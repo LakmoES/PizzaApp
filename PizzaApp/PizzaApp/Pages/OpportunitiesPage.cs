@@ -11,18 +11,26 @@ namespace PizzaApp.Pages
 
 	public class OpportunitiesPage : ContentPage
 	{
-		public OpportunitiesPage ()
+        private DBConnection dbc;
+		public OpportunitiesPage (DBConnection dbc)
 		{
 			Title = "Opportunities";
 			Icon = "Opportunities.png";
 
-            DBConnection dbc = new DBConnection();
-            
-            //User user = dbc.GetUser();
+            this.dbc = dbc;
+
+            User user = null;
+            string userInfo;
+            try
+            {
+                user = dbc.GetUser();
+                userInfo = user == null ? "empty table" : user.username;
+            }
+            catch(Exception ex) { userInfo = ex.ToString(); }
 
             Content = new StackLayout
             {
-                Children = { new Label { Text = dbc.db.DatabasePath } }
+                Children = { new Label { Text = dbc.db.DatabasePath + Environment.NewLine + userInfo } }
             };
         }
 	}

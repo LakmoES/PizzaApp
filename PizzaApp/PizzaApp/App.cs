@@ -5,6 +5,7 @@ using System.Text;
 using PizzaApp.Pages;
 
 using Xamarin.Forms;
+using PizzaApp.Data.Persistence;
 
 namespace PizzaApp
 {
@@ -12,21 +13,9 @@ namespace PizzaApp
     {
         public App()
         {
-            MainPage = new RootPage();
-            // The root page of your application
-            //MainPage = new ContentPage
-            //{
-            //    Content = new StackLayout
-            //    {
-            //        VerticalOptions = LayoutOptions.Center,
-            //        Children = {
-            //            new Label {
-            //                HorizontalTextAlignment = TextAlignment.Center,
-            //                Text = "Welcome to Xamarin Forms!"
-            //            }
-            //        }
-            //    }
-            //};
+            DBConnection dbc = new DBConnection();
+
+            MainPage = new RootPage(dbc);
         }
 
         protected override void OnStart()

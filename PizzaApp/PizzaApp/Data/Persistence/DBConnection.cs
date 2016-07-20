@@ -12,20 +12,61 @@ namespace PizzaApp.Data.Persistence
     public class DBConnection
     {
         public SQLiteConnection db { private set; get; }
+        private object locker;
         public DBConnection()
         {
+            locker = new object();
             db = DependencyService.Get<IDBPlatform>().GetConnection();
+            db.CreateTable<User>();
+            db.CreateTable<Token>();
         }
         public User GetUser()
         {
-            var user = db.ExecuteScalar<User>("SELECT * FROM User");
-            return user;
+            lock (locker)
+            {
+                var user = from u in db.Table<User>() select u;
+                return user.FirstOrDefault();
+                //var user = db.ExecuteScalar<User>("SELECT * FROM User");
+                //return user;
+            }
         }
-        public async Task DBG(string message)
+        public Token GetToken()
         {
-            string x = await Requests.GetAsync("http://localhost:37146/DBG/Write?message=" + message);
-            if (x != "ok")
-                throw new Exception("");
+            lock (locker)
+            {
+                var token = from t in db.Table<Token>() select t;
+                return token.FirstOrDefault();
+            }
+        }
+        public void SaveUser(User user)
+        {
+            lock(locker)
+            {
+                db.Execute("DELETE FROM USER");
+                db.Insert(user);
+            }
+        }
+        public void SaveToken(Token token)
+        {
+            lock(locker)
+            {
+                db.Execute("DELETE FROM TOKEN");
+                db.Insert(token);
+            }
+        }
+        public void RemoveUser()
+        {
+            lock (locker)
+            {
+                db.Execute("DELETE FROM USER");
+            }
+        }
+        public void RemoveToken()
+        {
+            lock (locker)
+            {
+                db.Execute("DELETE FROM TOKEN");
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Linq;
 using PizzaApp.Data;
 using PizzaApp.Pages.ProductsPageItems;
 using PizzaApp.Data.Providers;
+using PizzaApp.Data.Persistence;
 
 namespace PizzaApp.Pages
 {
@@ -19,11 +20,13 @@ namespace PizzaApp.Pages
         Label label = new Label { Text = "Магазин Pizza", HorizontalOptions = LayoutOptions.Center };
         Button button = new Button { Text = "Перейти ко всем товарам" };
         ListView listViewProducts;
-        public MainPage ()
+        private DBConnection dbc;
+        public MainPage (DBConnection dbc)
 		{
 			Title = "Главная";
 			Icon = "Contracts.png";
 
+            this.dbc = dbc;
             button.Clicked += bClicked;
 
             listViewProducts = new ListView();
@@ -56,7 +59,7 @@ namespace PizzaApp.Pages
         {
             button.IsEnabled = false;
 
-            Navigation.PushAsync(new ProductsPage());
+            Navigation.PushAsync(new ProductsPage(dbc));
                         
             button.IsEnabled = true;
         }

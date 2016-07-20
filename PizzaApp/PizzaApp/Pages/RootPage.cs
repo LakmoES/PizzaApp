@@ -2,21 +2,23 @@
 using Xamarin.Forms;
 using System.Linq;
 using PizzaApp.Pages.MenuPageItems;
+using PizzaApp.Data.Persistence;
 
 namespace PizzaApp.Pages
 {
 	public class RootPage : MasterDetailPage
 	{
 		MenuPage menuPage;
-
-		public RootPage ()
+        private DBConnection dbc;
+		public RootPage (DBConnection dbc)
 		{
 			menuPage = new MenuPage ();
+            this.dbc = dbc;
 
 			menuPage.Menu.ItemSelected += (sender, e) => NavigateTo (e.SelectedItem as MenuPageItems.MenuItem);
 
 			Master = menuPage;
-			Detail = new NavigationPage (new MainPage ());
+			Detail = new NavigationPage (new MainPage (dbc));
 		}
 
 		void NavigateTo (MenuPageItems.MenuItem menu)
@@ -24,7 +26,7 @@ namespace PizzaApp.Pages
 			if (menu == null)
 				return;
 			
-			Page displayPage = (Page)Activator.CreateInstance (menu.TargetType);
+			Page displayPage = (Page)Activator.CreateInstance (menu.TargetType, dbc);
 
 			Detail = new NavigationPage (displayPage);
 

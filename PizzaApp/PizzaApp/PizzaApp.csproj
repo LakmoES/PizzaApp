@@ -38,6 +38,7 @@
     <Compile Include="Data\Persistence\DBConnection.cs" />
     <Compile Include="Data\Persistence\IDBPlatform.cs" />
     <Compile Include="Data\Persistence\PersistenceProcessor.cs" />
+    <Compile Include="Data\Persistence\Token.cs" />
     <Compile Include="Data\Persistence\User.cs" />
     <Compile Include="Data\Providers\AuthProvider.cs" />
     <Compile Include="Data\Requests.cs" />

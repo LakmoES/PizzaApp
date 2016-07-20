@@ -7,6 +7,7 @@ using System.Linq;
 using Android.Graphics;
 using System.Threading.Tasks;
 using PizzaApp.Data.Providers;
+using PizzaApp.Data.Persistence;
 
 namespace PizzaApp.Pages
 {
@@ -14,7 +15,7 @@ namespace PizzaApp.Pages
 	public class ProductsPage : ContentPage
 	{
         ListView listView;
-        public ProductsPage()
+        public ProductsPage(DBConnection dbc)
         {
             Title = "Товары";
             Icon = "Leads.png";
