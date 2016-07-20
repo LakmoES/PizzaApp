@@ -10,7 +10,6 @@ namespace PizzaApp.Pages
 
 	public class AccountsPage : ContentPage
 	{
-        private Label labelUsernameDescription, labelPasswordDescription;
         private Entry entryUsername, entryPassword;
         private Label labelResult;
         private Button buttonLogin;
@@ -49,10 +48,8 @@ namespace PizzaApp.Pages
                 User user = dbc.GetUser();
                 if (user == null)
                 {
-                    labelUsernameDescription = new Label { Text = "Имя пользователя: ", HorizontalOptions = LayoutOptions.Start };
-                    labelPasswordDescription = new Label { Text = "Пароль: ", HorizontalOptions = LayoutOptions.Start };
-                    entryUsername = new Entry { HorizontalOptions = LayoutOptions.Center };
-                    entryPassword = new Entry { HorizontalOptions = LayoutOptions.Center, IsPassword = true };
+                    entryUsername = new Entry { Placeholder = "Имя пользователя" };
+                    entryPassword = new Entry { Placeholder = "Пароль", IsPassword = true };
                     labelResult = new Label();
 
                     buttonLogin = new Button { Text = "Войти" };
@@ -61,20 +58,9 @@ namespace PizzaApp.Pages
                     Content = new StackLayout
                     {
                         Orientation = StackOrientation.Vertical,
+                        HorizontalOptions = LayoutOptions.Fill,
                         Children = {
-                            new StackLayout
-                            {
-                                HorizontalOptions = LayoutOptions.Fill,
-                                Orientation = StackOrientation.Horizontal,
-                                Children = { labelUsernameDescription, entryUsername }
-                            },
-                            new StackLayout
-                            {
-                                HorizontalOptions = LayoutOptions.Fill,
-                                Orientation = StackOrientation.Horizontal,
-                                Children = { labelPasswordDescription, entryPassword }
-                            },
-                            buttonLogin, labelResult
+                            entryUsername, entryPassword, buttonLogin, labelResult
                         }
                     };
                 }

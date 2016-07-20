@@ -18,20 +18,22 @@ namespace PizzaApp.Pages.ProductsPageItems
             StackLayout verticalLayout = new StackLayout();
             Label labelTop = new Label();
             Label labelBottom = new Label();
+            Label labelID = new Label { IsVisible = true };
 
             //set bindings
             labelTop.SetBinding(Label.TextProperty, "title");
             labelBottom.SetBinding(Label.TextProperty, "subtitle");
+            labelID.SetBinding(Label.TextProperty, "id");
             image.SetBinding(Image.SourceProperty, "image");
 
             //Set properties for desired design
             cellWrapper.BackgroundColor = Color.FromHex("#eee");
-            System.Diagnostics.Debug.WriteLine("cellWrapper Orientation is {0}", cellWrapper.Orientation);
             horizontalLayout.Orientation = StackOrientation.Horizontal;
             verticalLayout.Orientation = StackOrientation.Vertical;
-            labelBottom.HorizontalOptions = LayoutOptions.EndAndExpand;
             labelTop.TextColor = Color.FromHex("#f35e20");
+            labelTop.Style = Device.Styles.TitleStyle;
             labelBottom.TextColor = Color.FromHex("503026");
+            labelBottom.Style = Device.Styles.SubtitleStyle;
 
             //add views to the view hierarchy
             horizontalLayout.Children.Add(image);

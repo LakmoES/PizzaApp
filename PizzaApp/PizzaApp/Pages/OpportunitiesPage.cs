@@ -30,7 +30,7 @@ namespace PizzaApp.Pages
 
             Content = new StackLayout
             {
-                Children = { new Label { Text = dbc.db.DatabasePath + Environment.NewLine + userInfo } }
+                Children = { new Label { Text = dbc.db.DatabasePath + Environment.NewLine + userInfo, Style = Device.Styles.SubtitleStyle } }
             };
         }
 	}

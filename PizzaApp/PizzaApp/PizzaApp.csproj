@@ -45,6 +45,7 @@
     <Compile Include="Data\ServerEntities\Category.cs" />
     <Compile Include="Pages\AccountsPage.cs" />
     <Compile Include="App.cs" />
+    <Compile Include="Pages\CurrentProductPage.cs" />
     <Compile Include="Pages\MainPage.cs" />
     <Compile Include="Pages\ProductsPage.cs" />
     <Compile Include="Pages\MenuPageItems\MenuCell.cs" />
@@ -52,7 +53,6 @@
     <Compile Include="Pages\MenuPageItems\MenuListData.cs" />
     <Compile Include="Pages\MenuPageItems\MenuListView.cs" />
     <Compile Include="Pages\MenuPage.cs" />
-    <Compile Include="Pages\MyContentPage.cs" />
     <Compile Include="Pages\OpportunitiesPage.cs" />
     <Compile Include="Pages\ProductsPageItems\CategoryCell.cs" />
     <Compile Include="Pages\ProductsPageItems\ProductCell.cs" />

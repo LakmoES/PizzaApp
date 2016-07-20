@@ -15,5 +15,9 @@ namespace PizzaApp.Data.ServerEntities
         public Decimal cost { get; set; }
         public int available { get; set; }
         public int advertising  { get; set; }
-}
+        public override string ToString()
+        {
+            return String.Format("[{0}] {1} {2} " + Environment.NewLine + "категория: {3}" + Environment.NewLine + "{4} грн" + Environment.NewLine + "Доступно:{5}" + Environment.NewLine + "Акционный:{6}", this.id, this.title, this.measure, this.category, this.cost, this.available, this.advertising);
+        }
+    }
 }
