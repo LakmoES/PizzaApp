@@ -14,11 +14,6 @@ namespace PizzaApp.Data.Providers
     {
         public static async Task<List<Product>> GetProductPage(int page, int pageSize, int category = -1)
         {
-            //var values = new Dictionary<string, string>
-            //{
-            //    { "page", page.ToString() },
-            //    { "pageSize", pageSize.ToString() }
-            //};
             var values = String.Format("?page={0}&pageSize={1}", page, pageSize);
             if (category != -1) values += String.Format("&category={0}", category);
 

@@ -41,9 +41,10 @@
     <Compile Include="Data\Persistence\Token.cs" />
     <Compile Include="Data\Persistence\User.cs" />
     <Compile Include="Data\Providers\AuthProvider.cs" />
+    <Compile Include="Data\Providers\UserProvider.cs" />
     <Compile Include="Data\Requests.cs" />
     <Compile Include="Data\ServerEntities\Category.cs" />
-    <Compile Include="Pages\AccountsPage.cs" />
+    <Compile Include="Pages\AccountPage.cs" />
     <Compile Include="App.cs" />
     <Compile Include="Pages\CurrentProductPage.cs" />
     <Compile Include="Pages\MainPage.cs" />

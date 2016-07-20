@@ -12,7 +12,7 @@ namespace PizzaApp.Pages
 		public MenuPage ()
 		{
 			Icon = "settings.png";
-			Title = "menu"; // The Title property must be set.
+			Title = "Меню"; // The Title property must be set.
 			BackgroundColor = Color.FromHex ("333333");
 
 			Menu = new MenuListView ();
@@ -21,7 +21,7 @@ namespace PizzaApp.Pages
 				Padding = new Thickness (10, 36, 0, 5),
 				Content = new Label {
 					TextColor = Color.FromHex ("AAAAAA"),
-					Text = "MENU", 
+					Text = "Меню", 
 				}
 			};
 

@@ -22,9 +22,9 @@ namespace PizzaApp.Pages.MenuPageItems
 			});
 
 			this.Add (new MenuItem () { 
-				Title = "Accounts", 
+				Title = "Аккаунт", 
 				IconSource = "accounts.png", 
-				TargetType = typeof(AccountsPage)
+				TargetType = typeof(AccountPage)
 			});
 
 			this.Add (new MenuItem () {

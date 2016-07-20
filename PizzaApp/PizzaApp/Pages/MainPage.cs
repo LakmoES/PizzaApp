@@ -50,8 +50,11 @@ namespace PizzaApp.Pages
         private async Task FillProductList()
         {
             var products = await ProductProvider.GetProductPage(1, 3);
-            if (listViewProducts == null)
-                throw new NullReferenceException("listview is null");
+            if (products == null)
+            {
+                await DisplayAlert("Warning", "Connection problem", "OK");
+                return;
+            }
             listViewProducts.ItemsSource = products.Select(a => new { title = a.title, subtitle = a.cost.ToString() + " грн", image = ImageSource.FromFile("icon.png") });
         }
 

@@ -8,19 +8,23 @@ using PizzaApp.Data.Persistence;
 namespace PizzaApp.Pages
 {
 
-	public class AccountsPage : ContentPage
+	public class AccountPage : ContentPage
 	{
         private Entry entryUsername, entryPassword;
-        private Label labelResult;
+        private Label labelTitle;
         private Button buttonLogin;
 
         private Label labelUsername;
+        private Label labelName;
+        private Label labelSurname;
+        private Label labelEmail;
+        private Label labelGuest;
         private Button buttonLogout;
 
         private DBConnection dbc;
-		public AccountsPage (DBConnection dbc)
+		public AccountPage (DBConnection dbc)
 		{
-			Title = "Accounts";
+			Title = "Аккаунт";
 			Icon = "Accounts.png";
             this.dbc = dbc;
 
@@ -31,10 +35,15 @@ namespace PizzaApp.Pages
             (sender as Button).IsEnabled = false;
 
             Token receivedToken = await Login(entryUsername.Text, entryPassword.Text);
+            
             if(receivedToken != null)
             {
-                dbc.SaveUser(new User { username = entryUsername.Text, password = entryPassword.Text});
                 dbc.SaveToken(receivedToken);
+
+                var user = await UserProvider.GetInfo(dbc);
+                if (user == null)
+                    throw new NullReferenceException("user is null");
+                dbc.SaveUser(new User { username = user.username, password = entryPassword.Text, name = user.name, surname = user.surname, email = user.email, guest = user.guest });
             }
 
             (sender as Button).IsEnabled = true;
@@ -46,33 +55,46 @@ namespace PizzaApp.Pages
             Device.BeginInvokeOnMainThread(() =>
             {
                 User user = dbc.GetUser();
+                //try
+                //{
+                //    var u = UserProvider.GetInfo(dbc).Result;
+                //    user = u;
+                //}
+                //catch { }
+                labelTitle = new Label { Style = Device.Styles.TitleStyle };
                 if (user == null)
                 {
+                    labelTitle.Text = "Пожалуйста, войдите в систему";
                     entryUsername = new Entry { Placeholder = "Имя пользователя" };
                     entryPassword = new Entry { Placeholder = "Пароль", IsPassword = true };
-                    labelResult = new Label();
 
                     buttonLogin = new Button { Text = "Войти" };
                     buttonLogin.Clicked += this.ButtonLogin_Clicked;
 
                     Content = new StackLayout
                     {
-                        Orientation = StackOrientation.Vertical,
-                        HorizontalOptions = LayoutOptions.Fill,
-                        Children = {
-                            entryUsername, entryPassword, buttonLogin, labelResult
+                        Children =
+                        {
+                            labelTitle, entryUsername, entryPassword, buttonLogin
                         }
                     };
                 }
                 else
                 {
-                    labelUsername = new Label { Text = user.username };
+                    labelTitle.Text = "Вы вошли как:";
+                    labelUsername = new Label { Text = "Логин: " + user.username, Style = Device.Styles.SubtitleStyle };
+                    labelName = new Label { Text = user.name == null ? "Имя: -" : "Имя: " + user.name, Style = Device.Styles.SubtitleStyle };
+                    labelSurname = new Label { Text = user.surname == null ? "Фамилия: -" : "Фамилия: " + user.surname, Style = Device.Styles.SubtitleStyle };
+                    labelEmail = new Label { Text = user.email == null ? "Email: -" : "Email: " + user.email, Style = Device.Styles.SubtitleStyle };
+                    labelGuest = new Label { Text = user.guest == 0 ? "Статус: Пользователь" : "Статус: Гость", Style = Device.Styles.SubtitleStyle };
                     buttonLogout = new Button { Text = "Выйти" };
                     buttonLogout.Clicked += this.ButtonLogout_Clicked;
                     Content = new StackLayout
                     {
-                        Orientation = StackOrientation.Vertical,
-                        Children = { labelUsername, buttonLogout }
+                        Children =
+                        {
+                            labelTitle, labelUsername, labelName, labelSurname, labelEmail, labelGuest, buttonLogout
+                        }
                     };
                 }
             });
@@ -81,13 +103,10 @@ namespace PizzaApp.Pages
         {
             Token t = await AuthProvider.Login(username, password);
             if (t != null)
-            {
-                labelResult.Text = String.Format("{0}, {1} - {2}", t.token_hash, t.createTime, t.expTime);
                 return t;
-            }
             else
             {
-                labelResult.Text = "Auth failed";
+                await DisplayAlert("Failed", "Auth failed", "OK");
                 return null;
             }
         }
