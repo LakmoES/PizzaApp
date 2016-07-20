@@ -11,6 +11,8 @@ namespace PizzaApp.Pages
 		{
 			Title = "Accounts";
 			Icon = "Accounts.png";
+
+            
 		}
 	}
 	

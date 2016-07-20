@@ -15,26 +15,29 @@ namespace PizzaApp.Pages.ProductsPageItems
             var image = new Image();
             StackLayout cellWrapper = new StackLayout();
             StackLayout horizontalLayout = new StackLayout();
-            Label left = new Label();
-            Label right = new Label();
+            StackLayout verticalLayout = new StackLayout();
+            Label labelTop = new Label();
+            Label labelBottom = new Label();
 
             //set bindings
-            left.SetBinding(Label.TextProperty, "title");
-            right.SetBinding(Label.TextProperty, "subtitle");
+            labelTop.SetBinding(Label.TextProperty, "title");
+            labelBottom.SetBinding(Label.TextProperty, "subtitle");
             image.SetBinding(Image.SourceProperty, "image");
 
             //Set properties for desired design
             cellWrapper.BackgroundColor = Color.FromHex("#eee");
             System.Diagnostics.Debug.WriteLine("cellWrapper Orientation is {0}", cellWrapper.Orientation);
             horizontalLayout.Orientation = StackOrientation.Horizontal;
-            right.HorizontalOptions = LayoutOptions.EndAndExpand;
-            left.TextColor = Color.FromHex("#f35e20");
-            right.TextColor = Color.FromHex("503026");
+            verticalLayout.Orientation = StackOrientation.Vertical;
+            labelBottom.HorizontalOptions = LayoutOptions.EndAndExpand;
+            labelTop.TextColor = Color.FromHex("#f35e20");
+            labelBottom.TextColor = Color.FromHex("503026");
 
             //add views to the view hierarchy
             horizontalLayout.Children.Add(image);
-            horizontalLayout.Children.Add(left);
-            horizontalLayout.Children.Add(right);
+            horizontalLayout.Children.Add(verticalLayout);
+            verticalLayout.Children.Add(labelTop);
+            verticalLayout.Children.Add(labelBottom);
             cellWrapper.Children.Add(horizontalLayout);
             View = cellWrapper;
         }

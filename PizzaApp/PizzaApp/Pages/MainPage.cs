@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System.Linq;
 using PizzaApp.Data;
 using PizzaApp.Pages.ProductsPageItems;
+using PizzaApp.Data.Providers;
 
 namespace PizzaApp.Pages
 {
@@ -45,10 +46,10 @@ namespace PizzaApp.Pages
         }
         private async Task FillProductList()
         {
-            var products = await ServerProcessor.GetProducts(1, 3);
+            var products = await ProductProvider.GetProductPage(1, 3);
             if (listViewProducts == null)
                 throw new NullReferenceException("listview is null");
-            listViewProducts.ItemsSource = products.Select(a => new { title = a.title, subtitle = a.cost.ToString(), image = ImageSource.FromFile("icon.png") });
+            listViewProducts.ItemsSource = products.Select(a => new { title = a.title, subtitle = a.cost.ToString() + " грн", image = ImageSource.FromFile("icon.png") });
         }
 
         public void bClicked(object sender, EventArgs e)

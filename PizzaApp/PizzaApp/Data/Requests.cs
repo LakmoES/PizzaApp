@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using PizzaApp.Data.ServerEntities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -9,26 +7,9 @@ using System.Threading.Tasks;
 
 namespace PizzaApp.Data
 {
-    public static class ServerProcessor
+    public static class Requests
     {
-        public static async Task<List<Product>> GetProducts(int page, int pageSize)
-        {
-            //var values = new Dictionary<string, string>
-            //{
-            //    { "page", page.ToString() },
-            //    { "pageSize", pageSize.ToString() }
-            //};
-            var values = String.Format("?page={0}&pageSize={1}", page, pageSize);
-
-            string content = await ServerProcessor.GetAsync("http://lakmoes-001-site1.etempurl.com/Product/GetPage" + values);
-            if (content == null)
-                return null;
-            var jArray = JArray.Parse(content);
-            var productList = jArray.ToObject<List<Product>>();
-
-            return productList;
-        }
-        private static async Task<String> PostAsync(string uri, Dictionary<string, string> data)
+        public static async Task<String> PostAsync(string uri, Dictionary<string, string> data)
         {
             var parameters = new FormUrlEncodedContent(data);
 

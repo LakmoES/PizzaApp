@@ -6,6 +6,7 @@ using PizzaApp.Data;
 using System.Linq;
 using Android.Graphics;
 using System.Threading.Tasks;
+using PizzaApp.Data.Providers;
 
 namespace PizzaApp.Pages
 {
@@ -46,10 +47,10 @@ namespace PizzaApp.Pages
         }
         private async Task FillList()
         {
-            var products = await ServerProcessor.GetProducts(1, 10);
+            var products = await ProductProvider.GetProductPage(1, 10);
             if (listView == null)
                 throw new NullReferenceException("listview is null");
-            listView.ItemsSource = products.Select(a => new { title = a.title, subtitle = a.cost.ToString(), image = ImageSource.FromFile("icon.png") });
+            listView.ItemsSource = products.Select(a => new { title = a.title, subtitle = a.cost.ToString() + " грн", image = ImageSource.FromFile("icon.png") });
         }
 	}
 	
