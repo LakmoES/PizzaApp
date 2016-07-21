@@ -118,11 +118,13 @@ namespace PizzaApp.Pages
         }
         private async Task Logout()
         {
-            dbc.RemoveUser();
             Token t = dbc.GetToken();
             if (t != null)
             {
-                await AuthProvider.Logout(t.token_hash);
+                string result = await AuthProvider.Logout(t.token_hash);
+                if (result == null)
+                    await DisplayAlert("Warning", "Connection error", "OK");
+                dbc.RemoveUser();
                 dbc.RemoveToken();
             }
         }

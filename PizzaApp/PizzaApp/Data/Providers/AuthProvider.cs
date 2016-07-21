@@ -60,13 +60,14 @@ namespace PizzaApp.Data.Providers
 
             return new Token { token_hash = jEntity.token_hash, createTime = createTime, expTime = expTime };
         }
-        public static async Task Logout(string token_hash)
+        public static async Task<String> Logout(string token_hash)
         {
             var values = new Dictionary<string, string>
             {
                 { "token", token_hash }
             };
             string content = await Requests.PostAsync("http://lakmoes-001-site1.etempurl.com/Auth/Logout", values);
+            return content;
         }
     }
 }
