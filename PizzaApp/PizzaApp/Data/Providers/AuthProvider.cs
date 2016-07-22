@@ -69,5 +69,36 @@ namespace PizzaApp.Data.Providers
             string content = await Requests.PostAsync("http://lakmoes-001-site1.etempurl.com/Auth/Logout", values);
             return content;
         }
+        public static async Task<List<ServerError>> Register(string username, string password, string email, string name, string surname)
+        {
+            var values = new Dictionary<string, string>
+            {
+                { "username", username },
+                { "password", password },
+                { "email", email },
+                { "name", name }
+            };
+            if (surname != null)
+                if (surname.Length > 0)
+                    values.Add("surname", surname);
+
+            string content = await Requests.PostAsync("http://lakmoes-001-site1.etempurl.com/Auth/RegisterUser", values);
+            List<ServerError> errorList = null;
+            if(content != null)
+            {
+                JArray jArray;
+                try
+                {
+                    jArray = JArray.Parse(content);
+                }
+                catch { return null; }
+                try
+                {
+                    errorList = jArray.ToObject<List<ServerError>>();
+                }
+                catch { return new List<ServerError> { { new ServerError { error = "Failed to parse Json" } }, { new ServerError { error = content } } }; }
+            }
+            return errorList;
+        }
     }
 }

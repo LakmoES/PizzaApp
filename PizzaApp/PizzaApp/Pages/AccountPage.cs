@@ -13,6 +13,7 @@ namespace PizzaApp.Pages
         private Entry entryUsername, entryPassword;
         private Label labelTitle;
         private Button buttonLogin;
+        private Button buttonRegister;
 
         private Label labelUsername;
         private Label labelName;
@@ -30,27 +31,7 @@ namespace PizzaApp.Pages
 
             Update();
         }
-        private async void ButtonLogin_Clicked(object sender, EventArgs e)
-        {
-            (sender as Button).IsEnabled = false;
-
-            Token receivedToken = await Login(entryUsername.Text, entryPassword.Text);
-            
-            if(receivedToken != null)
-            {
-                dbc.SaveToken(receivedToken);
-
-                var user = await UserProvider.GetInfo(dbc);
-                if (user == null)
-                    throw new NullReferenceException("user is null");
-                dbc.SaveUser(new User { username = user.username, password = entryPassword.Text, name = user.name, surname = user.surname, email = user.email, guest = user.guest });
-            }
-
-            (sender as Button).IsEnabled = true;
-
-            Update();
-        }
-        private void Update()
+        public void Update()
         {
             Device.BeginInvokeOnMainThread(() =>
             {
@@ -71,11 +52,14 @@ namespace PizzaApp.Pages
                     buttonLogin = new Button { Text = "Войти" };
                     buttonLogin.Clicked += this.ButtonLogin_Clicked;
 
+                    buttonRegister = new Button { Text = "Регистрация" };
+                    buttonRegister.Clicked += this.ButtonRegister_Clicked;
+
                     Content = new StackLayout
                     {
                         Children =
                         {
-                            labelTitle, entryUsername, entryPassword, buttonLogin
+                            labelTitle, entryUsername, entryPassword, buttonLogin, buttonRegister
                         }
                     };
                 }
@@ -98,6 +82,26 @@ namespace PizzaApp.Pages
                     };
                 }
             });
+        }
+        private async void ButtonLogin_Clicked(object sender, EventArgs e)
+        {
+            (sender as Button).IsEnabled = false;
+
+            Token receivedToken = await Login(entryUsername.Text, entryPassword.Text);
+
+            if (receivedToken != null)
+            {
+                dbc.SaveToken(receivedToken);
+
+                var user = await UserProvider.GetInfo(dbc);
+                if (user == null)
+                    throw new NullReferenceException("user is null");
+                dbc.SaveUser(new User { username = user.username, password = entryPassword.Text, name = user.name, surname = user.surname, email = user.email, guest = user.guest });
+            }
+
+            (sender as Button).IsEnabled = true;
+
+            Update();
         }
         private async Task<Token> Login(string username, string password)
         {
@@ -127,6 +131,19 @@ namespace PizzaApp.Pages
                 dbc.RemoveUser();
                 dbc.RemoveToken();
             }
+        }
+        private async void ButtonRegister_Clicked(object sender, EventArgs e)
+        {
+            this.buttonRegister.IsEnabled = false;
+
+            await Register();
+
+            this.buttonRegister.IsEnabled = true;
+        }
+        private async Task Register()
+        {
+            await Navigation.PushAsync(new RegistrationPage(dbc, this));
+            //await Navigation.PopAsync();
         }
     }
 	

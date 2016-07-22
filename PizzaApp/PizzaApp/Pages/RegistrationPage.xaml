@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PizzaApp.Pages.RegistrationPage">
+  <ScrollView>
+    <StackLayout>
+      <Entry Placeholder = "Имя пользователя" x:Name="entryUsername"/>
+      <Entry Placeholder = "Пароль" IsPassword="True" x:Name="entryPassword"/>
+      <Entry Placeholder = "Email" Keyboard="Keyboard.Email" x:Name="entryEmail"/>
+      <Entry Placeholder = "Ваше имя" x:Name="entryName"/>
+      <Entry Placeholder = "Фамилия" x:Name="entrySurname"/>
+      <Button Text="Подтвердить" x:Name="buttonSubmit"/>
+    </StackLayout>
+  </ScrollView>
+</ContentPage>
