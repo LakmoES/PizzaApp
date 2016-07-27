@@ -20,17 +20,20 @@ namespace PizzaApp.Pages
             this.dbc = dbc;
 
             User user = null;
-            string userInfo;
+            Token token = null;
+            string userInfo = String.Empty, tokenInfo = String.Empty;
             try
             {
                 user = dbc.GetUser();
-                userInfo = user == null ? "empty table" : user.username;
+                userInfo = user == null ? "empty user" : user.username + ":" + user.password;
+                token = dbc.GetToken();
+                tokenInfo = token == null ? "empty token" : token.token_hash;
             }
             catch(Exception ex) { userInfo = ex.ToString(); }
 
             Content = new StackLayout
             {
-                Children = { new Label { Text = dbc.db.DatabasePath + Environment.NewLine + userInfo, Style = Device.Styles.SubtitleStyle } }
+                Children = { new Label { Text = dbc.db.DatabasePath + Environment.NewLine + userInfo + Environment.NewLine + tokenInfo, Style = Device.Styles.SubtitleStyle } }
             };
         }
 	}

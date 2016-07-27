@@ -18,6 +18,7 @@ namespace PizzaApp.Pages
         {
             InitializeComponent();
             Title = "Регистрация";
+            
             this.dbc = dbc;
             this.parentPage = parentPage;
 
@@ -25,7 +26,7 @@ namespace PizzaApp.Pages
         }
         private async void ButtonSubmit_Clicked(object sender, EventArgs e)
         {
-            //await DisplayAlert("Submit", "Registration", "OK");
+            this.IsEnabled = false;
             await Register();
         }
         private async Task Register()
@@ -34,12 +35,14 @@ namespace PizzaApp.Pages
             if (errorList != null)
             {
                 await DisplayAlert("Warning", String.Join(Environment.NewLine, errorList.Select(x => x.error)), "OK");
+                this.IsEnabled = true;
                 return;
             }
             Token token = await AuthProvider.Login(entryUsername.Text, entryPassword.Text);
             if (token == null)
             {
                 await DisplayAlert("Error", "Something went wrong. Token is null", "OK");
+                this.IsEnabled = true;
                 return;
             }
             dbc.SaveToken(token);
@@ -47,11 +50,12 @@ namespace PizzaApp.Pages
             if(user == null)
             {
                 await DisplayAlert("Error", "Something went wrong. User is null", "OK");
+                this.IsEnabled = true;
                 return;
             }
             dbc.SaveUser(user);
             parentPage.Update();
-            //await Navigation.PopAsync();
+
             await Navigation.PopAsync();
         }
     }

@@ -8,12 +8,13 @@ using PizzaApp.Data.Persistence;
 namespace PizzaApp.Pages
 {
 
-	public class AccountPage : ContentPage
-	{
+    public class AccountPage : ContentPage
+    {
         private Entry entryUsername, entryPassword;
         private Label labelTitle;
         private Button buttonLogin;
         private Button buttonRegister;
+        private Button buttonEdit;
 
         private Label labelUsername;
         private Label labelName;
@@ -23,10 +24,10 @@ namespace PizzaApp.Pages
         private Button buttonLogout;
 
         private DBConnection dbc;
-		public AccountPage (DBConnection dbc)
-		{
-			Title = "Аккаунт";
-			Icon = "Accounts.png";
+        public AccountPage(DBConnection dbc)
+        {
+            Title = "Аккаунт";
+            Icon = "Accounts.png";
             this.dbc = dbc;
 
             Update();
@@ -65,19 +66,23 @@ namespace PizzaApp.Pages
                 }
                 else
                 {
+                    //user.password = "1";
+                    //dbc.SaveUser(user);
                     labelTitle.Text = "Вы вошли как:";
                     labelUsername = new Label { Text = "Логин: " + user.username, Style = Device.Styles.SubtitleStyle };
                     labelName = new Label { Text = user.name == null ? "Имя: -" : "Имя: " + user.name, Style = Device.Styles.SubtitleStyle };
                     labelSurname = new Label { Text = user.surname == null ? "Фамилия: -" : "Фамилия: " + user.surname, Style = Device.Styles.SubtitleStyle };
                     labelEmail = new Label { Text = user.email == null ? "Email: -" : "Email: " + user.email, Style = Device.Styles.SubtitleStyle };
                     labelGuest = new Label { Text = user.guest == 0 ? "Статус: Пользователь" : "Статус: Гость", Style = Device.Styles.SubtitleStyle };
+                    buttonEdit = new Button { Text = "Редактировать" };
+                    buttonEdit.Clicked += this.ButtonEdit_Clicked;
                     buttonLogout = new Button { Text = "Выйти" };
                     buttonLogout.Clicked += this.ButtonLogout_Clicked;
                     Content = new StackLayout
                     {
                         Children =
                         {
-                            labelTitle, labelUsername, labelName, labelSurname, labelEmail, labelGuest, buttonLogout
+                            labelTitle, labelUsername, labelName, labelSurname, labelEmail, labelGuest, buttonEdit, buttonLogout
                         }
                     };
                 }
@@ -113,6 +118,16 @@ namespace PizzaApp.Pages
                 await DisplayAlert("Failed", "Auth failed", "OK");
                 return null;
             }
+        }
+        private async void ButtonEdit_Clicked(object sender, EventArgs e)
+        {
+            this.IsBusy = true;
+            var user = await UserProvider.GetInfo(dbc);
+            if (user == null)
+                await DisplayAlert("Ошибка", "Не удалось связаться с сервером.", "OK");
+            else
+                await Navigation.PushAsync(new AccountEditPage(dbc, user));
+            this.IsBusy = false;
         }
         private async void ButtonLogout_Clicked(object sender, EventArgs e)
         {
