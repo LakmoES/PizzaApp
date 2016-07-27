@@ -13,15 +13,18 @@ namespace PizzaApp.Pages
     public partial class AccountEditPage : ContentPage
     {
         private DBConnection dbc;
-        public AccountEditPage(DBConnection dbc, User user)
+        private AccountPage parentPage;
+        public AccountEditPage(DBConnection dbc, User user, AccountPage parentPage)
         {
             InitializeComponent();
             Title = "Редактирование профиля";
 
             this.dbc = dbc;
             FillFields(user);
+            this.parentPage = parentPage;
 
             this.buttonSubmit.Clicked += ButtonSubmit_Clicked;
+            this.buttonTelEdit.Clicked += ButtonTelEdit_Clicked;
         }
         private void FillFields(User user)
         {
@@ -64,8 +67,15 @@ namespace PizzaApp.Pages
                     await Navigation.PopAsync();
                 }
                 await DisplayAlert("Успех", "Ваш профиль успешно обновлен.", "OK");
+                this.parentPage.Update();
             }
             this.IsEnabled = false;
+        }
+        private async void ButtonTelEdit_Clicked(object sender, EventArgs e)
+        {
+            var telNumbers = await UserProvider.GetTelList(dbc);
+            //await DisplayAlert("Count", telNumbers.Count + "", "OK");
+            await Navigation.PushAsync(new AccountTelEditPage(dbc, telNumbers));
         }
     }
 }

@@ -126,7 +126,7 @@ namespace PizzaApp.Pages
             if (user == null)
                 await DisplayAlert("Ошибка", "Не удалось связаться с сервером.", "OK");
             else
-                await Navigation.PushAsync(new AccountEditPage(dbc, user));
+                await Navigation.PushAsync(new AccountEditPage(dbc, user, this));
             this.IsBusy = false;
         }
         private async void ButtonLogout_Clicked(object sender, EventArgs e)

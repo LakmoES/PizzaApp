@@ -2,5 +2,26 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PizzaApp.Pages.AccountTelEditPage">
-  <Label Text="{Binding MainText}" VerticalOptions="Center" HorizontalOptions="Center" />
+  <ScrollView VerticalOptions="FillAndExpand">
+    <StackLayout VerticalOptions="FillAndExpand">
+      <Label Text="Ваши номера: " Style ="{DynamicResource TitleStyle}" />
+      <ListView x:Name="listViewTelList">
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <ViewCell>
+              <ViewCell.ContextActions>
+                <MenuItem Clicked="OnEdit" CommandParameter="{Binding id}" Text="Править" />
+                <MenuItem Clicked="OnDelete" CommandParameter="{Binding id}" Text="Удалить" IsDestructive="True" />
+              </ViewCell.ContextActions>
+              <StackLayout Padding="15,0" VerticalOptions="FillAndExpand">
+                <Label Text="{Binding number}" />
+              </StackLayout>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+      <Entry Placeholder="Новый номер" x:Name="entryNewNumber" Text="" />
+      <Button Text="Добавить" x:Name="buttonTelAdd" />
+    </StackLayout>
+  </ScrollView>
 </ContentPage>

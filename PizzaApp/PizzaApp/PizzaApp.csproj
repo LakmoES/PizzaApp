@@ -44,6 +44,7 @@
     <Compile Include="Data\Providers\UserProvider.cs" />
     <Compile Include="Data\Requests.cs" />
     <Compile Include="Data\ServerEntities\Category.cs" />
+    <Compile Include="Data\ServerEntities\TelNumber.cs" />
     <Compile Include="Data\ServerError.cs" />
     <Compile Include="Pages\AccountEditPage.xaml.cs">
       <DependentUpon>AccountEditPage.xaml</DependentUpon>
@@ -54,6 +55,9 @@
       <DependentUpon>AccountTelEditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\CurrentProductPage.cs" />
+    <Compile Include="Pages\CurrentTelEditPage.xaml.cs">
+      <DependentUpon>CurrentTelEditPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\MainPage.cs" />
     <Compile Include="Pages\ProductsPage.cs" />
     <Compile Include="Pages\MenuPageItems\MenuCell.cs" />
@@ -115,6 +119,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages\AccountTelEditPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\CurrentTelEditPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

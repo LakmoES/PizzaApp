@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PizzaApp.Data.Persistence;
+using PizzaApp.Data.ServerEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace PizzaApp.Data.Providers
     {
         public static async Task<User> GetInfo(DBConnection dbc)
         {
+            string url = "http://lakmoes-001-site1.etempurl.com/User/GetInfo";
             var token = dbc.GetToken();
             if (token == null)
                 return null;
@@ -31,7 +33,7 @@ namespace PizzaApp.Data.Providers
                 { "token",  token.token_hash }
             };
             
-            string content = await Requests.PostAsync("http://lakmoes-001-site1.etempurl.com/User/GetInfo", values);
+            string content = await Requests.PostAsync(url, values);
             if (content != null && content.Equals("\"wrong token\""))
             {
                 try
@@ -42,7 +44,7 @@ namespace PizzaApp.Data.Providers
                     {
                         dbc.SaveToken(token);
                         values["token"] = token.token_hash;
-                        content = await Requests.PostAsync("http://lakmoes-001-site1.etempurl.com/User/Edit", values);
+                        content = await Requests.PostAsync(url, values);
                     }
                 }
                 catch { }
@@ -61,6 +63,7 @@ namespace PizzaApp.Data.Providers
         }
         public static async Task<List<ServerError>> Edit(DBConnection dbc, string password, string email, string name, string surname)
         {
+            string url = "http://lakmoes-001-site1.etempurl.com/User/Edit";
             var token = dbc.GetToken();
             if (token == null)
                 return new List<ServerError> { new ServerError { error = "Вы не залогинены" } };
@@ -78,7 +81,7 @@ namespace PizzaApp.Data.Providers
                 if (surname.Length > 0)
                     values.Add("surname", surname);
 
-            string content = await Requests.PostAsync("http://lakmoes-001-site1.etempurl.com/User/Edit", values);
+            string content = await Requests.PostAsync(url, values);
             if (content != null && content.Equals("\"wrong token\""))
             {
                 try
@@ -89,7 +92,7 @@ namespace PizzaApp.Data.Providers
                     {
                         dbc.SaveToken(token);
                         values["token"] = token.token_hash;
-                        content = await Requests.PostAsync("http://lakmoes-001-site1.etempurl.com/User/Edit", values);
+                        content = await Requests.PostAsync(url, values);
                     }
                 }
                 catch { }
@@ -110,6 +113,184 @@ namespace PizzaApp.Data.Providers
                 catch { return new List<ServerError> { { new ServerError { error = "Failed to parse Json" } }, { new ServerError { error = content } } }; }
             }
             return errorList;
+        }
+
+        public static async Task<List<TelNumber>> GetTelList(DBConnection dbc)
+        {
+            string url = "http://lakmoes-001-site1.etempurl.com/User/GetTelList?token=";
+            var token = dbc.GetToken();
+            if (token == null)
+                return null;
+            DateTime now = DateTime.Now;
+            if (token.expTime.Date == now.Date &&
+                token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
+                token.expTime.TimeOfDay.Minutes - now.TimeOfDay.Minutes <= 5)
+            {
+                Token t = await AuthProvider.RenewToken(token.token_hash);
+                if (t != null)
+                    dbc.SaveToken(t);
+            }
+
+            string content = await Requests.GetAsync(url + token.token_hash);
+            if (content != null && content.Equals("\"wrong token\""))
+            {
+                try
+                {
+                    var user = dbc.GetUser();
+                    token = await AuthProvider.Login(user.username, user.password);
+                    if (token != null)
+                    {
+                        dbc.SaveToken(token);
+                        content = await Requests.GetAsync(url + token.token_hash);
+                    }
+                }
+                catch { }
+            }
+            if (content == null)
+                return null;
+            var number = new { id = 0, number = ""};
+            JArray jArray;
+            try
+            {
+                jArray = JArray.Parse(content);
+            }
+            catch { return null; }
+            var telList = jArray.ToObject<List<TelNumber>>();
+
+            return telList;
+        }
+        public static async Task<bool> RemoveTel(DBConnection dbc, int telID)
+        {
+            string url = "http://lakmoes-001-site1.etempurl.com/User/RemoveTel";
+            var token = dbc.GetToken();
+            if (token == null)
+                return false;
+            DateTime now = DateTime.Now;
+            if (token.expTime.Date == now.Date &&
+                token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
+                token.expTime.TimeOfDay.Minutes - now.TimeOfDay.Minutes <= 5)
+            {
+                Token t = await AuthProvider.RenewToken(token.token_hash);
+                if (t != null)
+                    dbc.SaveToken(t);
+            }
+
+            var values = new Dictionary<string, string>
+            {
+                { "token", token.token_hash },
+                { "telID", telID.ToString() }
+            };
+
+            string content = await Requests.PostAsync(url, values);
+            if (content != null && content.Equals("\"wrong token\""))
+            {
+                try
+                {
+                    var user = dbc.GetUser();
+                    token = await AuthProvider.Login(user.username, user.password);
+                    if (token != null)
+                    {
+                        dbc.SaveToken(token);
+                        content = await Requests.PostAsync(url, values);
+                    }
+                }
+                catch { }
+            }
+            if (content == null)
+                return false;
+            if (content.Equals("\"ok\""))
+                return true;
+            else
+                return false;
+        }
+        public static async Task<bool> AddTel(DBConnection dbc, string tel)
+        {
+            string url = "http://lakmoes-001-site1.etempurl.com/User/AddTel";
+            var token = dbc.GetToken();
+            if (token == null)
+                return false;
+            DateTime now = DateTime.Now;
+            if (token.expTime.Date == now.Date &&
+                token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
+                token.expTime.TimeOfDay.Minutes - now.TimeOfDay.Minutes <= 5)
+            {
+                Token t = await AuthProvider.RenewToken(token.token_hash);
+                if (t != null)
+                    dbc.SaveToken(t);
+            }
+
+            var values = new Dictionary<string, string>
+            {
+                { "token", token.token_hash },
+                { "tel", tel }
+            };
+
+            string content = await Requests.PostAsync(url, values);
+            if (content != null && content.Equals("\"wrong token\""))
+            {
+                try
+                {
+                    var user = dbc.GetUser();
+                    token = await AuthProvider.Login(user.username, user.password);
+                    if (token != null)
+                    {
+                        dbc.SaveToken(token);
+                        content = await Requests.PostAsync(url, values);
+                    }
+                }
+                catch { }
+            }
+            if (content == null)
+                return false;
+            if (content.Equals("\"ok\""))
+                return true;
+            else
+                return false;
+        }
+        public static async Task<bool> EditTel(DBConnection dbc, int telID, string tel)
+        {
+            string url = "http://lakmoes-001-site1.etempurl.com/User/EditTel";
+            var token = dbc.GetToken();
+            if (token == null)
+                return false;
+            DateTime now = DateTime.Now;
+            if (token.expTime.Date == now.Date &&
+                token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
+                token.expTime.TimeOfDay.Minutes - now.TimeOfDay.Minutes <= 5)
+            {
+                Token t = await AuthProvider.RenewToken(token.token_hash);
+                if (t != null)
+                    dbc.SaveToken(t);
+            }
+
+            var values = new Dictionary<string, string>
+            {
+                { "token", token.token_hash },
+                { "telID", telID.ToString() },
+                { "tel", tel }
+            };
+        
+            string content = await Requests.PostAsync(url, values);
+            if (content != null && content.Equals("\"wrong token\""))
+            {
+                try
+                {
+                    var user = dbc.GetUser();
+                    token = await AuthProvider.Login(user.username, user.password);
+                    if (token != null)
+                    {
+                        dbc.SaveToken(token);
+                        content = await Requests.PostAsync(url, values);
+                    }
+                }
+                catch { }
+            }
+            if (content == null)
+                return false;
+            if (content.Equals("\"ok\""))
+                return true;
+            else
+                return false;
         }
     }
 }
