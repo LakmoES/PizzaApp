@@ -148,7 +148,7 @@ namespace PizzaApp.Data.Providers
             }
             if (content == null)
                 return null;
-            var number = new { id = 0, number = ""};
+
             JArray jArray;
             try
             {
@@ -270,6 +270,184 @@ namespace PizzaApp.Data.Providers
                 { "tel", tel }
             };
         
+            string content = await Requests.PostAsync(url, values);
+            if (content != null && content.Equals("\"wrong token\""))
+            {
+                try
+                {
+                    var user = dbc.GetUser();
+                    token = await AuthProvider.Login(user.username, user.password);
+                    if (token != null)
+                    {
+                        dbc.SaveToken(token);
+                        content = await Requests.PostAsync(url, values);
+                    }
+                }
+                catch { }
+            }
+            if (content == null)
+                return false;
+            if (content.Equals("\"ok\""))
+                return true;
+            else
+                return false;
+        }
+
+        public static async Task<List<Address>> GetAddressList(DBConnection dbc)
+        {
+            string url = "http://lakmoes-001-site1.etempurl.com/User/GetAddressList?token=";
+            var token = dbc.GetToken();
+            if (token == null)
+                return null;
+            DateTime now = DateTime.Now;
+            if (token.expTime.Date == now.Date &&
+                token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
+                token.expTime.TimeOfDay.Minutes - now.TimeOfDay.Minutes <= 5)
+            {
+                Token t = await AuthProvider.RenewToken(token.token_hash);
+                if (t != null)
+                    dbc.SaveToken(t);
+            }
+
+            string content = await Requests.GetAsync(url + token.token_hash);
+            if (content != null && content.Equals("\"wrong token\""))
+            {
+                try
+                {
+                    var user = dbc.GetUser();
+                    token = await AuthProvider.Login(user.username, user.password);
+                    if (token != null)
+                    {
+                        dbc.SaveToken(token);
+                        content = await Requests.GetAsync(url + token.token_hash);
+                    }
+                }
+                catch { }
+            }
+            if (content == null)
+                return null;
+            
+            JArray jArray;
+            try
+            {
+                jArray = JArray.Parse(content);
+            }
+            catch { return null; }
+            var addressList = jArray.ToObject<List<Address>>();
+
+            return addressList;
+        }
+        public static async Task<bool> RemoveAddress(DBConnection dbc, int addressID)
+        {
+            string url = "http://lakmoes-001-site1.etempurl.com/User/RemoveAddress";
+            var token = dbc.GetToken();
+            if (token == null)
+                return false;
+            DateTime now = DateTime.Now;
+            if (token.expTime.Date == now.Date &&
+                token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
+                token.expTime.TimeOfDay.Minutes - now.TimeOfDay.Minutes <= 5)
+            {
+                Token t = await AuthProvider.RenewToken(token.token_hash);
+                if (t != null)
+                    dbc.SaveToken(t);
+            }
+
+            var values = new Dictionary<string, string>
+            {
+                { "token", token.token_hash },
+                { "addressID", addressID.ToString() }
+            };
+
+            string content = await Requests.PostAsync(url, values);
+            if (content != null && content.Equals("\"wrong token\""))
+            {
+                try
+                {
+                    var user = dbc.GetUser();
+                    token = await AuthProvider.Login(user.username, user.password);
+                    if (token != null)
+                    {
+                        dbc.SaveToken(token);
+                        content = await Requests.PostAsync(url, values);
+                    }
+                }
+                catch { }
+            }
+            if (content == null)
+                return false;
+            if (content.Equals("\"ok\""))
+                return true;
+            else
+                return false;
+        }
+        public static async Task<bool> AddAddress(DBConnection dbc, string address)
+        {
+            string url = "http://lakmoes-001-site1.etempurl.com/User/AddAddress";
+            var token = dbc.GetToken();
+            if (token == null)
+                return false;
+            DateTime now = DateTime.Now;
+            if (token.expTime.Date == now.Date &&
+                token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
+                token.expTime.TimeOfDay.Minutes - now.TimeOfDay.Minutes <= 5)
+            {
+                Token t = await AuthProvider.RenewToken(token.token_hash);
+                if (t != null)
+                    dbc.SaveToken(t);
+            }
+
+            var values = new Dictionary<string, string>
+            {
+                { "token", token.token_hash },
+                { "address", address }
+            };
+
+            string content = await Requests.PostAsync(url, values);
+            if (content != null && content.Equals("\"wrong token\""))
+            {
+                try
+                {
+                    var user = dbc.GetUser();
+                    token = await AuthProvider.Login(user.username, user.password);
+                    if (token != null)
+                    {
+                        dbc.SaveToken(token);
+                        content = await Requests.PostAsync(url, values);
+                    }
+                }
+                catch { }
+            }
+            if (content == null)
+                return false;
+            if (content.Equals("\"ok\""))
+                return true;
+            else
+                return false;
+        }
+        public static async Task<bool> EditAddress(DBConnection dbc, int addressID, string address)
+        {
+            string url = "http://lakmoes-001-site1.etempurl.com/User/EditAddress";
+            var token = dbc.GetToken();
+            if (token == null)
+                return false;
+            DateTime now = DateTime.Now;
+            if (token.expTime.Date == now.Date &&
+                token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
+                token.expTime.TimeOfDay.Minutes - now.TimeOfDay.Minutes <= 5)
+            {
+                Token t = await AuthProvider.RenewToken(token.token_hash);
+                if (t != null)
+                    dbc.SaveToken(t);
+            }
+
+            var values = new Dictionary<string, string>
+            {
+                { "token", token.token_hash },
+                { "addressID", addressID.ToString() },
+                { "address", address }
+            };
+
             string content = await Requests.PostAsync(url, values);
             if (content != null && content.Equals("\"wrong token\""))
             {

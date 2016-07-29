@@ -25,6 +25,7 @@ namespace PizzaApp.Pages
 
             this.buttonSubmit.Clicked += ButtonSubmit_Clicked;
             this.buttonTelEdit.Clicked += ButtonTelEdit_Clicked;
+            this.buttonAddressEdit.Clicked += ButtonAddressEdit_Clicked;
         }
         private void FillFields(User user)
         {
@@ -76,6 +77,12 @@ namespace PizzaApp.Pages
             var telNumbers = await UserProvider.GetTelList(dbc);
             //await DisplayAlert("Count", telNumbers.Count + "", "OK");
             await Navigation.PushAsync(new AccountTelEditPage(dbc, telNumbers));
+        }
+        private async void ButtonAddressEdit_Clicked(object sender, EventArgs e)
+        {
+            var addresses = await UserProvider.GetAddressList(dbc);
+            //await DisplayAlert("Count", telNumbers.Count + "", "OK");
+            await Navigation.PushAsync(new AccountAddressEditPage(dbc, addresses));
         }
     }
 }

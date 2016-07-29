@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PizzaApp.Pages.AccountAddressEditPage">
+  <ScrollView VerticalOptions="FillAndExpand">
+    <StackLayout VerticalOptions="FillAndExpand">
+      <Label Text="Ваши адреса: " Style ="{DynamicResource TitleStyle}" />
+      <ListView x:Name="listViewAddressList">
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <ViewCell>
+              <ViewCell.ContextActions>
+                <MenuItem Clicked="OnEdit" CommandParameter="{Binding id}" Text="Править" />
+                <MenuItem Clicked="OnDelete" CommandParameter="{Binding id}" Text="Удалить" IsDestructive="True" />
+              </ViewCell.ContextActions>
+              <StackLayout Padding="15,0" VerticalOptions="FillAndExpand">
+                <Label Text="{Binding address}" />
+              </StackLayout>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+      <Entry Placeholder="Новый адрес" x:Name="entryNewAddress" Text="" />
+      <Button Text="Добавить" x:Name="buttonAddressAdd" />
+    </StackLayout>
+  </ScrollView>
+</ContentPage>

@@ -43,9 +43,13 @@
     <Compile Include="Data\Providers\AuthProvider.cs" />
     <Compile Include="Data\Providers\UserProvider.cs" />
     <Compile Include="Data\Requests.cs" />
+    <Compile Include="Data\ServerEntities\Address.cs" />
     <Compile Include="Data\ServerEntities\Category.cs" />
     <Compile Include="Data\ServerEntities\TelNumber.cs" />
     <Compile Include="Data\ServerError.cs" />
+    <Compile Include="Pages\AccountAddressEditPage.xaml.cs">
+      <DependentUpon>AccountAddressEditPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\AccountEditPage.xaml.cs">
       <DependentUpon>AccountEditPage.xaml</DependentUpon>
     </Compile>
@@ -53,6 +57,9 @@
     <Compile Include="App.cs" />
     <Compile Include="Pages\AccountTelEditPage.xaml.cs">
       <DependentUpon>AccountTelEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CurrentAddressEditPage.xaml.cs">
+      <DependentUpon>CurrentAddressEditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\CurrentProductPage.cs" />
     <Compile Include="Pages\CurrentTelEditPage.xaml.cs">
@@ -125,6 +132,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages\CurrentTelEditPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\AccountAddressEditPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\CurrentAddressEditPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

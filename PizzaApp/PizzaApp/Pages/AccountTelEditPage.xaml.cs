@@ -63,6 +63,10 @@ namespace PizzaApp.Pages
 
         public async void OnDelete(object sender, EventArgs e)
         {
+            var answer = await DisplayAlert("Подтверждение", "Действительно хотите удалить?", "Да", "Нет");
+            if (!answer)
+                return;
+
             var mi = ((MenuItem)sender);
             int telID = Convert.ToInt32(mi.CommandParameter);
             bool removeResult = await UserProvider.RemoveTel(dbc, telID);

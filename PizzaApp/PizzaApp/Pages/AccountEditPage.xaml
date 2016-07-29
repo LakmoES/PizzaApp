@@ -12,7 +12,7 @@
       <Button Text="Подтвердить" x:Name="buttonSubmit"/>
       
       <Button Text="Номера телефонов" x:Name="buttonTelEdit" />
-      <Button Text="Адреса" x:Name="buttonAddressEdit" />
+      <Button Text="Адреса доставки" x:Name="buttonAddressEdit" />
     </StackLayout>
   </ScrollView>
 </ContentPage>
