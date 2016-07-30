@@ -15,6 +15,7 @@ namespace PizzaApp.Pages
 
 	public class ProductsPage : ContentPage
 	{
+        private DBConnection dbc;
         private ListView listView;
         private List<Product> products;
         public ProductsPage(DBConnection dbc)
@@ -22,6 +23,7 @@ namespace PizzaApp.Pages
             Title = "Товары";
             Icon = "Leads.png";
 
+            this.dbc = dbc;
             var label = new Label
             {
                 Text = "Наши товары",
@@ -60,7 +62,7 @@ namespace PizzaApp.Pages
             int index = itemSourceList.FindIndex(a => a.id == (e.SelectedItem as dynamic).id);
             
             Product p = products.ElementAt(index);
-            await Navigation.PushAsync(new CurrentProductPage(p));
+            await Navigation.PushAsync(new CurrentProductPage(dbc, p, await ShopCartProvider.ProductExists(dbc, p.id)));
 
             (sender as ListView).SelectedItem = null;
             (sender as ListView).IsEnabled = true;

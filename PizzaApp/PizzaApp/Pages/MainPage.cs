@@ -45,6 +45,7 @@ namespace PizzaApp.Pages
         private async void ListRefreshing(object sender, EventArgs e)
         {
             await FillProductList();
+            await UpdateCategories();
             (sender as ListView).IsRefreshing = false;
         }
         private async Task FillProductList()
@@ -56,6 +57,11 @@ namespace PizzaApp.Pages
                 return;
             }
             listViewProducts.ItemsSource = products.Select(a => new { title = a.title, subtitle = a.cost.ToString() + " грн", image = ImageSource.FromFile("icon.png") });
+        }
+        private async Task UpdateCategories()
+        {
+            var categories = await ProductProvider.GetCategories();
+            dbc.SaveCategoryList(categories.Select(c => new ProductCategory { id = c.id, title = c.title }).ToList());
         }
 
         public void bClicked(object sender, EventArgs e)

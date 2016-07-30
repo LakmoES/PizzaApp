@@ -37,14 +37,16 @@
   <ItemGroup>
     <Compile Include="Data\Persistence\DBConnection.cs" />
     <Compile Include="Data\Persistence\IDBPlatform.cs" />
-    <Compile Include="Data\Persistence\PersistenceProcessor.cs" />
+    <Compile Include="Data\Persistence\ProductCategory.cs" />
     <Compile Include="Data\Persistence\Token.cs" />
     <Compile Include="Data\Persistence\User.cs" />
     <Compile Include="Data\Providers\AuthProvider.cs" />
+    <Compile Include="Data\Providers\ShopCartProvider.cs" />
     <Compile Include="Data\Providers\UserProvider.cs" />
     <Compile Include="Data\Requests.cs" />
     <Compile Include="Data\ServerEntities\Address.cs" />
     <Compile Include="Data\ServerEntities\Category.cs" />
+    <Compile Include="Data\ServerEntities\ShopCartProduct.cs" />
     <Compile Include="Data\ServerEntities\TelNumber.cs" />
     <Compile Include="Data\ServerError.cs" />
     <Compile Include="Pages\AccountAddressEditPage.xaml.cs">
@@ -61,7 +63,9 @@
     <Compile Include="Pages\CurrentAddressEditPage.xaml.cs">
       <DependentUpon>CurrentAddressEditPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\CurrentProductPage.cs" />
+    <Compile Include="Pages\CurrentProductPage.xaml.cs">
+      <DependentUpon>CurrentProductPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\CurrentTelEditPage.xaml.cs">
       <DependentUpon>CurrentTelEditPage.xaml</DependentUpon>
     </Compile>
@@ -144,6 +148,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages\CurrentAddressEditPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\CurrentProductPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

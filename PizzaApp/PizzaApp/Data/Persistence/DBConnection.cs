@@ -19,6 +19,7 @@ namespace PizzaApp.Data.Persistence
             db = DependencyService.Get<IDBPlatform>().GetConnection();
             db.CreateTable<User>();
             db.CreateTable<Token>();
+            db.CreateTable<ProductCategory>();
         }
         public User GetUser()
         {
@@ -66,6 +67,22 @@ namespace PizzaApp.Data.Persistence
             lock (locker)
             {
                 db.Execute("DELETE FROM TOKEN");
+            }
+        }
+        public void SaveCategoryList(List<ProductCategory> categories)
+        {
+            lock (locker)
+            {
+                db.Execute("DELETE FROM PRODUCTCATEGORY");
+                db.InsertAll(categories);
+            }
+        }
+        public string GetCategoryTitle(int id)
+        {
+            lock (locker)
+            {
+                var categoryTitle = from c in db.Table<ProductCategory>() where c.id == id select c.title;
+                return categoryTitle.FirstOrDefault();
             }
         }
     }

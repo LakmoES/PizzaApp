@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PizzaApp.Pages.CurrentProductPage">
+  <ScrollView >
+    <RelativeLayout >
+      <Label x:Name="labelCategory" Style ="{DynamicResource SubtitleStyle}"
+             RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.025,Constant=0}"
+             />
+      <BoxView x:Name="boxPhoto" BackgroundColor="Gray" HeightRequest="70"  WidthRequest="50"
+               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.4,Constant=0}"
+               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=.4,Constant=0}"
+               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=labelCategory,Property=X,Factor=1,Constant=0}"
+               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=labelCategory, Property=Height, Factor=1.5,Constant=0}"
+             />
+      <!-- Правый блок [начало] -->
+      <Label x:Name="labelAvailable" Style ="{DynamicResource TitleStyle}"
+               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=.5, Constant=0}"
+               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=boxPhoto, Property=Y, Factor=1,Constant=0}"
+             />
+      <Label x:Name="labelAdvertising" Style ="{DynamicResource TitleStyle}"
+               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=labelAvailable, Property=X, Factor=1, Constant=0}"
+               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=labelAvailable, Property=Y, Factor=1.6,Constant=0}"
+             />
+      <Label x:Name="labelCostPerAmount" Style ="{DynamicResource TitleStyle}"
+               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=labelAdvertising, Property=X, Factor=1, Constant=0}"
+               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=labelAdvertising, Property=Y, Factor=1.6,Constant=0}"
+             />
+      <Label x:Name="labelAlreadyExists" Style ="{DynamicResource TitleStyle}"
+               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=labelAdvertising, Property=X, Factor=1, Constant=0}"
+               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=boxPhoto, Property=Height, Factor=.9,Constant=0}"
+             />
+      <!-- Правый блок [конец] -->
+      <Label x:Name="labelBuyAmount" Style ="{DynamicResource TitleStyle}" Text="1"
+               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=.25, Constant=0}"
+               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=boxPhoto, Property=Height, Factor=1.2,Constant=0}"
+             />
+      <Stepper x:Name="stepperBuyAmount" Minimum="1" Maximum="10" Increment="1" Value="1"
+               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=.15, Constant=0}"
+               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=labelBuyAmount, Property=Y, Factor=1,Constant=20}"
+             />
+      <Button x:Name="buttonAddToCart" Text="Добавить в корзину"
+               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=.45, Constant=0}"
+               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=labelBuyAmount, Property=Y, Factor=1,Constant=0}"
+             />
+    </RelativeLayout>
+  </ScrollView>
+</ContentPage>
