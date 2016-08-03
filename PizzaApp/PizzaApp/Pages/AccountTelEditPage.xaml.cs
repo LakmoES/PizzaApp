@@ -16,7 +16,7 @@ namespace PizzaApp.Pages
     {
         private DBConnection dbc;
         private ObservableCollection<TelNumber> telNumbers { get; set; }
-        public AccountTelEditPage(DBConnection dbc, List<TelNumber> telNumbers)
+        public AccountTelEditPage(DBConnection dbc, IEnumerable<TelNumber> telNumbers)
         {
             InitializeComponent();
             Title = "Правка номеров";

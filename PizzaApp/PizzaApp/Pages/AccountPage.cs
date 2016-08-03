@@ -37,12 +37,6 @@ namespace PizzaApp.Pages
             Device.BeginInvokeOnMainThread(() =>
             {
                 User user = dbc.GetUser();
-                //try
-                //{
-                //    var u = UserProvider.GetInfo(dbc).Result;
-                //    user = u;
-                //}
-                //catch { }
                 labelTitle = new Label { Style = Device.Styles.TitleStyle };
                 if (user == null)
                 {
@@ -66,8 +60,6 @@ namespace PizzaApp.Pages
                 }
                 else
                 {
-                    //user.password = "1";
-                    //dbc.SaveUser(user);
                     labelTitle.Text = "Вы вошли как:";
                     labelUsername = new Label { Text = "Логин: " + user.username, Style = Device.Styles.SubtitleStyle };
                     labelName = new Label { Text = user.name == null ? "Имя: -" : "Имя: " + user.name, Style = Device.Styles.SubtitleStyle };
@@ -158,7 +150,6 @@ namespace PizzaApp.Pages
         private async Task Register()
         {
             await Navigation.PushAsync(new RegistrationPage(dbc, this));
-            //await Navigation.PopAsync();
         }
     }
 	

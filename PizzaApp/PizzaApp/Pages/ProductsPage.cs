@@ -69,7 +69,7 @@ namespace PizzaApp.Pages
         }
         private async Task FillList()
         {
-            products = await ProductProvider.GetProductPage(1, 10);
+            products = await ProductProvider.GetProductPage(1, 10) as List<Product>;
             if (products == null)
             {
                 await DisplayAlert("Warning", "Connection problem", "OK");

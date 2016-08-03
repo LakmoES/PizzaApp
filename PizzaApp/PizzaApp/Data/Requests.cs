@@ -9,6 +9,7 @@ namespace PizzaApp.Data
 {
     public static class Requests
     {
+        private static readonly int timeout = 9000;
         public static async Task<String> PostAsync(string uri, Dictionary<string, string> data)
         {
             var parameters = new FormUrlEncodedContent(data);
@@ -16,14 +17,14 @@ namespace PizzaApp.Data
             try
             {
                 var httpClient = new HttpClient();
-                httpClient.Timeout = TimeSpan.FromMilliseconds(7000);
+                httpClient.Timeout = TimeSpan.FromMilliseconds(timeout);
                 var response = await httpClient.PostAsync(uri, parameters);
                 response.EnsureSuccessStatusCode();
                 content = await response.Content.ReadAsStringAsync();
             }
             catch { return null; }
 
-            return await Task.Run(() => content);
+            return content;
         }
 
         public static async Task<String> GetAsync(string uri)
@@ -32,11 +33,11 @@ namespace PizzaApp.Data
             try
             {
                 var httpClient = new HttpClient();
-                httpClient.Timeout = TimeSpan.FromMilliseconds(7000);
+                httpClient.Timeout = TimeSpan.FromMilliseconds(timeout);
                 content = await httpClient.GetStringAsync(uri);
             }
             catch { }
-            return await Task.Run(() => content);
+            return content;
         }
     }
 }

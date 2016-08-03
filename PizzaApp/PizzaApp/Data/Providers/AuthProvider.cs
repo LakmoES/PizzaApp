@@ -69,7 +69,7 @@ namespace PizzaApp.Data.Providers
             string content = await Requests.PostAsync("http://lakmoes-001-site1.etempurl.com/Auth/Logout", values);
             return content;
         }
-        public static async Task<List<ServerError>> Register(string username, string password, string email, string name, string surname)
+        public static async Task<IEnumerable<ServerError>> Register(string username, string password, string email, string name, string surname)
         {
             var values = new Dictionary<string, string>
             {

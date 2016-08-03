@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PizzaApp.Pages.ShopCartPage">
+  <ScrollView>
+    <StackLayout Orientation="Vertical">
+      
+      <Label x:Name="labelTotal" Text="" Style ="{DynamicResource TitleStyle}"/>
+      <ListView  x:Name="listViewProducts">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                      <ViewCell.ContextActions>
+                        <MenuItem Clicked="OnEdit" CommandParameter="{Binding productid}" Text="Править" />
+                        <MenuItem Clicked="OnDelete" CommandParameter="{Binding productid}" Text="Удалить" IsDestructive="True" />
+                      </ViewCell.ContextActions>
+                      <StackLayout Orientation="Horizontal">
+                        <Image x:Name="imagePhoto" Source="{Binding image}"/>
+                        <Label x:Name="labelTitle" Text="{Binding title}" Style ="{DynamicResource TitleStyle}" />
+                        <Label x:Name="labelAmount" Text="{Binding amount}" Style ="{DynamicResource SubtitleStyle}"/>
+                        <Label x:Name="labelMeasure" Text="{Binding measure}" Style ="{DynamicResource SubtitleStyle}"/>
+                        <Label HorizontalOptions="EndAndExpand" x:Name="labelResultPrice" Text="{Binding resultPrice}" Style ="{DynamicResource SubtitleStyle}"/>
+                        <Label HorizontalOptions="End" Text="грн" Style ="{DynamicResource SubtitleStyle}"/>
+                      </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+      <StackLayout Orientation="Horizontal">
+        <Entry x:Name="entryPromocode" Placeholder="Промокод"/>
+        <Button x:Name="buttonUsePromocode" Text="Использовать"/>
+      </StackLayout>
+      <Button x:Name="buttonMakeOrder" Text="Заказать"/>
+      <Button x:Name="buttonClearShopCart" Text="Очистить"/>
+      </StackLayout>
+  </ScrollView>
+</ContentPage>

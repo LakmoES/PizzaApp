@@ -21,7 +21,14 @@ namespace PizzaApp.Pages.MenuPageItems
 				TargetType = typeof(ProductsPage)
 			});
 
-			this.Add (new MenuItem () { 
+            this.Add(new MenuItem()
+            {
+                Title = "Корзина",
+                IconSource = "accounts.png",
+                TargetType = typeof(ShopCartPage)
+            });
+
+            this.Add (new MenuItem () { 
 				Title = "Аккаунт", 
 				IconSource = "accounts.png", 
 				TargetType = typeof(AccountPage)

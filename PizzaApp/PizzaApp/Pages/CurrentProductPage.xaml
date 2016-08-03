@@ -26,7 +26,7 @@
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=labelAdvertising, Property=X, Factor=1, Constant=0}"
                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=labelAdvertising, Property=Y, Factor=1.6,Constant=0}"
              />
-      <Label x:Name="labelAlreadyExists" Style ="{DynamicResource TitleStyle}"
+      <Label x:Name="labelAlreadyExists" Style ="{DynamicResource SubtitleStyle}"
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=labelAdvertising, Property=X, Factor=1, Constant=0}"
                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=boxPhoto, Property=Height, Factor=.9,Constant=0}"
              />
@@ -35,7 +35,7 @@
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=.25, Constant=0}"
                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=boxPhoto, Property=Height, Factor=1.2,Constant=0}"
              />
-      <Stepper x:Name="stepperBuyAmount" Minimum="1" Maximum="10" Increment="1" Value="1"
+      <Stepper x:Name="stepperBuyAmount" Minimum="1" Maximum="100" Increment="1" Value="1"
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=.15, Constant=0}"
                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=labelBuyAmount, Property=Y, Factor=1,Constant=20}"
              />

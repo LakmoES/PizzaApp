@@ -12,7 +12,7 @@ namespace PizzaApp.Data.Providers
 {
     public static class ProductProvider
     {
-        public static async Task<List<Product>> GetProductPage(int page, int pageSize, int category = -1)
+        public static async Task<IEnumerable<Product>> GetProductPage(int page, int pageSize, int category = -1)
         {
             var values = String.Format("?page={0}&pageSize={1}", page, pageSize);
             if (category != -1) values += String.Format("&category={0}", category);
@@ -30,7 +30,7 @@ namespace PizzaApp.Data.Providers
 
             return productList;
         }
-        public static async Task<List<Product>> GetProductPageByName(string name, int page, int pageSize)
+        public static async Task<IEnumerable<Product>> GetProductPageByName(string name, int page, int pageSize)
         {
             var values = String.Format("?name={0}&page={1}&pageSize={2}", name, page, pageSize);
             string content = await Requests.GetAsync("http://lakmoes-001-site1.etempurl.com/Product/GetByName" + values);
@@ -60,7 +60,7 @@ namespace PizzaApp.Data.Providers
 
             return count;
         }
-        public static async Task<List<Category>> GetCategories()
+        public static async Task<IEnumerable<Category>> GetCategories()
         {
             string content = await Requests.GetAsync("http://lakmoes-001-site1.etempurl.com/Product/GetCategoryList");
             if (content == null)

@@ -61,7 +61,7 @@ namespace PizzaApp.Data.Providers
 
             return new User { username = jEntity.username, name = jEntity.name, surname = jEntity.surname, email = jEntity.email, guest = jEntity.guest };
         }
-        public static async Task<List<ServerError>> Edit(DBConnection dbc, string password, string email, string name, string surname)
+        public static async Task<IEnumerable<ServerError>> Edit(DBConnection dbc, string password, string email, string name, string surname)
         {
             string url = "http://lakmoes-001-site1.etempurl.com/User/Edit";
             var token = dbc.GetToken();
@@ -115,7 +115,7 @@ namespace PizzaApp.Data.Providers
             return errorList;
         }
 
-        public static async Task<List<TelNumber>> GetTelList(DBConnection dbc)
+        public static async Task<IEnumerable<TelNumber>> GetTelList(DBConnection dbc)
         {
             string url = "http://lakmoes-001-site1.etempurl.com/User/GetTelList?token=";
             var token = dbc.GetToken();
@@ -293,7 +293,7 @@ namespace PizzaApp.Data.Providers
                 return false;
         }
 
-        public static async Task<List<Address>> GetAddressList(DBConnection dbc)
+        public static async Task<IEnumerable<Address>> GetAddressList(DBConnection dbc)
         {
             string url = "http://lakmoes-001-site1.etempurl.com/User/GetAddressList?token=";
             var token = dbc.GetToken();

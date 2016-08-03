@@ -16,7 +16,7 @@ namespace PizzaApp.Pages
     {
         private DBConnection dbc;
         private ObservableCollection<Address> addresses;
-        public AccountAddressEditPage(DBConnection dbc, List<Address> addresses)
+        public AccountAddressEditPage(DBConnection dbc, IEnumerable<Address> addresses)
         {
             InitializeComponent();
             Title = "Управление адресами доставки";
