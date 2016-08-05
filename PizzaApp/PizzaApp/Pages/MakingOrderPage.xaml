@@ -2,5 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PizzaApp.Pages.MakingOrderPage">
-  <Label Text="Страница заказа пока не готова." VerticalOptions="Center" HorizontalOptions="Center" Style ="{DynamicResource SubtitleStyle}"/>
+  <StackLayout>
+    <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
+    <Label x:Name="labelTotalPrice" Style ="{DynamicResource TitleStyle}"/>
+    <Label Text="Адрес:" Style ="{DynamicResource SubtitleStyle}"/>
+    <Picker x:Name="pickerDeliveryAddress" Title="Выберите адрес доставки" />
+    <Button x:Name="buttonSubmit" Text="Подтвердить заказ"/>
+  </StackLayout>
 </ContentPage>

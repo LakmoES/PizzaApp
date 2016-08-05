@@ -36,6 +36,13 @@ namespace PizzaApp.Pages
 
             this.stepperBuyAmount.ValueChanged += StepperBuyAmount_ValueChanged;
             this.buttonAddToCart.Clicked += ButtonAddToCart_Clicked;
+
+            if(dbc.GetUser() == null)
+            {
+                DeactivateControls();
+                activityIndicator.IsVisible = false;
+                activityIndicator.IsRunning = false;
+            }
         }
         private void DeactivateControls()
         {

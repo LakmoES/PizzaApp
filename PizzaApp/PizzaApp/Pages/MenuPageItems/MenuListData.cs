@@ -1,13 +1,14 @@
 using System;
 using Xamarin.Forms;
 using System.Collections.Generic;
+using PizzaApp.Data.Persistence;
 
 namespace PizzaApp.Pages.MenuPageItems
 {
 
 	public class MenuListData : List<MenuItem>
 	{
-		public MenuListData ()
+		public MenuListData (DBConnection dbc)
 		{
 			this.Add (new MenuItem () { 
 				Title = "Главная", 

@@ -16,18 +16,28 @@ namespace PizzaApp.Pages
     {
         private DBConnection dbc;
         private ObservableCollection<ShopCartProduct> products;
+        private string promocode;
         public ShopCartPage(DBConnection dbc)
         {
             Title = "Корзина";
             InitializeComponent();
             this.dbc = dbc;
 
+            promocode = null;
             this.buttonMakeOrder.Clicked += ButtonMakeOrder_Clicked;
             this.buttonClearShopCart.Clicked += ButtonClearShopCart_Clicked;
             this.buttonUsePromocode.Clicked += ButtonUsePromocode_Clicked;
 
             this.listViewProducts.Refreshing += ListViewProducts_Refreshing;
-            this.listViewProducts.BeginRefresh();
+            if (dbc.GetUser() != null)
+                this.listViewProducts.BeginRefresh();
+            else
+            {
+                DeactivateControls();
+                activityIndicator.IsVisible = false;
+                activityIndicator.IsRunning = false;
+                this.labelTotal.Text = "Вы не вошли в свой профиль. Корзина недоступна.";
+            }
         }
         public void BeginRefresh()
         {
@@ -90,7 +100,18 @@ namespace PizzaApp.Pages
 
         private async Task GoToMakingOrder()
         {
-            await Navigation.PushAsync(new MakingOrderPage(dbc));
+            var addresses = await UserProvider.GetAddressList(dbc);
+            if (addresses == null)
+                await DisplayAlert("Ошибка", "Не удалось связаться с сервером.", "OK");
+            else
+                await Navigation.PushAsync(
+                    new MakingOrderPage(
+                        dbc,
+                        addresses,
+                        products.Sum(x => x.resultPrice),
+                        this,
+                        this.promocode)
+                );
             ActivateControls();
         }
 
@@ -99,9 +120,9 @@ namespace PizzaApp.Pages
             DeactivateControls();
             await UpdateShopCart();
         }
-        private async Task UpdateShopCart()
+        public async Task UpdateShopCart()
         {
-            string promocode = null;
+            promocode = null;
             if (!String.IsNullOrWhiteSpace(this.entryPromocode.Text))
                 promocode = this.entryPromocode.Text;
             var products = await ShopCartProvider.Show(dbc, promocode);
@@ -110,9 +131,10 @@ namespace PizzaApp.Pages
                 this.labelTotal.Text = String.Empty;
                 listViewProducts.ItemsSource = null;
                 this.products = null;
-                await DisplayAlert(null, "Произошла ошибка", "OK");
+                await DisplayAlert("Ошибка", "Не удалось связаться с сервером.", "OK");
                 listViewProducts.IsRefreshing = false;
-                ActivateControls();
+                //ActivateControls();
+                promocode = null;
                 return;
             }
             this.products = new ObservableCollection<ShopCartProduct>(products);

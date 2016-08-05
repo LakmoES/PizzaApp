@@ -198,12 +198,12 @@ namespace PizzaApp.Data.Providers
             else
                 return count;
         }
-        public static async Task<bool> MakeOrder(DBConnection dbc, int addressID, string promocode)
+        public static async Task<int?> MakeOrder(DBConnection dbc, int? addressID, string promocode)
         {
-            string url = "http://lakmoes-001-site1.etempurl.com/ShopCart/AddProduct";
+            string url = "http://lakmoes-001-site1.etempurl.com/ShopCart/MakeOrder";
             var token = dbc.GetToken();
             if (token == null)
-                return false;
+                return null;
             DateTime now = DateTime.Now;
             if (token.expTime.Date == now.Date &&
                 token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
@@ -216,9 +216,10 @@ namespace PizzaApp.Data.Providers
 
             var values = new Dictionary<string, string>
             {
-                { "token", token.token_hash },
-                { "addressID", addressID.ToString() }
+                { "token", token.token_hash }
             };
+            if (addressID != null)
+                values.Add("addressID", addressID.ToString());
             if (!String.IsNullOrEmpty(promocode))
                 values.Add("promocode", promocode);
 
@@ -238,11 +239,15 @@ namespace PizzaApp.Data.Providers
                 catch { }
             }
             if (content == null)
-                return false;
-            if (content.Equals("\"ok\""))
-                return true;
+                return null;
+            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("{\"orderNO\":[0-9]+}");
+            var match = regex.Match(content);
+            if (match.Success)
+            {
+                return Convert.ToInt32(match.Value.Substring(11, match.Length - 11 - 1));
+            }
             else
-                return false;
+                return null;
         }
         public static async Task<IEnumerable<ServerError>> Clear(DBConnection dbc)
         {

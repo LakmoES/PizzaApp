@@ -12,7 +12,7 @@ namespace PizzaApp.Pages
         private DBConnection dbc;
 		public RootPage (DBConnection dbc)
 		{
-			menuPage = new MenuPage ();
+			menuPage = new MenuPage (dbc);
             this.dbc = dbc;
 
 			menuPage.Menu.ItemSelected += (sender, e) => NavigateTo (e.SelectedItem as MenuPageItems.MenuItem);
