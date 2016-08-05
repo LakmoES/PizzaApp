@@ -60,6 +60,7 @@ namespace PizzaApp.Pages
             this.buttonMakeOrder.IsEnabled = false;
             this.buttonClearShopCart.IsEnabled = false;
             this.buttonUsePromocode.IsEnabled = false;
+            this.entryPromocode.IsEnabled = false;
 
             this.listViewProducts.IsEnabled = false;
         }
@@ -71,6 +72,7 @@ namespace PizzaApp.Pages
             this.buttonMakeOrder.IsEnabled = true;
             this.buttonClearShopCart.IsEnabled = true;
             this.buttonUsePromocode.IsEnabled = true;
+            this.entryPromocode.IsEnabled = true;
 
             this.listViewProducts.IsEnabled = true;
         }
@@ -126,15 +128,22 @@ namespace PizzaApp.Pages
             if (!String.IsNullOrWhiteSpace(this.entryPromocode.Text))
                 promocode = this.entryPromocode.Text;
             var products = await ShopCartProvider.Show(dbc, promocode);
-            if (products == null)
+            if (products == null || products.Count() <= 0)
             {
                 this.labelTotal.Text = String.Empty;
                 listViewProducts.ItemsSource = null;
                 this.products = null;
-                await DisplayAlert("Ошибка", "Не удалось связаться с сервером.", "OK");
+                
                 listViewProducts.IsRefreshing = false;
-                //ActivateControls();
+                this.activityIndicator.IsRunning = false;
+                this.activityIndicator.IsVisible = false;
                 promocode = null;
+
+                if (products == null)
+                    await DisplayAlert("Ошибка", "Не удалось связаться с сервером.", "OK");
+                else
+                    this.labelTotal.Text = "В Вашей корзине еще нет товаров.";
+
                 return;
             }
             this.products = new ObservableCollection<ShopCartProduct>(products);
