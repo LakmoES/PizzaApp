@@ -26,16 +26,36 @@ namespace PizzaApp.Pages
             this.entryTelNumber.Text = telNumber.number;
             this.buttonSubmit.Clicked += ButtonSubmit_Clicked;
         }
+        private void DeactivateControls()
+        {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
 
+            entryTelNumber.IsEnabled = false;
+            buttonSubmit.IsEnabled = false;
+        }
+        private void ActivateControls()
+        {
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+
+            entryTelNumber.IsEnabled = true;
+            buttonSubmit.IsEnabled = true;
+        }
         private async void ButtonSubmit_Clicked(object sender, EventArgs e)
         {
-            if (!await UserProvider.EditTel(dbc, telNumber.id, this.entryTelNumber.Text))
-                await DisplayAlert("Ошибка", "Не удалось изменить номер.", "OK");
+            DeactivateControls();
+            if (!String.IsNullOrWhiteSpace(this.entryTelNumber.Text))
+                if (!await UserProvider.EditTel(dbc, telNumber.id, this.entryTelNumber.Text))
+                    await DisplayAlert("Ошибка", "Не удалось изменить номер.", "OK");
+                else
+                {
+                    await parentPage.GetTelListFromServer();
+                    await Navigation.PopAsync();
+                }
             else
-            {
-                await parentPage.GetTelListFromServer();
-                await Navigation.PopAsync();
-            }
+                await DisplayAlert(null, "Укажите номер.", "OK");
+            ActivateControls();
         }
     }
 }

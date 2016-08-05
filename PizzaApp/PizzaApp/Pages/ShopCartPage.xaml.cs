@@ -44,6 +44,9 @@ namespace PizzaApp.Pages
 
         private void DeactivateControls()
         {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+
             this.buttonMakeOrder.IsEnabled = false;
             this.buttonClearShopCart.IsEnabled = false;
             this.buttonUsePromocode.IsEnabled = false;
@@ -52,6 +55,9 @@ namespace PizzaApp.Pages
         }
         private void ActivateControls()
         {
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+
             this.buttonMakeOrder.IsEnabled = true;
             this.buttonClearShopCart.IsEnabled = true;
             this.buttonUsePromocode.IsEnabled = true;
@@ -78,12 +84,12 @@ namespace PizzaApp.Pages
         }
         private async void ButtonMakeOrder_Clicked(object sender, EventArgs e)
         {
+            DeactivateControls();
             await GoToMakingOrder();
         }
 
         private async Task GoToMakingOrder()
         {
-            DeactivateControls();
             await Navigation.PushAsync(new MakingOrderPage(dbc));
             ActivateControls();
         }
@@ -120,14 +126,16 @@ namespace PizzaApp.Pages
 
         public async void OnEdit(object sender, EventArgs e)
         {
+            DeactivateControls();
             var mi = ((MenuItem)sender);
             int productID = Convert.ToInt32(mi.CommandParameter);
             await Navigation.PushAsync(new ShopCartProductEdit(dbc, products.Where(x => x.productid == productID).FirstOrDefault(), this));
+            ActivateControls();
         }
 
         public async void OnDelete(object sender, EventArgs e)
         {
-            var answer = await DisplayAlert("Подтверждение", "Действительно хотите удалить?", "Да", "Нет");
+            var answer = await DisplayAlert(null, "Действительно хотите удалить?", "Да", "Нет");
             if (!answer)
                 return;
             DeactivateControls();
@@ -140,6 +148,7 @@ namespace PizzaApp.Pages
                     if (products.ElementAt(i).productid == productID)
                     {
                         products.RemoveAt(i);
+                        this.labelTotal.Text = String.Format("В корзине товаров на {0} грн", products.Sum(x => x.resultPrice));
                         break;
                     }
             }

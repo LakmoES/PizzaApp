@@ -4,6 +4,7 @@
              x:Class="PizzaApp.Pages.AccountTelEditPage">
   <ScrollView VerticalOptions="FillAndExpand">
     <StackLayout VerticalOptions="FillAndExpand">
+      <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
       <Label Text="Ваши номера: " Style ="{DynamicResource TitleStyle}" />
       <ListView x:Name="listViewTelList">
         <ListView.ItemTemplate>

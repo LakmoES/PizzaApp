@@ -27,6 +27,34 @@ namespace PizzaApp.Pages
             this.buttonTelEdit.Clicked += ButtonTelEdit_Clicked;
             this.buttonAddressEdit.Clicked += ButtonAddressEdit_Clicked;
         }
+        private void DeactivateControls()
+        {
+            entryUsername.IsEnabled = false;
+            entryPassword.IsEnabled = false;
+            entryEmail.IsEnabled = false;
+            entryName.IsEnabled = false;
+            entrySurname.IsEnabled = false;
+            buttonSubmit.IsEnabled = false;
+            buttonTelEdit.IsEnabled = false;
+            buttonAddressEdit.IsEnabled = false;
+
+            activityIndicator.IsRunning = true;
+            activityIndicator.IsVisible = true;
+        }
+        private void ActivateControls()
+        {
+            entryUsername.IsEnabled = true;
+            entryPassword.IsEnabled = true;
+            entryEmail.IsEnabled = true;
+            entryName.IsEnabled = true;
+            entrySurname.IsEnabled = true;
+            buttonSubmit.IsEnabled = true;
+            buttonTelEdit.IsEnabled = true;
+            buttonAddressEdit.IsEnabled = true;
+
+            activityIndicator.IsRunning = false;
+            activityIndicator.IsVisible = false;
+        }
         private void FillFields(User user)
         {
             this.entryUsername.Text = user.username;
@@ -36,7 +64,7 @@ namespace PizzaApp.Pages
         }
         private async void ButtonSubmit_Clicked(object sender, EventArgs e)
         {
-            this.IsEnabled = true;
+            DeactivateControls();
             await Edit();
         }
         private async Task Edit()
@@ -70,19 +98,23 @@ namespace PizzaApp.Pages
                 await DisplayAlert("Успех", "Ваш профиль успешно обновлен.", "OK");
                 this.parentPage.Update();
             }
-            this.IsEnabled = false;
+            ActivateControls();
         }
         private async void ButtonTelEdit_Clicked(object sender, EventArgs e)
         {
+            DeactivateControls();
             var telNumbers = await UserProvider.GetTelList(dbc);
             //await DisplayAlert("Count", telNumbers.Count + "", "OK");
             await Navigation.PushAsync(new AccountTelEditPage(dbc, telNumbers));
+            ActivateControls();
         }
         private async void ButtonAddressEdit_Clicked(object sender, EventArgs e)
         {
+            DeactivateControls();
             var addresses = await UserProvider.GetAddressList(dbc);
             //await DisplayAlert("Count", telNumbers.Count + "", "OK");
             await Navigation.PushAsync(new AccountAddressEditPage(dbc, addresses));
+            ActivateControls();
         }
     }
 }

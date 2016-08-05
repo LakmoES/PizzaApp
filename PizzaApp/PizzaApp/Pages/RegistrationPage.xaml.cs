@@ -24,9 +24,33 @@ namespace PizzaApp.Pages
 
             this.buttonSubmit.Clicked += ButtonSubmit_Clicked;
         }
+        private void DeactivateControls()
+        {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+
+            entryUsername.IsEnabled = false;
+            entryPassword.IsEnabled = false;
+            entryEmail.IsEnabled = false;
+            entryName.IsEnabled = false;
+            entrySurname.IsEnabled = false;
+            buttonSubmit.IsEnabled = false;
+        }
+        private void ActivateControls()
+        {
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+
+            entryUsername.IsEnabled = true;
+            entryPassword.IsEnabled = true;
+            entryEmail.IsEnabled = true;
+            entryName.IsEnabled = true;
+            entrySurname.IsEnabled = true;
+            buttonSubmit.IsEnabled = true;
+        }
         private async void ButtonSubmit_Clicked(object sender, EventArgs e)
         {
-            this.IsEnabled = false;
+            DeactivateControls();
             await Register();
         }
         private async Task Register()
@@ -35,14 +59,14 @@ namespace PizzaApp.Pages
             if (errorList != null)
             {
                 await DisplayAlert("Warning", String.Join(Environment.NewLine, errorList.Select(x => x.error)), "OK");
-                this.IsEnabled = true;
+                ActivateControls();
                 return;
             }
             Token token = await AuthProvider.Login(entryUsername.Text, entryPassword.Text);
             if (token == null)
             {
                 await DisplayAlert("Error", "Something went wrong. Token is null", "OK");
-                this.IsEnabled = true;
+                ActivateControls();
                 return;
             }
             dbc.SaveToken(token);
@@ -50,7 +74,7 @@ namespace PizzaApp.Pages
             if(user == null)
             {
                 await DisplayAlert("Error", "Something went wrong. User is null", "OK");
-                this.IsEnabled = true;
+                ActivateControls();
                 return;
             }
             dbc.SaveUser(user);

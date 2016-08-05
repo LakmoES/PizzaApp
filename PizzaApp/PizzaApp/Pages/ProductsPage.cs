@@ -17,6 +17,7 @@ namespace PizzaApp.Pages
 	{
         private DBConnection dbc;
         private ListView listView;
+        private ActivityIndicator activityIndicator;
         private List<Product> products;
         public ProductsPage(DBConnection dbc)
         {
@@ -35,28 +36,46 @@ namespace PizzaApp.Pages
             listView.Refreshing += ListRefreshing;
             listView.ItemSelected += ListItemSelected;
 
+            activityIndicator = new ActivityIndicator { IsVisible = false, IsRunning = false };
+
             Content = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
                 Children =
                 {
                     label,
+                    activityIndicator,
                     listView
                 }
             };
+
+            DeactivateControls();
             listView.BeginRefresh();
+        }
+        private void DeactivateControls()
+        {
+            listView.IsEnabled = false;
+            activityIndicator.IsRunning = true;
+            activityIndicator.IsVisible = true;
+        }
+        private void ActivateControls()
+        {
+            listView.IsEnabled = true;
+            activityIndicator.IsRunning = false;
+            activityIndicator.IsVisible = false;
         }
         private async void ListRefreshing(object sender, EventArgs e)
         {
             await FillList();
             (sender as ListView).IsRefreshing = false;
+            ActivateControls();
         }
         private async void ListItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem == null)
                 return;
 
-            (sender as ListView).IsEnabled = false;
+            DeactivateControls();
 
             var itemSourceList = (sender as ListView).ItemsSource.Cast<dynamic>().ToList();
             int index = itemSourceList.FindIndex(a => a.id == (e.SelectedItem as dynamic).id);
@@ -65,7 +84,7 @@ namespace PizzaApp.Pages
             await Navigation.PushAsync(new CurrentProductPage(dbc, p, await ShopCartProvider.ProductExists(dbc, p.id)));
 
             (sender as ListView).SelectedItem = null;
-            (sender as ListView).IsEnabled = true;
+            ActivateControls();
         }
         private async Task FillList()
         {

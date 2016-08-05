@@ -25,16 +25,37 @@ namespace PizzaApp.Pages
             this.listViewAddressList.ItemsSource = this.addresses;
             this.buttonAddressAdd.Clicked += ButtonAddressAdd_Clicked;
         }
+        private void DeactivateControls()
+        {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+
+            listViewAddressList.IsEnabled = false;
+            entryNewAddress.IsEnabled = false;
+            buttonAddressAdd.IsEnabled = false;
+        }
+        private void ActivateControls()
+        {
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+
+            listViewAddressList.IsEnabled = true;
+            entryNewAddress.IsEnabled = true;
+            buttonAddressAdd.IsEnabled = true;
+        }
         private async void ButtonAddressAdd_Clicked(object sender, EventArgs e)
         {
-            if (!await UserProvider.AddAddress(dbc, this.entryNewAddress.Text))
-                await DisplayAlert("Ошибка", "Не удалось добавить адрес.", "OK");
-            else
-            {
-                this.entryNewAddress.Text = String.Empty;
-                this.addresses = new ObservableCollection<Address>(await UserProvider.GetAddressList(dbc));
-                UpdateAddressList();
-            }
+            DeactivateControls();
+            if (!String.IsNullOrWhiteSpace(this.entryNewAddress.Text))
+                if (!await UserProvider.AddAddress(dbc, this.entryNewAddress.Text))
+                    await DisplayAlert("Ошибка", "Не удалось добавить адрес.", "OK");
+                else
+                {
+                    this.entryNewAddress.Text = String.Empty;
+                    this.addresses = new ObservableCollection<Address>(await UserProvider.GetAddressList(dbc));
+                    UpdateAddressList();
+                }
+            ActivateControls();
         }
         private void UpdateAddressList()
         {
@@ -48,17 +69,19 @@ namespace PizzaApp.Pages
         }
         public async void OnEdit(object sender, EventArgs e)
         {
+            DeactivateControls();
             var mi = ((MenuItem)sender);
             int addressID = Convert.ToInt32(mi.CommandParameter);
             await Navigation.PushAsync(new CurrentAddressEditPage(dbc, addresses.Where(x => x.id == addressID).FirstOrDefault(), this));
+            ActivateControls();
         }
 
         public async void OnDelete(object sender, EventArgs e)
         {
-            var answer = await DisplayAlert("Подтверждение", "Действительно хотите удалить?", "Да", "Нет");
+            var answer = await DisplayAlert(null, "Действительно хотите удалить?", "Да", "Нет");
             if (!answer)
                 return;
-            
+            DeactivateControls();
             var mi = ((MenuItem)sender);
             int addressID = Convert.ToInt32(mi.CommandParameter);
             bool removeResult = await UserProvider.RemoveAddress(dbc, addressID);
@@ -73,6 +96,7 @@ namespace PizzaApp.Pages
             }
             else
                 await DisplayAlert("Ошибка", "Не удалось удалить адрес.", "OK");
+            ActivateControls();
         }
     }
 }

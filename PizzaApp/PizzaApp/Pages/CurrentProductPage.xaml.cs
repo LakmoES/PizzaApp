@@ -37,10 +37,25 @@ namespace PizzaApp.Pages
             this.stepperBuyAmount.ValueChanged += StepperBuyAmount_ValueChanged;
             this.buttonAddToCart.Clicked += ButtonAddToCart_Clicked;
         }
+        private void DeactivateControls()
+        {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
 
+            stepperBuyAmount.IsEnabled = false;
+            buttonAddToCart.IsEnabled = false;
+        }
+        private void ActivateControls()
+        {
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+
+            stepperBuyAmount.IsEnabled = true;
+            buttonAddToCart.IsEnabled = true;
+        }
         private async void ButtonAddToCart_Clicked(object sender, EventArgs e)
         {
-            this.buttonAddToCart.IsEnabled = false;
+            DeactivateControls();
             await AddToCart(Convert.ToInt32(this.labelBuyAmount.Text));
         }
         private async Task AddToCart(int amount)
@@ -54,7 +69,7 @@ namespace PizzaApp.Pages
                 this.labelAlreadyExists.Text = String.Format("Уже есть в корзине: {0}", await AlreadyAmount());
             }
 
-            this.buttonAddToCart.IsEnabled = true;
+            ActivateControls();
         }
         private async Task<int> AlreadyAmount()
         {

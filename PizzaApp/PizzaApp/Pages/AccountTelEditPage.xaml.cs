@@ -26,17 +26,37 @@ namespace PizzaApp.Pages
             this.telNumbers.CollectionChanged += TelNumbers_CollectionChanged;
             this.buttonTelAdd.Clicked += ButtonTelAdd_Clicked;
         }
+        private void DeactivateControls()
+        {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
 
+            listViewTelList.IsEnabled = false;
+            entryNewNumber.IsEnabled = false;
+            buttonTelAdd.IsEnabled = false;
+        }
+        private void ActivateControls()
+        {
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+
+            listViewTelList.IsEnabled = true;
+            entryNewNumber.IsEnabled = true;
+            buttonTelAdd.IsEnabled = true;
+        }
         private async void ButtonTelAdd_Clicked(object sender, EventArgs e)
         {
-            if (!await UserProvider.AddTel(dbc, this.entryNewNumber.Text))
-                await DisplayAlert("Ошибка", "Не удалось добавить номер", "OK");
-            else
-            {
-                this.entryNewNumber.Text = String.Empty;
-                this.telNumbers = new ObservableCollection<TelNumber>(await UserProvider.GetTelList(dbc));
-                UpdateTelList();
-            }
+            DeactivateControls();
+            if (!String.IsNullOrWhiteSpace(this.entryNewNumber.Text))
+                if (!await UserProvider.AddTel(dbc, this.entryNewNumber.Text))
+                    await DisplayAlert("Ошибка", "Не удалось добавить номер", "OK");
+                else
+                {
+                    this.entryNewNumber.Text = String.Empty;
+                    this.telNumbers = new ObservableCollection<TelNumber>(await UserProvider.GetTelList(dbc));
+                    UpdateTelList();
+                }
+            ActivateControls();
         }
 
         private void TelNumbers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -56,17 +76,20 @@ namespace PizzaApp.Pages
         }
         public async void OnEdit(object sender, EventArgs e)
         {
+            DeactivateControls();
             var mi = ((MenuItem)sender);
             int telID = Convert.ToInt32(mi.CommandParameter);
             await Navigation.PushAsync(new CurrentTelEditPage(dbc, telNumbers.Where(x => x.id == telID).FirstOrDefault(), this));
+            ActivateControls();
         }
 
         public async void OnDelete(object sender, EventArgs e)
         {
-            var answer = await DisplayAlert("Подтверждение", "Действительно хотите удалить?", "Да", "Нет");
+            var answer = await DisplayAlert(null, "Действительно хотите удалить?", "Да", "Нет");
             if (!answer)
                 return;
 
+            DeactivateControls();
             var mi = ((MenuItem)sender);
             int telID = Convert.ToInt32(mi.CommandParameter);
             bool removeResult = await UserProvider.RemoveTel(dbc, telID);
@@ -78,10 +101,10 @@ namespace PizzaApp.Pages
                         telNumbers.RemoveAt(i);
                         break;
                     }
-                //await DisplayAlert("Успех", "Номер успешно удален.", "OK");
             }
             else
                 await DisplayAlert("Ошибка", "Не удалось удалить номер.", "OK");
+            ActivateControls();
         }
     }
 }

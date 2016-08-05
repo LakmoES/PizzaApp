@@ -4,6 +4,7 @@
              x:Class="PizzaApp.Pages.AccountAddressEditPage">
   <ScrollView VerticalOptions="FillAndExpand">
     <StackLayout VerticalOptions="FillAndExpand">
+      <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
       <Label Text="Ваши адреса: " Style ="{DynamicResource TitleStyle}" />
       <ListView x:Name="listViewAddressList">
         <ListView.ItemTemplate>
@@ -20,8 +21,8 @@
           </DataTemplate>
         </ListView.ItemTemplate>
       </ListView>
-      <Entry Placeholder="Новый адрес" x:Name="entryNewAddress" Text="" />
-      <Button Text="Добавить" x:Name="buttonAddressAdd" />
+      <Entry x:Name="entryNewAddress" Placeholder="Новый адрес" Text="" />
+      <Button x:Name="buttonAddressAdd" Text="Добавить" />
     </StackLayout>
   </ScrollView>
 </ContentPage>

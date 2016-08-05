@@ -4,7 +4,7 @@
              x:Class="PizzaApp.Pages.ShopCartPage">
   <ScrollView>
     <StackLayout Orientation="Vertical">
-      
+      <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
       <Label x:Name="labelTotal" Text="" Style ="{DynamicResource TitleStyle}"/>
       <ListView  x:Name="listViewProducts">
             <ListView.ItemTemplate>

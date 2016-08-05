@@ -4,15 +4,16 @@
              x:Class="PizzaApp.Pages.AccountEditPage">
   <ScrollView>
     <StackLayout>
-      <Entry Placeholder = "Имя пользователя" IsEnabled="False" x:Name="entryUsername"/>
-      <Entry Placeholder = "Пароль" IsPassword="True" Text="" x:Name="entryPassword"/>
-      <Entry Placeholder = "Email" Keyboard="Keyboard.Email" x:Name="entryEmail"/>
-      <Entry Placeholder = "Ваше имя" x:Name="entryName"/>
-      <Entry Placeholder = "Фамилия" x:Name="entrySurname"/>
-      <Button Text="Подтвердить" x:Name="buttonSubmit"/>
+      <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" />
+      <Entry x:Name="entryUsername" Placeholder = "Имя пользователя" IsEnabled="False"/>
+      <Entry x:Name="entryPassword" Placeholder = "Пароль" IsPassword="True" Text=""/>
+      <Entry x:Name="entryEmail" Placeholder = "Email" Keyboard="Keyboard.Email" />
+      <Entry x:Name="entryName" Placeholder = "Ваше имя" />
+      <Entry x:Name="entrySurname" Placeholder = "Фамилия"/>
+      <Button x:Name="buttonSubmit" Text="Подтвердить"/>
       
-      <Button Text="Номера телефонов" x:Name="buttonTelEdit" />
-      <Button Text="Адреса доставки" x:Name="buttonAddressEdit" />
+      <Button x:Name="buttonTelEdit" Text="Номера телефонов" />
+      <Button x:Name="buttonAddressEdit" Text="Адреса доставки" />
     </StackLayout>
   </ScrollView>
 </ContentPage>

@@ -26,16 +26,36 @@ namespace PizzaApp.Pages
             this.entryAddress.Text = address.address;
             this.buttonSubmit.Clicked += ButtonSubmit_Clicked; ;
         }
+        private void DeactivateControls()
+        {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+            
+            entryAddress.IsEnabled = false;
+            buttonSubmit.IsEnabled = false;
+        }
+        private void ActivateControls()
+        {
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
 
+            entryAddress.IsEnabled = true;
+            buttonSubmit.IsEnabled = true;
+        }
         private async void ButtonSubmit_Clicked(object sender, EventArgs e)
         {
-            if (!await UserProvider.EditAddress(dbc, address.id, this.entryAddress.Text))
-                await DisplayAlert("Ошибка", "Не удалось изменить номер.", "OK");
+            DeactivateControls();
+            if (!String.IsNullOrWhiteSpace(this.entryAddress.Text))
+                if (!await UserProvider.EditAddress(dbc, address.id, this.entryAddress.Text))
+                    await DisplayAlert("Ошибка", "Не удалось изменить адрес.", "OK");
+                else
+                {
+                    await parentPage.GetAddressListFromServer();
+                    await Navigation.PopAsync();
+                }
             else
-            {
-                await parentPage.GetAddressListFromServer();
-                await Navigation.PopAsync();
-            }
+                await DisplayAlert(null, "Укажите адрес.", "OK");
+            ActivateControls();
         }
     }
 }

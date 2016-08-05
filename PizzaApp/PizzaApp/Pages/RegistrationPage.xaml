@@ -4,6 +4,7 @@
              x:Class="PizzaApp.Pages.RegistrationPage">
   <ScrollView>
     <StackLayout>
+      <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
       <Entry Placeholder = "Имя пользователя" x:Name="entryUsername"/>
       <Entry Placeholder = "Пароль" IsPassword="True" x:Name="entryPassword"/>
       <Entry Placeholder = "Email" Keyboard="Keyboard.Email" x:Name="entryEmail"/>

@@ -10,6 +10,7 @@ namespace PizzaApp.Pages
 
     public class AccountPage : ContentPage
     {
+        private ActivityIndicator activityIndicator;
         private Entry entryUsername, entryPassword;
         private Label labelTitle;
         private Button buttonLogin;
@@ -32,11 +33,48 @@ namespace PizzaApp.Pages
 
             Update();
         }
+        private void DeactivateControls()
+        {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+
+            if (buttonLogin != null)
+                this.buttonLogin.IsEnabled = false;
+            if (entryUsername != null)
+                this.entryUsername.IsEnabled = false;
+            if (entryPassword != null)
+                this.entryPassword.IsEnabled = false;
+            if (buttonEdit != null)
+                this.buttonEdit.IsEnabled = false;
+            if (buttonLogout != null)
+                this.buttonLogout.IsEnabled = false;
+            if (buttonRegister != null)
+                this.buttonRegister.IsEnabled = false;
+        }
+        private void ActivateControls()
+        {
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+
+            if (buttonLogin != null)
+                this.buttonLogin.IsEnabled = true;
+            if (entryUsername != null)
+                this.entryUsername.IsEnabled = true;
+            if (entryPassword != null)
+                this.entryPassword.IsEnabled = true;
+            if (buttonEdit != null)
+                this.buttonEdit.IsEnabled = true;
+            if (buttonLogout != null)
+                this.buttonLogout.IsEnabled = true;
+            if (buttonRegister != null)
+                this.buttonRegister.IsEnabled = true;
+        }
         public void Update()
         {
             Device.BeginInvokeOnMainThread(() =>
             {
                 User user = dbc.GetUser();
+                activityIndicator = new ActivityIndicator { IsRunning = false, IsVisible = false };
                 labelTitle = new Label { Style = Device.Styles.TitleStyle };
                 if (user == null)
                 {
@@ -54,7 +92,7 @@ namespace PizzaApp.Pages
                     {
                         Children =
                         {
-                            labelTitle, entryUsername, entryPassword, buttonLogin, buttonRegister
+                            activityIndicator, labelTitle, entryUsername, entryPassword, buttonLogin, buttonRegister
                         }
                     };
                 }
@@ -74,7 +112,7 @@ namespace PizzaApp.Pages
                     {
                         Children =
                         {
-                            labelTitle, labelUsername, labelName, labelSurname, labelEmail, labelGuest, buttonEdit, buttonLogout
+                            activityIndicator, labelTitle, labelUsername, labelName, labelSurname, labelEmail, labelGuest, buttonEdit, buttonLogout
                         }
                     };
                 }
@@ -82,7 +120,7 @@ namespace PizzaApp.Pages
         }
         private async void ButtonLogin_Clicked(object sender, EventArgs e)
         {
-            (sender as Button).IsEnabled = false;
+            DeactivateControls();
 
             Token receivedToken = await Login(entryUsername.Text, entryPassword.Text);
 
@@ -96,8 +134,7 @@ namespace PizzaApp.Pages
                 dbc.SaveUser(new User { username = user.username, password = entryPassword.Text, name = user.name, surname = user.surname, email = user.email, guest = user.guest });
             }
 
-            (sender as Button).IsEnabled = true;
-
+            ActivateControls();
             Update();
         }
         private async Task<Token> Login(string username, string password)
@@ -113,18 +150,20 @@ namespace PizzaApp.Pages
         }
         private async void ButtonEdit_Clicked(object sender, EventArgs e)
         {
-            this.IsBusy = true;
+            DeactivateControls();
             var user = await UserProvider.GetInfo(dbc);
             if (user == null)
                 await DisplayAlert("Ошибка", "Не удалось связаться с сервером.", "OK");
             else
                 await Navigation.PushAsync(new AccountEditPage(dbc, user, this));
-            this.IsBusy = false;
+            ActivateControls();
         }
         private async void ButtonLogout_Clicked(object sender, EventArgs e)
         {
+            DeactivateControls();
             this.buttonLogout.IsEnabled = false;
             await Logout();
+            ActivateControls();
             Update();
         }
         private async Task Logout()
@@ -141,11 +180,9 @@ namespace PizzaApp.Pages
         }
         private async void ButtonRegister_Clicked(object sender, EventArgs e)
         {
-            this.buttonRegister.IsEnabled = false;
-
+            DeactivateControls();
             await Register();
-
-            this.buttonRegister.IsEnabled = true;
+            ActivateControls();
         }
         private async Task Register()
         {

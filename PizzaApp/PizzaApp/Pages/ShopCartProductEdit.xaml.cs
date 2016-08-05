@@ -33,11 +33,17 @@ namespace PizzaApp.Pages
         }
         private void DeactivateControls()
         {
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
+
             this.buttonSubmit.IsEnabled = false;
             this.stepperAmount.IsEnabled = false;
         }
         private void ActivateControls()
         {
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+
             this.buttonSubmit.IsEnabled = true;
             this.stepperAmount.IsEnabled = true;
         }

@@ -4,6 +4,10 @@
              x:Class="PizzaApp.Pages.CurrentProductPage">
   <ScrollView >
     <RelativeLayout >
+      <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"
+              RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.5,Constant=0}"
+              RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=.5,Constant=0}"
+                         />
       <Label x:Name="labelCategory" Style ="{DynamicResource SubtitleStyle}"
              RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.025,Constant=0}"
              />

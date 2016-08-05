@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PizzaApp.Pages.ShopCartProductEdit">
   <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+    <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
     <Label x:Name="labelAmount" HorizontalOptions="Center"/>
     <Stepper x:Name="stepperAmount" Minimum="1" Maximum="100" Increment="1"/>
     <Button Text ="Подтвердить" x:Name="buttonSubmit" />

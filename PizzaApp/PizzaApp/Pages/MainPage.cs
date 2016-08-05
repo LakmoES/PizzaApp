@@ -17,6 +17,7 @@ namespace PizzaApp.Pages
 
 	public class MainPage : ContentPage
 	{
+        private ActivityIndicator activityIndicator = new ActivityIndicator { IsRunning = false, IsVisible = false };
         private Label label = new Label { Text = "Магазин Pizza", HorizontalOptions = LayoutOptions.Center };
         private Button button = new Button { Text = "Перейти ко всем товарам" };
         private ListView listViewProducts;
@@ -38,10 +39,25 @@ namespace PizzaApp.Pages
 
             Content = new StackLayout
             {
-                Children = { label, listViewProducts, button }
+                Children = { label, activityIndicator, listViewProducts, button }
             };
 
+            DeactivateControls();
             listViewProducts.BeginRefresh();
+        }
+        private void DeactivateControls()
+        {
+            listViewProducts.IsEnabled = false;
+            button.IsEnabled = false;
+            activityIndicator.IsRunning = true;
+            activityIndicator.IsVisible = true;
+        }
+        private void ActivateControls()
+        {
+            listViewProducts.IsEnabled = true;
+            button.IsEnabled = true;
+            activityIndicator.IsRunning = false;
+            activityIndicator.IsVisible = false;
         }
 
         private async void ListRefreshing(object sender, EventArgs e)
@@ -49,6 +65,7 @@ namespace PizzaApp.Pages
             await FillProductList();
             await UpdateCategories();
             (sender as ListView).IsRefreshing = false;
+            ActivateControls();
         }
         private async Task FillProductList()
         {
@@ -65,7 +82,7 @@ namespace PizzaApp.Pages
             if (e.SelectedItem == null)
                 return;
 
-            (sender as ListView).IsEnabled = false;
+            DeactivateControls();
 
             var itemSourceList = (sender as ListView).ItemsSource.Cast<dynamic>().ToList();
             int index = itemSourceList.FindIndex(a => a.id == (e.SelectedItem as dynamic).id);
@@ -74,7 +91,7 @@ namespace PizzaApp.Pages
             await Navigation.PushAsync(new CurrentProductPage(dbc, p, await ShopCartProvider.ProductExists(dbc, p.id)));
 
             (sender as ListView).SelectedItem = null;
-            (sender as ListView).IsEnabled = true;
+            ActivateControls();
         }
         private async Task UpdateCategories()
         {
@@ -84,11 +101,11 @@ namespace PizzaApp.Pages
 
         public void buttonClicked(object sender, EventArgs e)
         {
-            button.IsEnabled = false;
+            DeactivateControls();
 
             Navigation.PushAsync(new ProductsPage(dbc));
-                        
-            button.IsEnabled = true;
+
+            ActivateControls();
         }
     }
 	
