@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PizzaApp.Pages.OrdersPage">
+  <StackLayout Padding="0,20,0,0">
+    <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
+    <ListView  x:Name="listViewOrders" ItemsSource="{Binding orders}" Refreshing="ListViewOrders_Refreshing">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                      <StackLayout Orientation="Horizontal">
+                        <Label Text="№" Style ="{DynamicResource TitleStyle}"/>
+                        <Label Text="{Binding id}" Style ="{DynamicResource TitleStyle}" />
+                        <Label Text="Статус:" Style ="{DynamicResource TitleStyle}"/>
+                        <Label Text="{Binding status}" Style ="{DynamicResource TitleStyle}" />
+                        <Label x:Name="labelDelivery" Style ="{DynamicResource SubtitleStyle}"/>
+                        <Label Text="Сумма: " Style ="{DynamicResource SubtitleStyle}"/>
+                        <Label Text="{Binding cost}" Style ="{DynamicResource SubtitleStyle}"/>
+                        <Label Text="грн" Style ="{DynamicResource SubtitleStyle}"/>
+                        <Label Text="Дата: " HorizontalOptions="EndAndExpand" Style ="{DynamicResource SubtitleStyle}"/>
+                        <Label HorizontalOptions="End" Text="{Binding date}" Style ="{DynamicResource SubtitleStyle}"/>
+                      </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+    </ListView>
+    <StackLayout VerticalOptions="EndAndExpand">
+      <Label x:Name="labelPages" Style ="{DynamicResource SubtitleStyle}" HorizontalOptions="Center"/>
+      <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+        <Button x:Name="buttonPreviousPage" Text="Предыдущая" Clicked="ButtonPreviousPage_Clicked"/>
+        <Button x:Name="buttonNextPage" Text="Следующая" Clicked="ButtonNextPage_Clicked"/>
+      </StackLayout>
+    </StackLayout>
+  </StackLayout>
+</ContentPage>

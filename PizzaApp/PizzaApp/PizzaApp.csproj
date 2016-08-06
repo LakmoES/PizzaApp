@@ -41,11 +41,13 @@
     <Compile Include="Data\Persistence\Token.cs" />
     <Compile Include="Data\Persistence\User.cs" />
     <Compile Include="Data\Providers\AuthProvider.cs" />
+    <Compile Include="Data\Providers\OrderProvider.cs" />
     <Compile Include="Data\Providers\ShopCartProvider.cs" />
     <Compile Include="Data\Providers\UserProvider.cs" />
     <Compile Include="Data\Requests.cs" />
     <Compile Include="Data\ServerEntities\Address.cs" />
     <Compile Include="Data\ServerEntities\Category.cs" />
+    <Compile Include="Data\ServerEntities\Order.cs" />
     <Compile Include="Data\ServerEntities\ShopCartProduct.cs" />
     <Compile Include="Data\ServerEntities\TelNumber.cs" />
     <Compile Include="Data\ServerError.cs" />
@@ -72,6 +74,9 @@
     <Compile Include="Pages\MainPage.cs" />
     <Compile Include="Pages\MakingOrderPage.xaml.cs">
       <DependentUpon>MakingOrderPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\OrdersPage.xaml.cs">
+      <DependentUpon>OrdersPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ProductsPage.cs" />
     <Compile Include="Pages\MenuPageItems\MenuCell.cs" />
@@ -181,6 +186,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages\ShopCartProductEdit.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\OrdersPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

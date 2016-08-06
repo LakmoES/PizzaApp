@@ -16,6 +16,7 @@ namespace PizzaApp.Pages
         private Button buttonLogin;
         private Button buttonRegister;
         private Button buttonEdit;
+        private Button buttonOrders;
 
         private Label labelUsername;
         private Label labelName;
@@ -50,6 +51,8 @@ namespace PizzaApp.Pages
                 this.buttonLogout.IsEnabled = false;
             if (buttonRegister != null)
                 this.buttonRegister.IsEnabled = false;
+            if (buttonOrders != null)
+                this.buttonOrders.IsEnabled = false;
         }
         private void ActivateControls()
         {
@@ -68,6 +71,8 @@ namespace PizzaApp.Pages
                 this.buttonLogout.IsEnabled = true;
             if (buttonRegister != null)
                 this.buttonRegister.IsEnabled = true;
+            if (buttonOrders != null)
+                this.buttonOrders.IsEnabled = true;
         }
         public void Update()
         {
@@ -108,11 +113,17 @@ namespace PizzaApp.Pages
                     buttonEdit.Clicked += this.ButtonEdit_Clicked;
                     buttonLogout = new Button { Text = "Выйти" };
                     buttonLogout.Clicked += this.ButtonLogout_Clicked;
+                    buttonOrders = new Button { Text = "Заказы" };
+                    buttonOrders.Clicked += async (sender, e) => {
+                        DeactivateControls();
+                        await Navigation.PushAsync(new OrdersPage(dbc));
+                        ActivateControls();
+                    };
                     Content = new StackLayout
                     {
                         Children =
                         {
-                            activityIndicator, labelTitle, labelUsername, labelName, labelSurname, labelEmail, labelGuest, buttonEdit, buttonLogout
+                            activityIndicator, labelTitle, labelUsername, labelName, labelSurname, labelEmail, labelGuest, buttonEdit, buttonLogout, buttonOrders
                         }
                     };
                 }
