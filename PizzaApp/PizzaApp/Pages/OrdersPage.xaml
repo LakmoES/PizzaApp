@@ -8,17 +8,16 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                      <StackLayout Orientation="Horizontal">
-                        <Label Text="№" Style ="{DynamicResource TitleStyle}"/>
-                        <Label Text="{Binding id}" Style ="{DynamicResource TitleStyle}" />
-                        <Label Text="Статус:" Style ="{DynamicResource TitleStyle}"/>
-                        <Label Text="{Binding status}" Style ="{DynamicResource TitleStyle}" />
-                        <Label x:Name="labelDelivery" Style ="{DynamicResource SubtitleStyle}"/>
-                        <Label Text="Сумма: " Style ="{DynamicResource SubtitleStyle}"/>
-                        <Label Text="{Binding cost}" Style ="{DynamicResource SubtitleStyle}"/>
-                        <Label Text="грн" Style ="{DynamicResource SubtitleStyle}"/>
-                        <Label Text="Дата: " HorizontalOptions="EndAndExpand" Style ="{DynamicResource SubtitleStyle}"/>
-                        <Label HorizontalOptions="End" Text="{Binding date}" Style ="{DynamicResource SubtitleStyle}"/>
+                      <StackLayout Orientation="Vertical">
+                        <StackLayout Orientation="Horizontal">
+                          <Label Text="{Binding id, StringFormat='№ {0}'}" Style ="{DynamicResource TitleStyle}" />
+                          <Label Text="Статус:" Style ="{DynamicResource SubtitleStyle}"/>
+                          <Label Text="{Binding status}" Style ="{DynamicResource TitleStyle}" />
+                          <Label Text="{Binding cost, StringFormat='Сумма: {0} грн'}" Style ="{DynamicResource SubtitleStyle}"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                          <Label Text="{Binding date, StringFormat='{0:dd.MM.yy HH:mm}'}" Style ="{DynamicResource SubtitleStyle}"/>
+                        </StackLayout>
                       </StackLayout>
                     </ViewCell>
                 </DataTemplate>

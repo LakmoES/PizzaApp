@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PizzaApp.Pages.ShopCartPage">
-  <ScrollView>
     <StackLayout Orientation="Vertical">
       <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
       <Label x:Name="labelTotal" Text="" Style ="{DynamicResource TitleStyle}"/>
@@ -26,12 +25,15 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-      <StackLayout Orientation="Horizontal">
-        <Entry x:Name="entryPromocode" Placeholder="Промокод"/>
-        <Button x:Name="buttonUsePromocode" Text="Использовать"/>
+      <StackLayout VerticalOptions="EndAndExpand" Orientation="Vertical">
+        <StackLayout Orientation="Horizontal">
+          <Entry x:Name="entryPromocode" Placeholder="Промокод"/>
+          <Button x:Name="buttonUsePromocode" Text="Использовать"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+          <Button x:Name="buttonClearShopCart" Text="Очистить"/>
+          <Button x:Name="buttonMakeOrder" HorizontalOptions="EndAndExpand" Text="Заказать"/>
+        </StackLayout>
       </StackLayout>
-      <Button x:Name="buttonMakeOrder" Text="Заказать"/>
-      <Button x:Name="buttonClearShopCart" Text="Очистить"/>
-      </StackLayout>
-  </ScrollView>
+    </StackLayout>
 </ContentPage>

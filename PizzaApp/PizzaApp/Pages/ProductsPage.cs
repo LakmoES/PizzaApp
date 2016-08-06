@@ -66,7 +66,7 @@ namespace PizzaApp.Pages
 
             Content = new StackLayout
             {
-                Padding = new Thickness(0, 20, 0, 0),
+                //Padding = new Thickness(0, 20, 0, 0),
                 Orientation = StackOrientation.Vertical,
                 Children =
                 {
