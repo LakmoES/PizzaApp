@@ -95,6 +95,7 @@ namespace PizzaApp.Pages
 
                     Content = new StackLayout
                     {
+                        Padding = new Thickness(10, 0, 10, 0),
                         Children =
                         {
                             activityIndicator, labelTitle, entryUsername, entryPassword, buttonLogin, buttonRegister
@@ -121,6 +122,7 @@ namespace PizzaApp.Pages
                     };
                     Content = new StackLayout
                     {
+                        Padding = new Thickness(10, 0, 10, 0),
                         Children =
                         {
                             activityIndicator, labelTitle, labelUsername, labelName, labelSurname, labelEmail, labelGuest, buttonEdit, buttonLogout, buttonOrders

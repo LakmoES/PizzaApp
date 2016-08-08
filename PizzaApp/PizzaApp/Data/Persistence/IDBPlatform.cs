@@ -10,5 +10,8 @@ namespace PizzaApp.Data.Persistence
     public interface IDBPlatform
     {
         SQLiteConnection GetConnection();
+        void WriteLog(string text);
+        string ReadAllLogs();
+        void ClearLogFile();
     }
 }

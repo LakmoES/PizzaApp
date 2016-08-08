@@ -28,5 +28,34 @@ namespace PizzaApp.Droid
             var connection = new SQLite.Net.SQLiteConnection(platform, path);
             return connection;
         }
+        public void WriteLog(string text)
+        {
+            var filename = "errlog.txt";
+            var documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            var path = Path.Combine(documentsPath, filename);
+
+            if (!File.Exists(path))
+                File.Create(path);
+            File.AppendAllText(path, text);
+        }
+        public string ReadAllLogs()
+        {
+            var filename = "errlog.txt";
+            var documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            var path = Path.Combine(documentsPath, filename);
+
+            if (!File.Exists(path))
+                return "";
+            return File.ReadAllText(path);
+        }
+        public void ClearLogFile()
+        {
+            var filename = "errlog.txt";
+            var documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            var path = Path.Combine(documentsPath, filename);
+
+            if (File.Exists(path))
+                File.Delete(path);
+        }
     }
 }

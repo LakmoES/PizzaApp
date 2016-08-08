@@ -16,6 +16,7 @@ namespace PizzaApp
             DBConnection dbc = new DBConnection();
 
             MainPage = new RootPage(dbc);
+            DependencyService.Get<IDBPlatform>().ClearLogFile();
         }
 
         protected override void OnStart()

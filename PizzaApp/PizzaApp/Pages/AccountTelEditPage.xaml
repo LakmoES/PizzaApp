@@ -2,8 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PizzaApp.Pages.AccountTelEditPage">
-  <ScrollView VerticalOptions="FillAndExpand">
-    <StackLayout VerticalOptions="FillAndExpand">
+  <StackLayout Padding="10,0,10,0">
+    <StackLayout>
       <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
       <Label Text="Ваши номера: " Style ="{DynamicResource TitleStyle}" />
       <ListView x:Name="listViewTelList">
@@ -21,8 +21,10 @@
           </DataTemplate>
         </ListView.ItemTemplate>
       </ListView>
+    </StackLayout>
+    <StackLayout VerticalOptions="EndAndExpand">
       <Entry Placeholder="Новый номер" x:Name="entryNewNumber" Text="" />
       <Button Text="Добавить" x:Name="buttonTelAdd" />
     </StackLayout>
-  </ScrollView>
+  </StackLayout>
 </ContentPage>

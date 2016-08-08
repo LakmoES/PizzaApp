@@ -31,9 +31,24 @@ namespace PizzaApp.Pages
             }
             catch(Exception ex) { userInfo = ex.ToString(); }
 
-            Content = new StackLayout
+            string errlogs = "";
+            try
             {
-                Children = { new Label { Text = "DB path: " + dbc.db.DatabasePath + Environment.NewLine + userInfo + Environment.NewLine + tokenInfo, Style = Device.Styles.SubtitleStyle } }
+                errlogs = DependencyService.Get<IDBPlatform>().ReadAllLogs();
+            }
+            catch (Exception ex) { errlogs = "bad logs" + ex.ToString(); }
+
+            Content = new ScrollView
+            {
+                Content =
+                    new StackLayout
+                    {
+                        Children =
+                        {
+                            new Label { Text = ".DB path: " + dbc.db.DatabasePath + Environment.NewLine + userInfo + Environment.NewLine + tokenInfo, Style = Device.Styles.SubtitleStyle },
+                            new Label { Text = "LOGS: " +  errlogs, Style = Device.Styles.SubtitleStyle }
+                        }
+                    }
             };
         }
 	}

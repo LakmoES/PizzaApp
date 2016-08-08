@@ -25,7 +25,10 @@ namespace PizzaApp.Data.Providers
             {
                 Token t = await AuthProvider.RenewToken(token.token_hash);
                 if (t != null)
+                {
                     dbc.SaveToken(t);
+                    token = t;
+                }
             }
 
             var values = new Dictionary<string, string>
@@ -128,7 +131,10 @@ namespace PizzaApp.Data.Providers
             {
                 Token t = await AuthProvider.RenewToken(token.token_hash);
                 if (t != null)
+                {
                     dbc.SaveToken(t);
+                    token = t;
+                }
             }
 
             string content = await Requests.GetAsync(url + token.token_hash);
@@ -141,6 +147,7 @@ namespace PizzaApp.Data.Providers
                     if (token != null)
                     {
                         dbc.SaveToken(token);
+                        values["token"] = token.token_hash;
                         content = await Requests.GetAsync(url + token.token_hash);
                     }
                 }
@@ -172,7 +179,10 @@ namespace PizzaApp.Data.Providers
             {
                 Token t = await AuthProvider.RenewToken(token.token_hash);
                 if (t != null)
+                {
                     dbc.SaveToken(t);
+                    token = t;
+                }
             }
 
             var values = new Dictionary<string, string>
@@ -191,6 +201,7 @@ namespace PizzaApp.Data.Providers
                     if (token != null)
                     {
                         dbc.SaveToken(token);
+                        values["token"] = token.token_hash;
                         content = await Requests.PostAsync(url, values);
                     }
                 }
@@ -216,7 +227,10 @@ namespace PizzaApp.Data.Providers
             {
                 Token t = await AuthProvider.RenewToken(token.token_hash);
                 if (t != null)
+                {
                     dbc.SaveToken(t);
+                    token = t;
+                }
             }
 
             var values = new Dictionary<string, string>
@@ -235,6 +249,7 @@ namespace PizzaApp.Data.Providers
                     if (token != null)
                     {
                         dbc.SaveToken(token);
+                        values["token"] = token.token_hash;
                         content = await Requests.PostAsync(url, values);
                     }
                 }
@@ -260,7 +275,10 @@ namespace PizzaApp.Data.Providers
             {
                 Token t = await AuthProvider.RenewToken(token.token_hash);
                 if (t != null)
+                {
                     dbc.SaveToken(t);
+                    token = t;
+                }
             }
 
             var values = new Dictionary<string, string>
@@ -280,6 +298,7 @@ namespace PizzaApp.Data.Providers
                     if (token != null)
                     {
                         dbc.SaveToken(token);
+                        values["token"] = token.token_hash;
                         content = await Requests.PostAsync(url, values);
                     }
                 }
@@ -306,7 +325,10 @@ namespace PizzaApp.Data.Providers
             {
                 Token t = await AuthProvider.RenewToken(token.token_hash);
                 if (t != null)
+                {
                     dbc.SaveToken(t);
+                    token = t;
+                }
             }
 
             string content = await Requests.GetAsync(url + token.token_hash);
@@ -319,6 +341,7 @@ namespace PizzaApp.Data.Providers
                     if (token != null)
                     {
                         dbc.SaveToken(token);
+                        values["token"] = token.token_hash;
                         content = await Requests.GetAsync(url + token.token_hash);
                     }
                 }
@@ -350,7 +373,10 @@ namespace PizzaApp.Data.Providers
             {
                 Token t = await AuthProvider.RenewToken(token.token_hash);
                 if (t != null)
+                {
                     dbc.SaveToken(t);
+                    token = t;
+                }
             }
 
             var values = new Dictionary<string, string>
@@ -369,6 +395,7 @@ namespace PizzaApp.Data.Providers
                     if (token != null)
                     {
                         dbc.SaveToken(token);
+                        values["token"] = token.token_hash;
                         content = await Requests.PostAsync(url, values);
                     }
                 }
@@ -394,7 +421,10 @@ namespace PizzaApp.Data.Providers
             {
                 Token t = await AuthProvider.RenewToken(token.token_hash);
                 if (t != null)
+                {
                     dbc.SaveToken(t);
+                    token = t;
+                }
             }
 
             var values = new Dictionary<string, string>
@@ -413,6 +443,7 @@ namespace PizzaApp.Data.Providers
                     if (token != null)
                     {
                         dbc.SaveToken(token);
+                        values["token"] = token.token_hash;
                         content = await Requests.PostAsync(url, values);
                     }
                 }
@@ -438,7 +469,10 @@ namespace PizzaApp.Data.Providers
             {
                 Token t = await AuthProvider.RenewToken(token.token_hash);
                 if (t != null)
+                {
                     dbc.SaveToken(t);
+                    token = t;
+                }
             }
 
             var values = new Dictionary<string, string>
@@ -458,6 +492,7 @@ namespace PizzaApp.Data.Providers
                     if (token != null)
                     {
                         dbc.SaveToken(token);
+                        values["token"] = token.token_hash;
                         content = await Requests.PostAsync(url, values);
                     }
                 }

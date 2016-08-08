@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PizzaApp.Pages.AccountEditPage">
   <ScrollView>
-    <StackLayout>
+    <StackLayout Padding="10,0,10,0">
       <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False" />
       <Entry x:Name="entryUsername" Placeholder = "Имя пользователя" IsEnabled="False"/>
       <Entry x:Name="entryPassword" Placeholder = "Пароль" IsPassword="True" Text=""/>
