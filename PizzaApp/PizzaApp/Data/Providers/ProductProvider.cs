@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using PizzaApp.Data.ServerConsts.ServerControllers;
 
 namespace PizzaApp.Data.Providers
 {
@@ -14,10 +15,11 @@ namespace PizzaApp.Data.Providers
     {
         public static async Task<IEnumerable<Product>> GetProductPage(int page, int pageSize, int category = -1)
         {
+            var url = ProductUrlsCollection.GetPage;
             var values = String.Format("?page={0}&pageSize={1}", page, pageSize);
             if (category != -1) values += String.Format("&category={0}", category);
 
-            string content = await Requests.GetAsync("http://lakmoes-001-site1.etempurl.com/Product/GetPage" + values);
+            string content = await Requests.GetAsync(url + values);
             if (content == null)
                 return null;
             JArray jArray;
@@ -32,8 +34,9 @@ namespace PizzaApp.Data.Providers
         }
         public static async Task<IEnumerable<Product>> GetProductPageByName(string name, int page, int pageSize)
         {
+            var url = ProductUrlsCollection.GetByName;
             var values = String.Format("?name={0}&page={1}&pageSize={2}", name, page, pageSize);
-            string content = await Requests.GetAsync("http://lakmoes-001-site1.etempurl.com/Product/GetByName" + values);
+            string content = await Requests.GetAsync(url + values);
             if (content == null)
                 return null;
             JArray jArray;
@@ -48,10 +51,11 @@ namespace PizzaApp.Data.Providers
         }
         public static async Task<int?> GetProductPageCount(int pageSize, int category = -1)
         {
+            var url = ProductUrlsCollection.Pages;
             var values = String.Format("?pageSize={0}",pageSize);
             if (category != -1) values += String.Format("&category={0}", category);
 
-            string content = await Requests.GetAsync("http://lakmoes-001-site1.etempurl.com/Product/Pages" + values);
+            string content = await Requests.GetAsync(url + values);
             if (content == null)
                 return null;
             int count;
@@ -62,7 +66,8 @@ namespace PizzaApp.Data.Providers
         }
         public static async Task<IEnumerable<Category>> GetCategories()
         {
-            string content = await Requests.GetAsync("http://lakmoes-001-site1.etempurl.com/Product/GetCategoryList");
+            string url = ProductUrlsCollection.CategoryList;
+            string content = await Requests.GetAsync(url);
             if (content == null)
                 return null;
             JArray jArray;
@@ -77,8 +82,9 @@ namespace PizzaApp.Data.Providers
         }
         public static async Task<string> GetCategoryName(int category)
         {
+            var url = ProductUrlsCollection.CategoryList;
             var values = String.Format("?category={0}", category);
-            string content = await Requests.GetAsync("http://lakmoes-001-site1.etempurl.com/Product/GetCategoryList" + values);
+            string content = await Requests.GetAsync(url + values);
             if (content == null)
                 return null;
             var categoryName = new { name = "" };

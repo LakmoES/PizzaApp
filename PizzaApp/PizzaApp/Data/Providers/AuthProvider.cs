@@ -1,11 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PizzaApp.Data.Persistence;
-using PizzaApp.Data.ServerEntities;
+using PizzaApp.Data.ServerConsts.ServerControllers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PizzaApp.Data.Providers
@@ -14,13 +12,14 @@ namespace PizzaApp.Data.Providers
     {
         public static async Task<Token> Login(string username, string password)
         {
+            var url = AuthUrlsCollection.Login;
             var values = new Dictionary<string, string>
             {
                 { "username", username },
                 { "password", password }
             };
 
-            string content = await Requests.PostAsync("http://lakmoes-001-site1.etempurl.com/Auth/Login", values);
+            string content = await Requests.PostAsync(url, values);
             if (content == null)
                 return null;
             var token = new { token_hash = "", lifetime = 0 };
@@ -38,12 +37,13 @@ namespace PizzaApp.Data.Providers
         }
         public static async Task<Token> RenewToken(string token_hash)
         {
+            var url = AuthUrlsCollection.GetNewToken;
             var values = new Dictionary<string, string>
             {
                 { "token", token_hash }
             };
 
-            string content = await Requests.PostAsync("http://lakmoes-001-site1.etempurl.com/Auth/GetNewToken", values);
+            string content = await Requests.PostAsync(url, values);
             if (content == null)
                 return null;
 
@@ -62,15 +62,17 @@ namespace PizzaApp.Data.Providers
         }
         public static async Task<String> Logout(string token_hash)
         {
+            var url = AuthUrlsCollection.Logout;
             var values = new Dictionary<string, string>
             {
                 { "token", token_hash }
             };
-            string content = await Requests.PostAsync("http://lakmoes-001-site1.etempurl.com/Auth/Logout", values);
+            string content = await Requests.PostAsync(url, values);
             return content;
         }
         public static async Task<IEnumerable<ServerError>> Register(string username, string password, string email, string name, string surname)
         {
+            var url = AuthUrlsCollection.Register;
             var values = new Dictionary<string, string>
             {
                 { "username", username },
@@ -82,7 +84,7 @@ namespace PizzaApp.Data.Providers
                 if (surname.Length > 0)
                     values.Add("surname", surname);
 
-            string content = await Requests.PostAsync("http://lakmoes-001-site1.etempurl.com/Auth/RegisterUser", values);
+            string content = await Requests.PostAsync(url, values);
             List<ServerError> errorList = null;
             if(content != null)
             {

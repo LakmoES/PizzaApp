@@ -42,9 +42,17 @@
     <Compile Include="Data\Persistence\User.cs" />
     <Compile Include="Data\Providers\AuthProvider.cs" />
     <Compile Include="Data\Providers\OrderProvider.cs" />
+    <Compile Include="Data\Providers\ProviderHelpers\TokenProviderHelper.cs" />
     <Compile Include="Data\Providers\ShopCartProvider.cs" />
     <Compile Include="Data\Providers\UserProvider.cs" />
     <Compile Include="Data\Requests.cs" />
+    <Compile Include="Data\ServerConsts\ServerAddress.cs" />
+    <Compile Include="Data\ServerConsts\ServerControllers\BaseController.cs" />
+    <Compile Include="Data\ServerConsts\ServerControllers\AuthUrlsCollection.cs" />
+    <Compile Include="Data\ServerConsts\ServerControllers\OrderUrlsCollection.cs" />
+    <Compile Include="Data\ServerConsts\ServerControllers\ProductUrlsCollection.cs" />
+    <Compile Include="Data\ServerConsts\ServerControllers\ShopCartUrlsCollection.cs" />
+    <Compile Include="Data\ServerConsts\ServerControllers\UserUrlsCollection.cs" />
     <Compile Include="Data\ServerEntities\Address.cs" />
     <Compile Include="Data\ServerEntities\Category.cs" />
     <Compile Include="Data\ServerEntities\Order.cs" />

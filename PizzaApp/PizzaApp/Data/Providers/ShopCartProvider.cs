@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using PizzaApp.Data.Persistence;
+using PizzaApp.Data.Providers.ProviderHelpers;
+using PizzaApp.Data.ServerConsts.ServerControllers;
 using PizzaApp.Data.ServerEntities;
 using System;
 using System.Collections.Generic;
@@ -11,46 +13,15 @@ namespace PizzaApp.Data.Providers
     {
         public static async Task<bool> AddProduct(DBConnection dbc, int productID, int amount)
         {
-            string url = "http://lakmoes-001-site1.etempurl.com/ShopCart/AddProduct";
-            var token = dbc.GetToken();
-            if (token == null)
-                return false;
-            DateTime now = DateTime.Now;
-            if (token.expTime.Date == now.Date &&
-                token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
-                token.expTime.TimeOfDay.Minutes - now.TimeOfDay.Minutes <= 5)
-            {
-                Token t = await AuthProvider.RenewToken(token.token_hash);
-                if (t != null)
-                {
-                    dbc.SaveToken(t);
-                    token = t;
-                }
-            }
-
+            string url = ShopCartUrlsCollection.AddProduct;
+            
             var values = new Dictionary<string, string>
             {
-                { "token", token.token_hash },
                 { "productID", productID.ToString()},
                 { "amount", amount.ToString() }
             };
 
-            string content = await Requests.PostAsync(url, values);
-            if (content != null && content.Equals("\"wrong token\""))
-            {
-                try
-                {
-                    var user = dbc.GetUser();
-                    token = await AuthProvider.Login(user.username, user.password);
-                    if (token != null)
-                    {
-                        dbc.SaveToken(token);
-                        values["token"] = token.token_hash;
-                        content = await Requests.PostAsync(url, values);
-                    }
-                }
-                catch { }
-            }
+            string content = await TokenProviderHelper.TryGetContentPost(dbc, url, values);
             if (content == null)
                 return false;
             if (content.Equals("\"ok\""))
@@ -60,46 +31,15 @@ namespace PizzaApp.Data.Providers
         }
         public static async Task<bool> EditProduct(DBConnection dbc, int productID, int amount)
         {
-            string url = "http://lakmoes-001-site1.etempurl.com/ShopCart/EditProduct";
-            var token = dbc.GetToken();
-            if (token == null)
-                return false;
-            DateTime now = DateTime.Now;
-            if (token.expTime.Date == now.Date &&
-                token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
-                token.expTime.TimeOfDay.Minutes - now.TimeOfDay.Minutes <= 5)
-            {
-                Token t = await AuthProvider.RenewToken(token.token_hash);
-                if (t != null)
-                {
-                    dbc.SaveToken(t);
-                    token = t;
-                }
-            }
-
+            string url = ShopCartUrlsCollection.EditProduct;
+            
             var values = new Dictionary<string, string>
             {
-                { "token", token.token_hash },
                 { "productID", productID.ToString()},
                 { "amount", amount.ToString() }
             };
 
-            string content = await Requests.PostAsync(url, values);
-            if (content != null && content.Equals("\"wrong token\""))
-            {
-                try
-                {
-                    var user = dbc.GetUser();
-                    token = await AuthProvider.Login(user.username, user.password);
-                    if (token != null)
-                    {
-                        dbc.SaveToken(token);
-                        values["token"] = token.token_hash;
-                        content = await Requests.PostAsync(url, values);
-                    }
-                }
-                catch { }
-            }
+            string content = await TokenProviderHelper.TryGetContentPost(dbc, url, values);
             if (content == null)
                 return false;
             if (content.Equals("\"ok\""))
@@ -110,46 +50,12 @@ namespace PizzaApp.Data.Providers
 
         public static async Task<IEnumerable<ShopCartProduct>> Show(DBConnection dbc, string promocode)
         {
-            string url = "http://lakmoes-001-site1.etempurl.com/ShopCart/Show";
-            var token = dbc.GetToken();
-            if (token == null)
-                return null;
-            DateTime now = DateTime.Now;
-            if (token.expTime.Date == now.Date &&
-                token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
-                token.expTime.TimeOfDay.Minutes - now.TimeOfDay.Minutes <= 5)
-            {
-                Token t = await AuthProvider.RenewToken(token.token_hash);
-                if (t != null)
-                {
-                    dbc.SaveToken(t);
-                    token = t;
-                }
-            }
-
-            var values = new Dictionary<string, string>
-            {
-                { "token", token.token_hash }
-            };
+            string url = ShopCartUrlsCollection.Show;
+            var values = new Dictionary<string, string>();
             if (promocode != null)
                 values.Add("promocode", promocode);
 
-            string content = await Requests.PostAsync(url, values);
-            if (content != null && content.Equals("\"wrong token\""))
-            {
-                try
-                {
-                    var user = dbc.GetUser();
-                    token = await AuthProvider.Login(user.username, user.password);
-                    if (token != null)
-                    {
-                        dbc.SaveToken(token);
-                        values["token"] = token.token_hash;
-                        content = await Requests.PostAsync(url, values);
-                    }
-                }
-                catch { }
-            }
+            string content = await TokenProviderHelper.TryGetContentPost(dbc, url, values);
             if (content == null)
                 return null;
             JArray jArray;
@@ -164,45 +70,13 @@ namespace PizzaApp.Data.Providers
         }
         public static async Task<int> ProductExists(DBConnection dbc, int productID)
         {
-            string url = "http://lakmoes-001-site1.etempurl.com/ShopCart/ProductExists";
-            var token = dbc.GetToken();
-            if (token == null)
-                return 0;
-            DateTime now = DateTime.Now;
-            if (token.expTime.Date == now.Date &&
-                token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
-                token.expTime.TimeOfDay.Minutes - now.TimeOfDay.Minutes <= 5)
-            {
-                Token t = await AuthProvider.RenewToken(token.token_hash);
-                if (t != null)
-                {
-                    dbc.SaveToken(t);
-                    token = t;
-                }
-            }
-
+            string url = ShopCartUrlsCollection.ProductExists;
             var values = new Dictionary<string, string>
             {
-                { "token", token.token_hash },
                 { "productID", productID.ToString()}
             };
 
-            string content = await Requests.PostAsync(url, values);
-            if (content != null && content.Equals("\"wrong token\""))
-            {
-                try
-                {
-                    var user = dbc.GetUser();
-                    token = await AuthProvider.Login(user.username, user.password);
-                    if (token != null)
-                    {
-                        dbc.SaveToken(token);
-                        values["token"] = token.token_hash;
-                        content = await Requests.PostAsync(url, values);
-                    }
-                }
-                catch { }
-            }
+            string content = await TokenProviderHelper.TryGetContentPost(dbc, url, values);
             if (content == null)
                 return 0;
 
@@ -214,48 +88,15 @@ namespace PizzaApp.Data.Providers
         }
         public static async Task<int?> MakeOrder(DBConnection dbc, int? addressID, string promocode)
         {
-            string url = "http://lakmoes-001-site1.etempurl.com/ShopCart/MakeOrder";
-            var token = dbc.GetToken();
-            if (token == null)
-                return null;
-            DateTime now = DateTime.Now;
-            if (token.expTime.Date == now.Date &&
-                token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
-                token.expTime.TimeOfDay.Minutes - now.TimeOfDay.Minutes <= 5)
-            {
-                Token t = await AuthProvider.RenewToken(token.token_hash);
-                if (t != null)
-                {
-                    dbc.SaveToken(t);
-                    token = t;
-                }
-            }
+            string url = ShopCartUrlsCollection.MakeOrder;
 
-            var values = new Dictionary<string, string>
-            {
-                { "token", token.token_hash }
-            };
+            var values = new Dictionary<string, string>();
             if (addressID != null)
                 values.Add("addressID", addressID.ToString());
             if (!String.IsNullOrEmpty(promocode))
                 values.Add("promocode", promocode);
 
-            string content = await Requests.PostAsync(url, values);
-            if (content != null && content.Equals("\"wrong token\""))
-            {
-                try
-                {
-                    var user = dbc.GetUser();
-                    token = await AuthProvider.Login(user.username, user.password);
-                    if (token != null)
-                    {
-                        dbc.SaveToken(token);
-                        values["token"] = token.token_hash;
-                        content = await Requests.PostAsync(url, values);
-                    }
-                }
-                catch { }
-            }
+            string content = await TokenProviderHelper.TryGetContentPost(dbc, url, values);
             if (content == null)
                 return null;
             System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("{\"orderNO\":[0-9]+}");
@@ -269,44 +110,10 @@ namespace PizzaApp.Data.Providers
         }
         public static async Task<IEnumerable<ServerError>> Clear(DBConnection dbc)
         {
-            string url = "http://lakmoes-001-site1.etempurl.com/ShopCart/Clear";
-            var token = dbc.GetToken();
-            if (token == null)
-                return new List<ServerError> { new ServerError { error = "Возможно, вы не вошли в профиль." } };
-            DateTime now = DateTime.Now;
-            if (token.expTime.Date == now.Date &&
-                token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
-                token.expTime.TimeOfDay.Minutes - now.TimeOfDay.Minutes <= 5)
-            {
-                Token t = await AuthProvider.RenewToken(token.token_hash);
-                if (t != null)
-                {
-                    dbc.SaveToken(t);
-                    token = t;
-                }
-            }
+            string url = ShopCartUrlsCollection.Clear;
+            var values = new Dictionary<string, string>();
 
-            var values = new Dictionary<string, string>
-            {
-                { "token", token.token_hash }
-            };
-
-            string content = await Requests.PostAsync(url, values);
-            if (content != null && content.Equals("\"wrong token\""))
-            {
-                try
-                {
-                    var user = dbc.GetUser();
-                    token = await AuthProvider.Login(user.username, user.password);
-                    if (token != null)
-                    {
-                        dbc.SaveToken(token);
-                        values["token"] = token.token_hash;
-                        content = await Requests.PostAsync(url, values);
-                    }
-                }
-                catch { }
-            }
+            string content = await TokenProviderHelper.TryGetContentPost(dbc, url, values);
             if (content == null)
                 return new List<ServerError> { new ServerError { error = "Не удалось связаться с сервером." } };
             if (content.Equals("\"ok\""))
@@ -316,45 +123,13 @@ namespace PizzaApp.Data.Providers
         }
         public static async Task<bool> RemoveProduct(DBConnection dbc, int productID)
         {
-            string url = "http://lakmoes-001-site1.etempurl.com/ShopCart/RemoveProduct";
-            var token = dbc.GetToken();
-            if (token == null)
-                return false;
-            DateTime now = DateTime.Now;
-            if (token.expTime.Date == now.Date &&
-                token.expTime.TimeOfDay.Hours == now.TimeOfDay.Hours &&
-                token.expTime.TimeOfDay.Minutes - now.TimeOfDay.Minutes <= 5)
-            {
-                Token t = await AuthProvider.RenewToken(token.token_hash);
-                if (t != null)
-                {
-                    dbc.SaveToken(t);
-                    token = t;
-                }
-            }
-
+            string url = ShopCartUrlsCollection.RemoveProduct;
             var values = new Dictionary<string, string>
             {
-                { "token", token.token_hash },
                 { "productID", productID.ToString() }
             };
 
-            string content = await Requests.PostAsync(url, values);
-            if (content != null && content.Equals("\"wrong token\""))
-            {
-                try
-                {
-                    var user = dbc.GetUser();
-                    token = await AuthProvider.Login(user.username, user.password);
-                    if (token != null)
-                    {
-                        dbc.SaveToken(token);
-                        values["token"] = token.token_hash;
-                        content = await Requests.PostAsync(url, values);
-                    }
-                }
-                catch { }
-            }
+            string content = await TokenProviderHelper.TryGetContentPost(dbc, url, values);
             if (content == null)
                 return false;
             if (content.Equals("\"ok\""))

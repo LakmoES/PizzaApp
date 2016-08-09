@@ -23,7 +23,6 @@ namespace PizzaApp.Data
                 var response = await httpClient.PostAsync(uri, parameters);
                 response.EnsureSuccessStatusCode();
                 content = await response.Content.ReadAsStringAsync();
-                int k = 1;
             }
             catch(Exception ex)
             {
