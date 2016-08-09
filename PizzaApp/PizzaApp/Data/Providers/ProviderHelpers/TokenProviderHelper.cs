@@ -74,10 +74,7 @@ namespace PizzaApp.Data.Providers.ProviderHelpers
             {
                 token = await TryReLogin(dbc);
                 if (token != null)
-                {
-                    dbc.SaveToken(token);
                     content = await Requests.GetAsync(url + token.token_hash);
-                }
             }
             return content;
         }
