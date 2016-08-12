@@ -1,4 +1,5 @@
-﻿using PizzaApp.Data.Persistence;
+﻿using PizzaApp.Data;
+using PizzaApp.Data.Persistence;
 using PizzaApp.Data.Providers;
 using System;
 using System.Collections.Generic;
@@ -55,7 +56,17 @@ namespace PizzaApp.Pages
         }
         private async Task Register()
         {
-            var errorList = await AuthProvider.Register(entryUsername.Text, entryPassword.Text, entryEmail.Text, entryName.Text, entrySurname.Text);
+            IEnumerable<ServerError> errorList = null;
+            var foundUser = dbc.GetUser();
+            if (foundUser == null)
+                errorList = await AuthProvider.Register(entryUsername.Text, entryPassword.Text, entryEmail.Text, entryName.Text, entrySurname.Text);
+            else
+            {
+                if (foundUser.guest == 1)
+                    errorList = await AuthProvider.NoMoreGuest(dbc, entryUsername.Text, entryPassword.Text, entryEmail.Text, entryName.Text, entrySurname.Text);
+                else
+                    errorList = new List<ServerError> { new ServerError { error = "Already registered" }  };
+            }
             if (errorList != null)
             {
                 await DisplayAlert("Warning", String.Join(Environment.NewLine, errorList.Select(x => x.error)), "OK");

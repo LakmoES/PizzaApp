@@ -17,6 +17,7 @@ namespace PizzaApp.Pages
         private Button buttonRegister;
         private Button buttonEdit;
         private Button buttonOrders;
+        private Button buttonGuestEnter;
 
         private Label labelUsername;
         private Label labelName;
@@ -53,6 +54,8 @@ namespace PizzaApp.Pages
                 this.buttonRegister.IsEnabled = false;
             if (buttonOrders != null)
                 this.buttonOrders.IsEnabled = false;
+            if (buttonGuestEnter != null)
+                this.buttonGuestEnter.IsEnabled = false;
         }
         private void ActivateControls()
         {
@@ -73,6 +76,8 @@ namespace PizzaApp.Pages
                 this.buttonRegister.IsEnabled = true;
             if (buttonOrders != null)
                 this.buttonOrders.IsEnabled = true;
+            if (buttonGuestEnter != null)
+                this.buttonGuestEnter.IsEnabled = true;
         }
         public void Update()
         {
@@ -93,43 +98,99 @@ namespace PizzaApp.Pages
                     buttonRegister = new Button { Text = "Регистрация" };
                     buttonRegister.Clicked += this.ButtonRegister_Clicked;
 
+                    buttonGuestEnter = new Button { Text = "Гостевой вход" };
+                    buttonGuestEnter.Clicked += this.ButtonGuestEnter_Clicked;
+
                     Content = new StackLayout
                     {
                         Padding = new Thickness(10, 0, 10, 0),
                         Children =
                         {
-                            activityIndicator, labelTitle, entryUsername, entryPassword, buttonLogin, buttonRegister
+                            activityIndicator, labelTitle, entryUsername, entryPassword, buttonLogin, buttonRegister, buttonGuestEnter
                         }
                     };
                 }
                 else
                 {
-                    labelTitle.Text = "Вы вошли как:";
-                    labelUsername = new Label { Text = "Логин: " + user.username, Style = Device.Styles.SubtitleStyle };
-                    labelName = new Label { Text = user.name == null ? "Имя: -" : "Имя: " + user.name, Style = Device.Styles.SubtitleStyle };
-                    labelSurname = new Label { Text = user.surname == null ? "Фамилия: -" : "Фамилия: " + user.surname, Style = Device.Styles.SubtitleStyle };
-                    labelEmail = new Label { Text = user.email == null ? "Email: -" : "Email: " + user.email, Style = Device.Styles.SubtitleStyle };
-                    labelGuest = new Label { Text = user.guest == 0 ? "Статус: Пользователь" : "Статус: Гость", Style = Device.Styles.SubtitleStyle };
-                    buttonEdit = new Button { Text = "Редактировать" };
-                    buttonEdit.Clicked += this.ButtonEdit_Clicked;
                     buttonLogout = new Button { Text = "Выйти" };
                     buttonLogout.Clicked += this.ButtonLogout_Clicked;
+
+                    buttonEdit = new Button { Text = "Редактировать" };
+                    buttonEdit.Clicked += this.ButtonEdit_Clicked;
+
                     buttonOrders = new Button { Text = "Заказы" };
-                    buttonOrders.Clicked += async (sender, e) => {
+                    buttonOrders.Clicked += async (sender, e) =>
+                    {
                         DeactivateControls();
                         await Navigation.PushAsync(new OrdersPage(dbc));
                         ActivateControls();
                     };
-                    Content = new StackLayout
+
+                    if (user.guest == 0)
                     {
-                        Padding = new Thickness(10, 0, 10, 0),
-                        Children =
+                        labelTitle.Text = "Вы вошли как:";
+                        labelUsername = new Label { Text = "Логин: " + user.username, Style = Device.Styles.SubtitleStyle };
+                        labelName = new Label { Text = user.name == null ? "Имя: -" : "Имя: " + user.name, Style = Device.Styles.SubtitleStyle };
+                        labelSurname = new Label { Text = user.surname == null ? "Фамилия: -" : "Фамилия: " + user.surname, Style = Device.Styles.SubtitleStyle };
+                        labelEmail = new Label { Text = user.email == null ? "Email: -" : "Email: " + user.email, Style = Device.Styles.SubtitleStyle };
+                        labelGuest = new Label { Text = user.guest == 0 ? "Статус: Пользователь" : "Статус: Гость", Style = Device.Styles.SubtitleStyle };
+                        Content = new StackLayout
                         {
-                            activityIndicator, labelTitle, labelUsername, labelName, labelSurname, labelEmail, labelGuest, buttonEdit, buttonLogout, buttonOrders
-                        }
-                    };
+                            Padding = new Thickness(10, 0, 10, 0),
+                            Children =
+                            {
+                                activityIndicator, labelTitle, labelUsername, labelName, labelSurname, labelEmail, labelGuest, buttonEdit, buttonLogout, buttonOrders
+                            }
+                        };
+                    }
+                    else
+                    {
+                        labelTitle.Text = "Вы вошли как гость.";
+                        labelUsername = new Label { Text = "Ваш логин: " + user.username, Style = Device.Styles.SubtitleStyle };
+
+                        buttonRegister = new Button { Text = "Регистрация" };
+                        buttonRegister.Clicked += this.ButtonRegister_Clicked;
+
+                        Content = new StackLayout
+                        {
+                            Padding = new Thickness(10, 0, 10, 0),
+                            Children =
+                            {
+                                activityIndicator, labelTitle, labelUsername, buttonRegister, buttonLogout, buttonEdit, buttonOrders
+                            }
+                        };
+                    }
                 }
             });
+        }
+
+        private async void ButtonGuestEnter_Clicked(object sender, EventArgs e)
+        {
+            DeactivateControls();
+
+            var enterResult = await GuestEnter();
+            
+            if (enterResult != 1)
+                await DisplayAlert("Внимание", "Не удалось войти в гостевой профиль.", "OK");
+
+            ActivateControls();
+            Update();
+        }
+        private async Task<int> GuestEnter()
+        {
+            var guestAccount = await AuthProvider.NewGuest();
+            if (guestAccount != null)
+            {
+                dbc.SaveUser(new User { username = guestAccount.username, password = guestAccount.password, guest = 1 });
+                var token = await AuthProvider.Login(guestAccount.username, guestAccount.password);
+                if (token != null)
+                    dbc.SaveToken(token);
+                else
+                    return -1;
+            }
+            else
+                return 0;
+            return 1;
         }
         private async void ButtonLogin_Clicked(object sender, EventArgs e)
         {

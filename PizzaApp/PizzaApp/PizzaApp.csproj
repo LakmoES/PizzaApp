@@ -55,6 +55,7 @@
     <Compile Include="Data\ServerConsts\ServerControllers\UserUrlsCollection.cs" />
     <Compile Include="Data\ServerEntities\Address.cs" />
     <Compile Include="Data\ServerEntities\Category.cs" />
+    <Compile Include="Data\ServerEntities\Guest.cs" />
     <Compile Include="Data\ServerEntities\Order.cs" />
     <Compile Include="Data\ServerEntities\ShopCartProduct.cs" />
     <Compile Include="Data\ServerEntities\TelNumber.cs" />

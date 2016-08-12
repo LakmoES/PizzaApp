@@ -37,12 +37,12 @@ namespace PizzaApp.Pages
             this.stepperBuyAmount.ValueChanged += StepperBuyAmount_ValueChanged;
             this.buttonAddToCart.Clicked += ButtonAddToCart_Clicked;
 
-            if(dbc.GetUser() == null)
-            {
-                DeactivateControls();
-                activityIndicator.IsVisible = false;
-                activityIndicator.IsRunning = false;
-            }
+            //if(dbc.GetUser() == null)
+            //{
+            //    DeactivateControls();
+            //    activityIndicator.IsVisible = false;
+            //    activityIndicator.IsRunning = false;
+            //}
         }
         private void DeactivateControls()
         {
@@ -63,7 +63,20 @@ namespace PizzaApp.Pages
         private async void ButtonAddToCart_Clicked(object sender, EventArgs e)
         {
             DeactivateControls();
-            await AddToCart(Convert.ToInt32(this.labelBuyAmount.Text));
+            if (dbc.GetUser() == null)
+            {
+                bool result = await DisplayAlert("Вход не выполнен", "Вы хотите войти в свой профиль или создать гостевой?", "Да", "Нет");
+                if (result)
+                    await Navigation.PushAsync(new AccountPage(dbc));
+                else
+                {
+                    ActivateControls();
+                    return;
+                }
+            }
+            else
+                await AddToCart(Convert.ToInt32(this.labelBuyAmount.Text));
+            ActivateControls();
         }
         private async Task AddToCart(int amount)
         {

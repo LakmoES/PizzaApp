@@ -62,20 +62,21 @@ namespace PizzaApp.Pages
 
         private async void ListRefreshing(object sender, EventArgs e)
         {
-            await FillProductList();
-            await UpdateCategories();
+            if (await FillProductList())
+                await UpdateCategories();
             (sender as ListView).IsRefreshing = false;
             ActivateControls();
         }
-        private async Task FillProductList()
+        private async Task<bool> FillProductList()
         {
             products = await ProductProvider.GetProductPage(1, 3) as List<Product>;
             if (products == null)
             {
                 await DisplayAlert("Warning", "Connection problem", "OK");
-                return;
+                return false;
             }
             listViewProducts.ItemsSource = products.Select(a => new { id = a.id, title = a.title, subtitle = a.cost.ToString() + " грн", image = ImageSource.FromFile("icon.png") });
+            return true;
         }
         private async void ListItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
@@ -96,6 +97,11 @@ namespace PizzaApp.Pages
         private async Task UpdateCategories()
         {
             var categories = await ProductProvider.GetCategories();
+            if(categories == null)
+            {
+                await DisplayAlert("Warning", "Connection problem", "OK");
+                return;
+            }
             dbc.SaveCategoryList(categories.Select(c => new ProductCategory { id = c.id, title = c.title }).ToList());
         }
 

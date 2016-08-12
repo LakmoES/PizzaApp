@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PizzaApp.Data.Persistence;
+using PizzaApp.Data.Providers.ProviderHelpers;
 using PizzaApp.Data.ServerConsts.ServerControllers;
+using PizzaApp.Data.ServerEntities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -34,6 +36,56 @@ namespace PizzaApp.Data.Providers
             var expTime = createTime.AddMinutes(jEntity.lifetime);
 
             return new Token { token_hash = jEntity.token_hash, createTime = createTime, expTime = expTime };
+        }
+        public static async Task<Guest> NewGuest()
+        {
+            var url = AuthUrlsCollection.NewGuest;
+
+            string content = await Requests.GetAsync(url);
+            if (content == null)
+                return null;
+            Guest guest = null;
+            try
+            {
+                guest = JsonConvert.DeserializeObject<Guest>(content);
+            }
+            catch { return null; }
+
+            return guest;
+        }
+        public static async Task<IEnumerable<ServerError>> NoMoreGuest(DBConnection dbc, string username, string password, string email, string name, string surname)
+        {
+            var url = AuthUrlsCollection.NoMoreGuest;
+            var values = new Dictionary<string, string>
+            {
+                { "username", username },
+                { "password", password },
+                { "email", email },
+                { "name", name }
+            };
+            if (surname != null)
+                if (surname.Length > 0)
+                    values.Add("surname", surname);
+
+            string content = await TokenProviderHelper.TryGetContentPost(dbc, url, values);
+            List<ServerError> errorList = null;
+            if (content != null)
+            {
+                JArray jArray;
+                try
+                {
+                    jArray = JArray.Parse(content);
+                }
+                catch { return null; }
+                try
+                {
+                    errorList = jArray.ToObject<List<ServerError>>();
+                }
+                catch { return new List<ServerError> { { new ServerError { error = "Failed to parse Json" } }, { new ServerError { error = content } } }; }
+            }
+            else
+                errorList = new List<ServerError> { new ServerError { error = "Запрос не удался" } };
+            return errorList;
         }
         public static async Task<Token> RenewToken(string token_hash)
         {
