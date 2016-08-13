@@ -17,18 +17,45 @@ namespace PizzaApp.Pages
 	{
         private int page, pageSize;
         private bool firstPage, lastPage;
+        private int selectedCategoryID;
         private DBConnection dbc;
         private ListView listView;
         private Button buttonPreviousPage, buttonNextPage;
         private Label labelPages;
         private ActivityIndicator activityIndicator;
+
+        private IEnumerable<ProductCategory> categoryList;
+        private Picker pickerCategory;
+        private bool showPicker;
+
         private List<Product> products;
         public ProductsPage(DBConnection dbc)
         {
             Title = "Товары";
             Icon = "Leads.png";
 
+            showPicker = false;
+            pickerCategory = new Picker { Title = "Выберите категорию", IsVisible = false };
+            categoryList = dbc.GetCategoryList();
+            foreach (var category in categoryList)
+                pickerCategory.Items.Add(category.title);
+            pickerCategory.SelectedIndexChanged += PickerCategory_SelectedIndexChanged;
+
+            ToolbarItems.Add(new ToolbarItem
+            {
+                Text = "Поиск",
+                Order = ToolbarItemOrder.Primary//,
+                //Command = new Command(() => Navigation.PushAsync(new AccountPage(dbc)))
+            });
+            ToolbarItems.Add(new ToolbarItem
+            {
+                Text = "Категория",
+                Order = ToolbarItemOrder.Primary,
+                Command = new Command(() => ShowPicker())
+            });
+
             this.dbc = dbc;
+            selectedCategoryID = -1;
             page = 1;
             pageSize = 8;
             firstPage = true;
@@ -70,7 +97,7 @@ namespace PizzaApp.Pages
                 Orientation = StackOrientation.Vertical,
                 Children =
                 {
-                    //label,
+                    pickerCategory,
                     activityIndicator,
                     listView,
                     new StackLayout
@@ -97,6 +124,28 @@ namespace PizzaApp.Pages
             DeactivateControls();
             listView.BeginRefresh();
         }
+
+        private void PickerCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (pickerCategory.SelectedIndex == -1)
+                return;
+            selectedCategoryID = categoryList.ElementAt(pickerCategory.SelectedIndex).id;
+            DeactivateControls();
+            listView.BeginRefresh();
+        }
+
+        private void ShowPicker()
+        {
+            showPicker = !showPicker;
+            pickerCategory.IsVisible = showPicker;
+            if(!showPicker && selectedCategoryID != -1)
+            {
+                pickerCategory.SelectedIndex = -1;
+                selectedCategoryID = -1;
+                DeactivateControls();
+                listView.BeginRefresh();
+            }
+        }
         private void UpdatePagesLabel(int page, int totalPages)
         {
             labelPages.Text = String.Format("Страница {0} из {1}", page, totalPages);
@@ -116,12 +165,14 @@ namespace PizzaApp.Pages
             listView.IsEnabled = false;
             buttonNextPage.IsEnabled = false;
             buttonPreviousPage.IsEnabled = false;
+            pickerCategory.IsEnabled = false;
             activityIndicator.IsRunning = true;
             activityIndicator.IsVisible = true;
         }
         private void ActivateControls()
         {
             listView.IsEnabled = true;
+            pickerCategory.IsEnabled = true;
             if (!lastPage)
                 buttonNextPage.IsEnabled = true;
             if (!firstPage)
@@ -158,8 +209,8 @@ namespace PizzaApp.Pages
         }
         private async Task<bool> FillList()
         {
-            products = await ProductProvider.GetProductPage(page, pageSize) as List<Product>;
-            var pages = await ProductProvider.GetProductPageCount(pageSize);
+            products = await ProductProvider.GetProductPage(page, pageSize, selectedCategoryID) as List<Product>;
+            var pages = await ProductProvider.GetProductPageCount(pageSize, selectedCategoryID);
             if (products == null || pages == null)
             {
                 await DisplayAlert("Warning", "Connection problem", "OK");

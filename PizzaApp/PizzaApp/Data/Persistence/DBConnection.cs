@@ -85,5 +85,12 @@ namespace PizzaApp.Data.Persistence
                 return categoryTitle.FirstOrDefault();
             }
         }
+        public IEnumerable<ProductCategory> GetCategoryList()
+        {
+            lock(locker)
+            {
+                return from c in db.Table<ProductCategory>() select c;
+            }
+        }
     }
 }

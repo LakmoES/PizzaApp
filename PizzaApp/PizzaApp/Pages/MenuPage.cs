@@ -22,7 +22,7 @@ namespace PizzaApp.Pages
 				Padding = new Thickness (10, 36, 0, 5),
 				Content = new Label {
 					TextColor = Color.FromHex ("AAAAAA"),
-					Text = "Меню", 
+					Text = "PizzaApp", 
 				}
 			};
 
