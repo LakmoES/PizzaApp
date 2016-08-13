@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PizzaApp.Data.ServerConsts.ServerControllers
+namespace PizzaApp.Data.ServerConsts.ServerUrlsControllers
 {
     public class ShopCartUrlsCollection
     {
-        private static BaseController bc = new BaseController("ShopCart");
+        private static BaseUrlsController bc = new BaseUrlsController("ShopCart");
         public static string AddProduct { get { return bc.GetFullUrl("AddProduct"); } }
         public static string EditProduct { get { return bc.GetFullUrl("EditProduct"); } }
         public static string Show { get { return bc.GetFullUrl("Show"); } }

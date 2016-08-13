@@ -1,8 +1,8 @@
-﻿namespace PizzaApp.Data.ServerConsts.ServerControllers
+﻿namespace PizzaApp.Data.ServerConsts.ServerUrlsControllers
 {
     public class OrderUrlsCollection
     {
-        private static BaseController bc = new BaseController("Order");
+        private static BaseUrlsController bc = new BaseUrlsController("Order");
         public static string GetPage { get { return bc.GetFullUrl("GetPage"); } }
         public static string Pages { get { return bc.GetFullUrl("Pages"); } }
     }

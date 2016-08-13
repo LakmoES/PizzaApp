@@ -1,9 +1,9 @@
-﻿namespace PizzaApp.Data.ServerConsts.ServerControllers
+﻿namespace PizzaApp.Data.ServerConsts.ServerUrlsControllers
 {
-    public class BaseController
+    public class BaseUrlsController
     {
         public string controllerUrl { get; private set; }
-        public BaseController(string controllerUrl)
+        public BaseUrlsController(string controllerUrl)
         {
             this.controllerUrl = controllerUrl;
         }

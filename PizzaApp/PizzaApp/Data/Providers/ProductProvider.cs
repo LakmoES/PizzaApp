@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using PizzaApp.Data.ServerConsts.ServerControllers;
+using PizzaApp.Data.ServerConsts.ServerUrlsControllers;
 
 namespace PizzaApp.Data.Providers
 {
@@ -54,6 +54,21 @@ namespace PizzaApp.Data.Providers
             var url = ProductUrlsCollection.Pages;
             var values = String.Format("?pageSize={0}",pageSize);
             if (category != -1) values += String.Format("&category={0}", category);
+
+            string content = await Requests.GetAsync(url + values);
+            if (content == null)
+                return null;
+            int count;
+            if (!Int32.TryParse(content, out count))
+                return null;
+
+            return count;
+        }
+        public static async Task<int?> GetProductPageByNameCount(string name, int pageSize)
+        {
+            var url = ProductUrlsCollection.PagesByName;
+            var values = String.Format("?pageSize={0}", pageSize);
+            if (name != null) values += String.Format("&name={0}", name);
 
             string content = await Requests.GetAsync(url + values);
             if (content == null)

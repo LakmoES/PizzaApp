@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using PizzaApp.Data.Persistence;
 using PizzaApp.Data.Providers.ProviderHelpers;
-using PizzaApp.Data.ServerConsts.ServerControllers;
+using PizzaApp.Data.ServerConsts.ServerUrlsControllers;
 using PizzaApp.Data.ServerEntities;
 using System;
 using System.Collections.Generic;
