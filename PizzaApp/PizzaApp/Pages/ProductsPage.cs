@@ -27,6 +27,11 @@ namespace PizzaApp.Pages
         private Label labelPages;
         private ActivityIndicator activityIndicator;
 
+        private Button buttonSort;
+        private bool orderDesc;
+        private char orderBy;
+        private bool orderNeed;
+
         private StackLayout stackLayoutProductName;
         private Entry entryProductName;
         private Button buttonProductName;
@@ -81,7 +86,11 @@ namespace PizzaApp.Pages
             selectedCategoryID = -1;
             selectedProductName = null;
             page = 1;
-            pageSize = 8;
+            var pageSizeInDB = dbc.GetProductPageSize();
+            if (pageSizeInDB != null)
+                pageSize = (int)pageSizeInDB;
+            else
+                pageSize = 8;
             firstPage = true;
             var label = new Label
             {
@@ -113,6 +122,12 @@ namespace PizzaApp.Pages
                 NextPage();
             };
 
+            buttonSort = new Button { Text = "Сорт.", HorizontalOptions = LayoutOptions.EndAndExpand };
+            buttonSort.Clicked += ButtonSort_Clicked;
+            orderDesc = false;
+            orderBy = 'c';
+            orderNeed = false;
+
             activityIndicator = new ActivityIndicator { IsVisible = false, IsRunning = false };
 
             Content = new StackLayout
@@ -130,11 +145,18 @@ namespace PizzaApp.Pages
                         VerticalOptions = LayoutOptions.EndAndExpand,
                         Children =
                         {
-                            labelPages,
                             new StackLayout
                             {
                                 Orientation = StackOrientation.Horizontal,
-                                //VerticalOptions = LayoutOptions.EndAndExpand,
+                                HorizontalOptions = LayoutOptions.Center,
+                                Children =
+                                {
+                                    labelPages, buttonSort
+                                }
+                            },
+                            new StackLayout
+                            {
+                                Orientation = StackOrientation.Horizontal,
                                 HorizontalOptions = LayoutOptions.Center,
                                 Children =
                                 {
@@ -149,6 +171,13 @@ namespace PizzaApp.Pages
             DeactivateControls();
             listView.BeginRefresh();
         }
+
+        private void ButtonSort_Clicked(object sender, EventArgs e)
+        {
+            ListViewSort();
+            ActivateControls();
+        }
+
         private void ShowEntry()
         {
             ChangePickerVisible(true);
@@ -228,6 +257,9 @@ namespace PizzaApp.Pages
             buttonNextPage.IsEnabled = false;
             buttonPreviousPage.IsEnabled = false;
             pickerCategory.IsEnabled = false;
+            entryProductName.IsEnabled = false;
+            buttonProductName.IsEnabled = false;
+            buttonSort.IsEnabled = false;
             activityIndicator.IsRunning = true;
             activityIndicator.IsVisible = true;
         }
@@ -235,6 +267,9 @@ namespace PizzaApp.Pages
         {
             listView.IsEnabled = true;
             pickerCategory.IsEnabled = true;
+            entryProductName.IsEnabled = true;
+            buttonProductName.IsEnabled = true;
+            buttonSort.IsEnabled = true;
             if (!lastPage)
                 buttonNextPage.IsEnabled = true;
             if (!firstPage)
@@ -257,6 +292,11 @@ namespace PizzaApp.Pages
         {
             if (e.SelectedItem == null)
                 return;
+            if (!listView.IsEnabled)
+            {
+                listView.SelectedItem = null;
+                return;
+            }
 
             DeactivateControls();
 
@@ -274,7 +314,7 @@ namespace PizzaApp.Pages
             int? pages = null;
             if (String.IsNullOrWhiteSpace(selectedProductName))
             {
-                products = await ProductProvider.GetProductPage(page, pageSize, selectedCategoryID) as List<Product>;
+                products = await ProductProvider.GetProductPage(page, pageSize, selectedCategoryID, orderNeed ? orderBy : (char?)null, orderNeed ? orderDesc : (bool?)null) as List<Product>;
                 pages = await ProductProvider.GetProductPageCount(pageSize, selectedCategoryID);
             }
             else
@@ -292,6 +332,17 @@ namespace PizzaApp.Pages
             UpdatePagesLabel(page, (int)pages);
             listView.ItemsSource = products.Select(a => new { id = a.id, title = a.title, subtitle = a.cost.ToString() + " грн", image = ImageSource.FromFile("icon.png") });
             return true;
+        }
+        private void ListViewSort()
+        {
+            if (!orderNeed)
+                orderDesc = false;
+            else
+                orderDesc = !orderDesc;
+            orderNeed = true;
+
+            DeactivateControls();
+            listView.BeginRefresh();
         }
 	}
 	

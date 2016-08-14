@@ -13,11 +13,13 @@ namespace PizzaApp.Data.Providers
 {
     public static class ProductProvider
     {
-        public static async Task<IEnumerable<Product>> GetProductPage(int page, int pageSize, int category = -1)
+        public static async Task<IEnumerable<Product>> GetProductPage(int page, int pageSize, int category = -1, char? orderBy = null, bool? desc = null)
         {
             var url = ProductUrlsCollection.GetPage;
             var values = String.Format("?page={0}&pageSize={1}", page, pageSize);
             if (category != -1) values += String.Format("&category={0}", category);
+            if (orderBy != null) values += String.Format("&orderBy={0}", orderBy);
+            if (desc != null) values += String.Format("&desc={0}", (bool)desc ? 1 : 0);
 
             string content = await Requests.GetAsync(url + values);
             if (content == null)

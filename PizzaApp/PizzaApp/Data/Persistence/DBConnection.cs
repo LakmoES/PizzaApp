@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SQLite.Net;
 using Xamarin.Forms;
+using PizzaApp.Data.Persistence.Settings;
 
 namespace PizzaApp.Data.Persistence
 {
@@ -20,6 +21,7 @@ namespace PizzaApp.Data.Persistence
             db.CreateTable<User>();
             db.CreateTable<Token>();
             db.CreateTable<ProductCategory>();
+            db.CreateTable<ProductPageSize>();
         }
         public User GetUser()
         {
@@ -90,6 +92,25 @@ namespace PizzaApp.Data.Persistence
             lock(locker)
             {
                 return from c in db.Table<ProductCategory>() select c;
+            }
+        }
+        public void SaveProductPageSize(int pageSize)
+        {
+            lock (locker)
+            {
+                db.Execute("DELETE FROM PRODUCTPAGESIZE");
+                db.Insert(new ProductPageSize { pageSize = pageSize });
+            }
+        }
+        public int? GetProductPageSize()
+        {
+            lock (locker)
+            {
+                var pageSize = from ps in db.Table<ProductPageSize>() select ps;
+                var foundPageSize = pageSize.FirstOrDefault();
+                if (foundPageSize != null)
+                    return foundPageSize.pageSize;
+                return null;
             }
         }
     }

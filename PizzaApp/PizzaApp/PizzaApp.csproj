@@ -38,6 +38,7 @@
     <Compile Include="Data\Persistence\DBConnection.cs" />
     <Compile Include="Data\Persistence\IDBPlatform.cs" />
     <Compile Include="Data\Persistence\ProductCategory.cs" />
+    <Compile Include="Data\Persistence\Settings\ProductPageSize.cs" />
     <Compile Include="Data\Persistence\Token.cs" />
     <Compile Include="Data\Persistence\User.cs" />
     <Compile Include="Data\Providers\AuthProvider.cs" />
@@ -98,6 +99,9 @@
     <Compile Include="Pages\ProductsPageItems\ProductCell.cs" />
     <Compile Include="Pages\RegistrationPage.xaml.cs">
       <DependentUpon>RegistrationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ShopCartPage.xaml.cs">
       <DependentUpon>ShopCartPage.xaml</DependentUpon>
@@ -201,6 +205,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages\OrdersPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\SettingsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

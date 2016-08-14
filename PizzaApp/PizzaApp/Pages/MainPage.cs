@@ -82,6 +82,11 @@ namespace PizzaApp.Pages
         {
             if (e.SelectedItem == null)
                 return;
+            if (!listViewProducts.IsEnabled)
+            {
+                listViewProducts.SelectedItem = null;
+                return;
+            }
 
             DeactivateControls();
 
