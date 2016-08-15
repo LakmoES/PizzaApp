@@ -15,13 +15,23 @@ namespace PizzaApp.Pages
     {
         private DBConnection dbc;
         private AccountPage parentPage;
-        public RegistrationPage(DBConnection dbc, AccountPage parentPage)
+        public RegistrationPage(DBConnection dbc, AccountPage parentPage, User guestProfile = null)
         {
             InitializeComponent();
             Title = "Регистрация";
             
             this.dbc = dbc;
             this.parentPage = parentPage;
+
+            if(guestProfile != null)
+            {
+                if (!String.IsNullOrEmpty(guestProfile.email))
+                    entryEmail.Text = guestProfile.email;
+                if (!String.IsNullOrEmpty(guestProfile.name))
+                    entryName.Text = guestProfile.name;
+                if (!String.IsNullOrEmpty(guestProfile.surname))
+                    entrySurname.Text = guestProfile.surname;
+            }
 
             this.buttonSubmit.Clicked += ButtonSubmit_Clicked;
         }

@@ -43,7 +43,6 @@ namespace PizzaApp.Pages
         }
         private void ActivateControls()
         {
-            entryUsername.IsEnabled = true;
             entryPassword.IsEnabled = true;
             entryEmail.IsEnabled = true;
             entryName.IsEnabled = true;
@@ -57,6 +56,8 @@ namespace PizzaApp.Pages
         }
         private void FillFields(User user)
         {
+            if (user.guest == 1)
+                entryPassword.IsVisible = false;
             this.entryUsername.Text = user.username;
             this.entryEmail.Text = user.email ?? "";
             this.entryName.Text = user.name ?? "";
@@ -97,6 +98,7 @@ namespace PizzaApp.Pages
                 }
                 await DisplayAlert("Успех", "Ваш профиль успешно обновлен.", "OK");
                 this.parentPage.Update();
+                await Navigation.PopAsync();
             }
             ActivateControls();
         }
@@ -104,7 +106,6 @@ namespace PizzaApp.Pages
         {
             DeactivateControls();
             var telNumbers = await UserProvider.GetTelList(dbc);
-            //await DisplayAlert("Count", telNumbers.Count + "", "OK");
             await Navigation.PushAsync(new AccountTelEditPage(dbc, telNumbers));
             ActivateControls();
         }
@@ -112,7 +113,6 @@ namespace PizzaApp.Pages
         {
             DeactivateControls();
             var addresses = await UserProvider.GetAddressList(dbc);
-            //await DisplayAlert("Count", telNumbers.Count + "", "OK");
             await Navigation.PushAsync(new AccountAddressEditPage(dbc, addresses));
             ActivateControls();
         }

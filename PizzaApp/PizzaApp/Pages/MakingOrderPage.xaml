@@ -6,7 +6,10 @@
     <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
     <Label x:Name="labelTotalPrice" Style ="{DynamicResource TitleStyle}"/>
     <Label Text="Адрес:" Style ="{DynamicResource SubtitleStyle}"/>
-    <Picker x:Name="pickerDeliveryAddress" Title="Выберите адрес доставки" />
+    <StackLayout Orientation="Horizontal">
+      <Picker x:Name="pickerDeliveryAddress" Title="Выберите адрес доставки" />
+      <Button x:Name="buttonEditAddresses" Text="Адреса" Clicked="ButtonEditAddresses_Clicked"/>
+    </StackLayout>
     <Button x:Name="buttonSubmit" Text="Подтвердить заказ"/>
   </StackLayout>
 </ContentPage>

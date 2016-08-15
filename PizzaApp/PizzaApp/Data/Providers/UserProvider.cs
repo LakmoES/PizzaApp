@@ -35,11 +35,12 @@ namespace PizzaApp.Data.Providers
         public static async Task<IEnumerable<ServerError>> Edit(DBConnection dbc, string password, string email, string name, string surname)
         {
             string url = UserUrlsCollection.Edit;
-            var values = new Dictionary<string, string>
-            {
-                { "email", email },
-                { "name", name }
-            };
+            var values = new Dictionary<string, string>();
+
+            if (!String.IsNullOrEmpty(email))
+                values.Add("email", email);
+            if (!String.IsNullOrEmpty(name))
+                values.Add("name", name);
             if (password != null)
                 if (password.Length > 0)
                     values.Add("password", password);

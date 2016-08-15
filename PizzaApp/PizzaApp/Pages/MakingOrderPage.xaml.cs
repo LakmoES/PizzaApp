@@ -34,7 +34,19 @@ namespace PizzaApp.Pages
 
             buttonSubmit.Clicked += ButtonSubmit_Clicked;
         }
-
+        private async void ButtonEditAddresses_Clicked(object sender, EventArgs e)
+        {
+            DeactivateControls();
+            await Navigation.PushAsync(new AccountAddressEditPage(dbc, addresses, this));
+            ActivateControls();
+        }
+        public void UpdateAddresses(IEnumerable<Address> addresses)
+        {
+            this.addresses = addresses;
+            pickerDeliveryAddress.Items.Clear();
+            foreach (var address in addresses)
+                this.pickerDeliveryAddress.Items.Add(address.address);
+        }
         private async void ButtonSubmit_Clicked(object sender, EventArgs e)
         {
             DeactivateControls();
@@ -47,14 +59,27 @@ namespace PizzaApp.Pages
             else
             {
                 int? addressID = pickerDeliveryAddress.SelectedIndex == -1 ? null : addresses.ElementAt(pickerDeliveryAddress.SelectedIndex).id as int?;
-                var result = await ShopCartProvider.MakeOrder(dbc, addressID, promocode);
-                if (result == null)
-                    await DisplayAlert("Ошибка", "Не удалось совершить заказ.", "OK");
+                var telnumbers = await UserProvider.GetTelList(dbc);
+                if (telnumbers.Count() <= 0)
+                {
+                    var questionResult = await DisplayAlert(null, "В Вашем профиле не найдено ни одиного номера телефона. Наш оператор не сможет с Вами связаться. Хотите добавить телефон?", "Да", "Нет");
+                    if (questionResult)
+                        await Navigation.PushAsync(new AccountTelEditPage(dbc, telnumbers));
+                }
                 else
                 {
-                    await DisplayAlert(null, String.Format("Заказ №{0} отправлен на обработку. С вами свяжутся в ближайшее время.", result), "OK");
-                    await parent.UpdateShopCart();
-                    await Navigation.PopAsync();
+                    if (await DisplayAlert(null, "Вы подтверждаете заказ?", "Да", "Нет"))
+                    {
+                        var result = await ShopCartProvider.MakeOrder(dbc, addressID, promocode);
+                        if (result == null)
+                            await DisplayAlert("Ошибка", "Не удалось совершить заказ.", "OK");
+                        else
+                        {
+                            await DisplayAlert(null, String.Format("Заказ №{0} отправлен на обработку. С вами свяжутся в ближайшее время.", result), "OK");
+                            await parent.UpdateShopCart();
+                            await Navigation.PopAsync();
+                        }
+                    }
                 }
             }
                 
@@ -68,6 +93,7 @@ namespace PizzaApp.Pages
 
             pickerDeliveryAddress.IsEnabled = false;
             buttonSubmit.IsEnabled = false;
+            buttonEditAddresses.IsEnabled = false;
         }
         private void ActivateControls()
         {
@@ -76,6 +102,7 @@ namespace PizzaApp.Pages
 
             pickerDeliveryAddress.IsEnabled = true;
             buttonSubmit.IsEnabled = true;
+            buttonEditAddresses.IsEnabled = true;
         }
     }
 }

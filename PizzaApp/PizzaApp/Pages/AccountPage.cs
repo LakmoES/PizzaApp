@@ -126,14 +126,15 @@ namespace PizzaApp.Pages
                         ActivateControls();
                     };
 
+                    labelTitle.Text = "Вы вошли как:";
+                    labelUsername = new Label { Text = "Логин: " + user.username, Style = Device.Styles.SubtitleStyle };
+                    labelName = new Label { Text = user.name == null ? "Имя: -" : "Имя: " + user.name, Style = Device.Styles.SubtitleStyle };
+                    labelSurname = new Label { Text = user.surname == null ? "Фамилия: -" : "Фамилия: " + user.surname, Style = Device.Styles.SubtitleStyle };
+                    labelEmail = new Label { Text = user.email == null ? "Email: -" : "Email: " + user.email, Style = Device.Styles.SubtitleStyle };
+                    labelGuest = new Label { Text = user.guest == 0 ? "Статус: Пользователь" : "Статус: Гость", Style = Device.Styles.SubtitleStyle };
+
                     if (user.guest == 0)
                     {
-                        labelTitle.Text = "Вы вошли как:";
-                        labelUsername = new Label { Text = "Логин: " + user.username, Style = Device.Styles.SubtitleStyle };
-                        labelName = new Label { Text = user.name == null ? "Имя: -" : "Имя: " + user.name, Style = Device.Styles.SubtitleStyle };
-                        labelSurname = new Label { Text = user.surname == null ? "Фамилия: -" : "Фамилия: " + user.surname, Style = Device.Styles.SubtitleStyle };
-                        labelEmail = new Label { Text = user.email == null ? "Email: -" : "Email: " + user.email, Style = Device.Styles.SubtitleStyle };
-                        labelGuest = new Label { Text = user.guest == 0 ? "Статус: Пользователь" : "Статус: Гость", Style = Device.Styles.SubtitleStyle };
                         Content = new StackLayout
                         {
                             Padding = new Thickness(10, 0, 10, 0),
@@ -145,8 +146,6 @@ namespace PizzaApp.Pages
                     }
                     else
                     {
-                        labelTitle.Text = "Вы вошли как гость.";
-                        labelUsername = new Label { Text = "Ваш логин: " + user.username, Style = Device.Styles.SubtitleStyle };
 
                         buttonRegister = new Button { Text = "Регистрация" };
                         buttonRegister.Clicked += this.ButtonRegister_Clicked;
@@ -156,7 +155,7 @@ namespace PizzaApp.Pages
                             Padding = new Thickness(10, 0, 10, 0),
                             Children =
                             {
-                                activityIndicator, labelTitle, labelUsername, buttonRegister, buttonLogout, buttonEdit, buttonOrders
+                                activityIndicator, labelTitle, labelUsername, labelName, labelSurname, labelEmail, labelGuest, buttonRegister, buttonLogout, buttonEdit, buttonOrders
                             }
                         };
                     }
@@ -260,7 +259,7 @@ namespace PizzaApp.Pages
         }
         private async Task Register()
         {
-            await Navigation.PushAsync(new RegistrationPage(dbc, this));
+            await Navigation.PushAsync(new RegistrationPage(dbc, this, dbc.GetUser()));
         }
     }
 	

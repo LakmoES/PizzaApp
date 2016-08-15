@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PizzaApp.Data.Providers.ProviderHelpers;
+using Newtonsoft.Json;
 
 namespace PizzaApp.Data.Providers
 {
@@ -17,7 +18,7 @@ namespace PizzaApp.Data.Providers
         public static async Task<IEnumerable<Order>> GetPage(DBConnection dbc, int page, int pageSize)
         {
             string url = OrderUrlsCollection.GetPage;
-
+            
             var values = new Dictionary<string, string>
             {
                 { "page", page.ToString() },
@@ -33,7 +34,8 @@ namespace PizzaApp.Data.Providers
                 jArray = JArray.Parse(content);
             }
             catch { return null; }
-            var ordersList = jArray.ToObject<List<Order>>();
+            var format = "dd.MM.yyyy HH:mm:ss"; // datetime format
+            var ordersList = jArray.ToObject<List<Order>>(new JsonSerializer { DateFormatString = format });
 
             return ordersList;
         }

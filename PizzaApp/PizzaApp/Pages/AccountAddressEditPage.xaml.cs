@@ -16,12 +16,14 @@ namespace PizzaApp.Pages
     {
         private DBConnection dbc;
         private ObservableCollection<Address> addresses;
-        public AccountAddressEditPage(DBConnection dbc, IEnumerable<Address> addresses)
+        private MakingOrderPage updatablePage;
+        public AccountAddressEditPage(DBConnection dbc, IEnumerable<Address> addresses, MakingOrderPage updatablePage = null)
         {
             InitializeComponent();
             Title = "Управление адресами доставки";
             this.dbc = dbc;
             this.addresses = new ObservableCollection<Address>(addresses);
+            this.updatablePage = updatablePage;
             this.listViewAddressList.ItemsSource = this.addresses;
             this.buttonAddressAdd.Clicked += ButtonAddressAdd_Clicked;
         }
@@ -54,6 +56,8 @@ namespace PizzaApp.Pages
                     this.entryNewAddress.Text = String.Empty;
                     this.addresses = new ObservableCollection<Address>(await UserProvider.GetAddressList(dbc));
                     UpdateAddressList();
+                    if (updatablePage != null)
+                        updatablePage.UpdateAddresses(addresses);
                 }
             ActivateControls();
         }
@@ -66,6 +70,8 @@ namespace PizzaApp.Pages
         {
             this.addresses = new ObservableCollection<Address>(await UserProvider.GetAddressList(dbc));
             UpdateAddressList();
+            if (updatablePage != null)
+                updatablePage.UpdateAddresses(addresses);
         }
         public async void OnEdit(object sender, EventArgs e)
         {
@@ -73,6 +79,8 @@ namespace PizzaApp.Pages
             var mi = ((MenuItem)sender);
             int addressID = Convert.ToInt32(mi.CommandParameter);
             await Navigation.PushAsync(new CurrentAddressEditPage(dbc, addresses.Where(x => x.id == addressID).FirstOrDefault(), this));
+            if (updatablePage != null)
+                updatablePage.UpdateAddresses(addresses);
             ActivateControls();
         }
 
@@ -93,6 +101,8 @@ namespace PizzaApp.Pages
                         addresses.RemoveAt(i);
                         break;
                     }
+                if (updatablePage != null)
+                    updatablePage.UpdateAddresses(addresses);
             }
             else
                 await DisplayAlert("Ошибка", "Не удалось удалить адрес.", "OK");
