@@ -1,4 +1,5 @@
-﻿using PizzaApp.Data.Persistence;
+﻿using PizzaApp.Data;
+using PizzaApp.Data.Persistence;
 using PizzaApp.Data.Providers;
 using System;
 using System.Collections.Generic;
@@ -71,8 +72,8 @@ namespace PizzaApp.Pages
         private async Task Edit()
         {
             string password = null;
-            if (this.entryPassword.Text.Length > 0)
-                password = this.entryPassword.Text;
+            if (!String.IsNullOrWhiteSpace(this.entryPassword.Text))
+                password = CryptoProcessor.GetSHA1(this.entryPassword.Text);
 
             var errorList = await UserProvider.Edit(dbc, password, this.entryEmail.Text, this.entryName.Text, this.entrySurname.Text);
             if (errorList != null)
@@ -86,7 +87,7 @@ namespace PizzaApp.Pages
                     if (password == null)
                         user.password = dbc.GetUser().password;
                     else
-                        user.password = this.entryPassword.Text;
+                        user.password = CryptoProcessor.GetSHA1(this.entryPassword.Text);
 
                     dbc.SaveUser(user);
                     FillFields(user);

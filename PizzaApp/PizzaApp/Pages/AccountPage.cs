@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using PizzaApp.Data.Providers;
 using PizzaApp.Data.Persistence;
+using PizzaApp.Data;
 
 namespace PizzaApp.Pages
 {
@@ -194,8 +195,8 @@ namespace PizzaApp.Pages
         private async void ButtonLogin_Clicked(object sender, EventArgs e)
         {
             DeactivateControls();
-
-            Token receivedToken = await Login(entryUsername.Text, entryPassword.Text);
+            string cryptedPassword = CryptoProcessor.GetSHA1(entryPassword.Text);
+            Token receivedToken = await Login(entryUsername.Text, cryptedPassword);
 
             if (receivedToken != null)
             {
@@ -204,7 +205,7 @@ namespace PizzaApp.Pages
                 var user = await UserProvider.GetInfo(dbc);
                 if (user == null)
                     throw new NullReferenceException("user is null");
-                dbc.SaveUser(new User { username = user.username, password = entryPassword.Text, name = user.name, surname = user.surname, email = user.email, guest = user.guest });
+                dbc.SaveUser(new User { username = user.username, password = cryptedPassword, name = user.name, surname = user.surname, email = user.email, guest = user.guest });
             }
 
             ActivateControls();

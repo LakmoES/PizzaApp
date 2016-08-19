@@ -67,15 +67,16 @@ namespace PizzaApp.Pages
         private async Task Register()
         {
             IEnumerable<ServerError> errorList = null;
+            string cryptedPassword = CryptoProcessor.GetSHA1(entryPassword.Text);
             var foundUser = dbc.GetUser();
             if (foundUser == null)
-                errorList = await AuthProvider.Register(entryUsername.Text, entryPassword.Text, entryEmail.Text, entryName.Text, entrySurname.Text);
+                errorList = await AuthProvider.Register(entryUsername.Text, cryptedPassword, entryEmail.Text, entryName.Text, entrySurname.Text);
             else
             {
                 if (foundUser.guest == 1)
-                    errorList = await AuthProvider.NoMoreGuest(dbc, entryUsername.Text, entryPassword.Text, entryEmail.Text, entryName.Text, entrySurname.Text);
+                    errorList = await AuthProvider.NoMoreGuest(dbc, entryUsername.Text, cryptedPassword, entryEmail.Text, entryName.Text, entrySurname.Text);
                 else
-                    errorList = new List<ServerError> { new ServerError { error = "Already registered" }  };
+                    errorList = new List<ServerError> { new ServerError { error = "Already registered" } };
             }
             if (errorList != null)
             {
@@ -83,7 +84,7 @@ namespace PizzaApp.Pages
                 ActivateControls();
                 return;
             }
-            Token token = await AuthProvider.Login(entryUsername.Text, entryPassword.Text);
+            Token token = await AuthProvider.Login(entryUsername.Text, cryptedPassword);
             if (token == null)
             {
                 await DisplayAlert("Error", "Something went wrong. Token is null", "OK");
@@ -98,6 +99,7 @@ namespace PizzaApp.Pages
                 ActivateControls();
                 return;
             }
+            user.password = cryptedPassword;
             dbc.SaveUser(user);
             parentPage.Update();
 

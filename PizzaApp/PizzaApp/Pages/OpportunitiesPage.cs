@@ -25,7 +25,7 @@ namespace PizzaApp.Pages
             try
             {
                 user = dbc.GetUser();
-                userInfo = user == null ? "empty user" : "username:pass -> " + user.username + ":" + user.password;
+                userInfo = user == null ? "empty user" : "username:pass -> " + user.username + ":" + (String.IsNullOrEmpty(user.password) ? "<empty>" : user.password);
                 token = dbc.GetToken();
                 tokenInfo = token == null ? "empty token" : "token: " + token.token_hash;
             }
