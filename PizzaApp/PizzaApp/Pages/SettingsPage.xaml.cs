@@ -1,4 +1,5 @@
 ﻿using PizzaApp.Data.Persistence;
+using PizzaApp.Data.ServerConsts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,9 @@ namespace PizzaApp.Pages
 
             this.dbc = dbc;
 
+            string serverURLInDB = dbc.GetServerURL();
+            entryServerURL.Text = serverURLInDB ?? "";
+
             pageSizes = new List<int> { 5, 8, 10, 12, 15, 20 };
 
             var pageSizeInDB = dbc.GetProductPageSize();
@@ -37,14 +41,9 @@ namespace PizzaApp.Pages
             }
 
             foreach (var ps in pageSizes)
-                pickerPageSize.Items.Add(String.Format("{0} ед.",ps));
+                pickerPageSize.Items.Add(String.Format("{0} ед.", ps));
             if (selectedIndex != -1)
                 pickerPageSize.SelectedIndex = selectedIndex;
-        }
-
-        private void PickerPageSize_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //dbc.SaveProductPageSize(pageSizes[pickerPageSize.SelectedIndex]);
         }
         private async void ButtonSave_Clicked(object sender, EventArgs e)
         {
@@ -53,12 +52,21 @@ namespace PizzaApp.Pages
         }
         private bool SaveSettings()
         {
-            if (pickerPageSize.SelectedIndex != -1)
-            {
+            bool succeedFlag = true;
+
+            if (pickerPageSize.SelectedIndex == -1)
+                succeedFlag = false;
+            else
                 dbc.SaveProductPageSize(pageSizes[pickerPageSize.SelectedIndex]);
-                return true;
+            if (String.IsNullOrWhiteSpace(entryServerURL.Text))
+                succeedFlag = false;
+            else
+            {
+                dbc.SaveServerURL(entryServerURL.Text);
+                ServerAddress.Url = entryServerURL.Text;
             }
-            return false;
+
+            return succeedFlag;
         }
     }
 }

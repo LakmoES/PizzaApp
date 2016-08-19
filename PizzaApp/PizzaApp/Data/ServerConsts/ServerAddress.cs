@@ -2,6 +2,6 @@
 {
     public class ServerAddress
     {
-        public static readonly string Url = "http://lakmoes-001-site1.etempurl.com";     
+        public static string Url;
     }
 }

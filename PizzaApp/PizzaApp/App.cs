@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PizzaApp.Data.ServerEntities;
 using Newtonsoft.Json.Converters;
+using PizzaApp.Data.ServerConsts;
 
 namespace PizzaApp
 {
@@ -20,6 +21,9 @@ namespace PizzaApp
             DBConnection dbc = new DBConnection();
 
             MainPage = new RootPage(dbc);
+
+            ServerAddress.Url = dbc.GetServerURL() ?? "http://asp-lakmoes.tk";
+
             DependencyService.Get<IDBPlatform>().ClearLogFile();
         }
 

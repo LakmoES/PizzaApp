@@ -22,6 +22,7 @@ namespace PizzaApp.Data.Persistence
             db.CreateTable<Token>();
             db.CreateTable<ProductCategory>();
             db.CreateTable<ProductPageSize>();
+            db.CreateTable<ServerURL>();
         }
         public User GetUser()
         {
@@ -41,6 +42,17 @@ namespace PizzaApp.Data.Persistence
                 return token.FirstOrDefault();
             }
         }
+        public string GetServerURL()
+        {
+            lock (locker)
+            {
+                var serverAddress = from sa in db.Table<ServerURL>() select sa;
+                var foundServerAddress = serverAddress.FirstOrDefault();
+                if (foundServerAddress != null)
+                    return foundServerAddress.url;
+                return null;
+            }
+        }
         public void SaveUser(User user)
         {
             lock(locker)
@@ -55,6 +67,14 @@ namespace PizzaApp.Data.Persistence
             {
                 db.Execute("DELETE FROM TOKEN");
                 db.Insert(token);
+            }
+        }
+        public void SaveServerURL(string url)
+        {
+            lock (locker)
+            {
+                db.Execute("DELETE FROM SERVERURL");
+                db.Insert(new ServerURL { url = url });
             }
         }
         public void RemoveUser()

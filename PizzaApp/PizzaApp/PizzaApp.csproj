@@ -39,6 +39,7 @@
     <Compile Include="Data\Persistence\IDBPlatform.cs" />
     <Compile Include="Data\Persistence\ProductCategory.cs" />
     <Compile Include="Data\Persistence\Settings\ProductPageSize.cs" />
+    <Compile Include="Data\Persistence\Settings\ServerURL.cs" />
     <Compile Include="Data\Persistence\Token.cs" />
     <Compile Include="Data\Persistence\User.cs" />
     <Compile Include="Data\Providers\AuthProvider.cs" />

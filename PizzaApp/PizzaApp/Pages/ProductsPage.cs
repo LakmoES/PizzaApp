@@ -225,6 +225,7 @@ namespace PizzaApp.Pages
                 return;
             }
             selectedProductName = entryProductName.Text;
+            page = 1;
             DeactivateControls();
             listView.BeginRefresh();
         }
@@ -234,6 +235,7 @@ namespace PizzaApp.Pages
             if (pickerCategory.SelectedIndex == -1)
                 return;
             selectedCategoryID = categoryList.ElementAt(pickerCategory.SelectedIndex).id;
+            page = 1;
             DeactivateControls();
             listView.BeginRefresh();
         }

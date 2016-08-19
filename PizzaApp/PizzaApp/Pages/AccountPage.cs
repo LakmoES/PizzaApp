@@ -233,6 +233,8 @@ namespace PizzaApp.Pages
         }
         private async void ButtonLogout_Clicked(object sender, EventArgs e)
         {
+            if (!await DisplayAlert(null, "Вы действительно хотите выйти из своего профиля?", "Да", "Нет"))
+                return;
             DeactivateControls();
             this.buttonLogout.IsEnabled = false;
             await Logout();

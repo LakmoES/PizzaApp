@@ -5,8 +5,9 @@
   <StackLayout Padding="10,10,10,0">
     <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
       <Label Text="Товаров на странице" Style ="{DynamicResource SubtitleStyle}"/>
-      <Picker x:Name="pickerPageSize" Title="Выберите количество" SelectedIndexChanged="PickerPageSize_SelectedIndexChanged" />
+      <Picker x:Name="pickerPageSize" Title="Выберите количество" />
     </StackLayout>
-    <Button Text="Сохранить" Clicked="ButtonSave_Clicked"/>
+    <Entry x:Name="entryServerURL" Placeholder="URL сервера" />
+    <Button Text="Сохранить" Clicked="ButtonSave_Clicked" />
   </StackLayout>
 </ContentPage>
