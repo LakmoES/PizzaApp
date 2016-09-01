@@ -1,34 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PizzaApp.Pages.OrdersPage">
-  <StackLayout Padding="0,20,0,0">
-    <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
-    <ListView  x:Name="listViewOrders" ItemsSource="{Binding orders}" Refreshing="ListViewOrders_Refreshing">
+<ContentPage x:Class="PizzaApp.Pages.OrdersPage"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <StackLayout Padding="0,20,0,0">
+        <ActivityIndicator x:Name="activityIndicator"
+                           IsRunning="False"
+                           IsVisible="False" />
+        <ListView x:Name="listViewOrders"
+                  ItemsSource="{Binding orders}"
+                  Refreshing="ListViewOrders_Refreshing">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                      <StackLayout Orientation="Vertical">
-                        <StackLayout Orientation="Horizontal">
-                          <Label Text="{Binding id, StringFormat='№ {0}'}" Style ="{DynamicResource TitleStyle}" />
-                          <Label Text="Статус:" Style ="{DynamicResource SubtitleStyle}"/>
-                          <Label Text="{Binding status}" Style ="{DynamicResource TitleStyle}" />
-                          <Label Text="{Binding cost, StringFormat='Сумма: {0} грн'}" Style ="{DynamicResource SubtitleStyle}"/>
+                        <StackLayout Orientation="Vertical">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Style="{DynamicResource TitleStyle}" Text="{Binding id, StringFormat='№ {0}'}" />
+                                <Label Style="{DynamicResource SubtitleStyle}" Text="Статус:" />
+                                <Label Style="{DynamicResource TitleStyle}" Text="{Binding status}" />
+                                <Label Style="{DynamicResource SubtitleStyle}" Text="{Binding cost, StringFormat='Сумма: {0} грн'}" />
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Style="{DynamicResource SubtitleStyle}" Text="{Binding date, StringFormat='{0:dd.MM.yy HH:mm}'}" />
+                            </StackLayout>
                         </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                          <Label Text="{Binding date, StringFormat='{0:dd.MM.yy HH:mm}'}" Style ="{DynamicResource SubtitleStyle}"/>
-                        </StackLayout>
-                      </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
-    </ListView>
-    <StackLayout VerticalOptions="EndAndExpand">
-      <Label x:Name="labelPages" Style ="{DynamicResource SubtitleStyle}" HorizontalOptions="Center"/>
-      <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-        <Button x:Name="buttonPreviousPage" Text="Предыдущая" Clicked="ButtonPreviousPage_Clicked"/>
-        <Button x:Name="buttonNextPage" Text="Следующая" Clicked="ButtonNextPage_Clicked"/>
-      </StackLayout>
+        </ListView>
+        <StackLayout VerticalOptions="EndAndExpand">
+            <Label x:Name="labelPages"
+                   HorizontalOptions="Center"
+                   Style="{DynamicResource SubtitleStyle}" />
+            <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+                <Button x:Name="buttonPreviousPage"
+                        Clicked="ButtonPreviousPage_Clicked"
+                        Text="Предыдущая" />
+                <Button x:Name="buttonNextPage"
+                        Clicked="ButtonNextPage_Clicked"
+                        Text="Следующая" />
+            </StackLayout>
+        </StackLayout>
     </StackLayout>
-  </StackLayout>
 </ContentPage>

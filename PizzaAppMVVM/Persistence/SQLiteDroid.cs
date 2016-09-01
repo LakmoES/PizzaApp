@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO;
-using PizzaApp.Data.Persistence;
 
 using Android.App;
 using Android.Content;
@@ -11,12 +9,12 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Xamarin.Forms;
+using PizzaApp.Data.Persistence;
+using System.IO;
 
-[assembly: Dependency(typeof(PizzaApp.Droid.NotesSQLiteDroid))]
-namespace PizzaApp.Droid
+namespace PizzaAppMVVM.Persistence
 {
-    public class NotesSQLiteDroid : IDBPlatform
+    public class SQLiteDroid : IDBPlatform
     {
         private static string Path(string filename)
         {

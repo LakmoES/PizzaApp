@@ -12,17 +12,18 @@ namespace PizzaApp.Data.Persistence
 {
     public class DBConnection
     {
-        public SQLiteConnection db { private set; get; }
+        public SQLiteConnection db { set; get; }
         private object locker;
-        public DBConnection()
+        public DBConnection(SQLiteConnection db = null)
         {
             locker = new object();
-            db = DependencyService.Get<IDBPlatform>().GetConnection();
-            db.CreateTable<User>();
-            db.CreateTable<Token>();
-            db.CreateTable<ProductCategory>();
-            db.CreateTable<ProductPageSize>();
-            db.CreateTable<ServerURL>();
+            this.db = db ?? DependencyService.Get<IDBPlatform>().GetConnection();
+
+            this.db.CreateTable<User>();
+            this.db.CreateTable<Token>();
+            this.db.CreateTable<ProductCategory>();
+            this.db.CreateTable<ProductPageSize>();
+            this.db.CreateTable<ServerURL>();
         }
         public User GetUser()
         {
@@ -48,9 +49,7 @@ namespace PizzaApp.Data.Persistence
             {
                 var serverAddress = from sa in db.Table<ServerURL>() select sa;
                 var foundServerAddress = serverAddress.FirstOrDefault();
-                if (foundServerAddress != null)
-                    return foundServerAddress.url;
-                return null;
+                return foundServerAddress?.url;
             }
         }
         public void SaveUser(User user)
@@ -69,7 +68,7 @@ namespace PizzaApp.Data.Persistence
                 db.Insert(token);
             }
         }
-        public void SaveServerURL(string url)
+        public void SaveServerUrl(string url)
         {
             lock (locker)
             {
@@ -128,9 +127,7 @@ namespace PizzaApp.Data.Persistence
             {
                 var pageSize = from ps in db.Table<ProductPageSize>() select ps;
                 var foundPageSize = pageSize.FirstOrDefault();
-                if (foundPageSize != null)
-                    return foundPageSize.pageSize;
-                return null;
+                return foundPageSize?.pageSize;
             }
         }
     }

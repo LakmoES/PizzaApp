@@ -1,39 +1,61 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PizzaApp.Pages.ShopCartPage">
+<ContentPage x:Class="PizzaApp.Pages.ShopCartPage"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <StackLayout Orientation="Vertical" Padding="10,5,10,0">
-      <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
-      <Label x:Name="labelTotal" Text="" Style ="{DynamicResource TitleStyle}"/>
-      <ListView  x:Name="listViewProducts">
+        <ActivityIndicator x:Name="activityIndicator"
+                           IsRunning="False"
+                           IsVisible="False" />
+        <Label x:Name="labelTotal"
+               Style="{DynamicResource TitleStyle}"
+               Text="" />
+        <ListView x:Name="listViewProducts">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                      <ViewCell.ContextActions>
-                        <MenuItem Clicked="OnEdit" CommandParameter="{Binding productid}" Text="Править" />
-                        <MenuItem Clicked="OnDelete" CommandParameter="{Binding productid}" Text="Удалить" IsDestructive="True" />
-                      </ViewCell.ContextActions>
-                      <StackLayout Orientation="Horizontal">
-                        <Image x:Name="imagePhoto" Source="{Binding image}"/>
-                        <Label x:Name="labelTitle" Text="{Binding title}" Style ="{DynamicResource TitleStyle}" />
-                        <Label x:Name="labelAmount" Text="{Binding amount}" Style ="{DynamicResource SubtitleStyle}"/>
-                        <Label x:Name="labelMeasure" Text="{Binding measure}" Style ="{DynamicResource SubtitleStyle}"/>
-                        <Label HorizontalOptions="EndAndExpand" x:Name="labelResultPrice" Text="{Binding resultPrice}" Style ="{DynamicResource SubtitleStyle}"/>
-                        <Label HorizontalOptions="End" Text="грн" Style ="{DynamicResource SubtitleStyle}"/>
-                      </StackLayout>
+                        <ViewCell.ContextActions>
+                            <MenuItem Clicked="OnEdit"
+                                      CommandParameter="{Binding productid}"
+                                      Text="Править" />
+                            <MenuItem Clicked="OnDelete"
+                                      CommandParameter="{Binding productid}"
+                                      IsDestructive="True"
+                                      Text="Удалить" />
+                        </ViewCell.ContextActions>
+                        <StackLayout Orientation="Horizontal">
+                            <Image x:Name="imagePhoto" Source="{Binding image}" />
+                            <Label x:Name="labelTitle"
+                                   Style="{DynamicResource TitleStyle}"
+                                   Text="{Binding title}" />
+                            <Label x:Name="labelAmount"
+                                   Style="{DynamicResource SubtitleStyle}"
+                                   Text="{Binding amount}" />
+                            <Label x:Name="labelMeasure"
+                                   Style="{DynamicResource SubtitleStyle}"
+                                   Text="{Binding measure}" />
+                            <Label x:Name="labelResultPrice"
+                                   HorizontalOptions="EndAndExpand"
+                                   Style="{DynamicResource SubtitleStyle}"
+                                   Text="{Binding resultPrice}" />
+                            <Label HorizontalOptions="End"
+                                   Style="{DynamicResource SubtitleStyle}"
+                                   Text="грн" />
+                        </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-      <StackLayout VerticalOptions="EndAndExpand" Orientation="Vertical">
-        <StackLayout Orientation="Horizontal">
-          <Entry x:Name="entryPromocode" Placeholder="Промокод"/>
-          <Button x:Name="buttonUsePromocode" Text="Использовать"/>
+        <StackLayout Orientation="Vertical" VerticalOptions="EndAndExpand">
+            <StackLayout Orientation="Horizontal">
+                <Entry x:Name="entryPromocode" Placeholder="Промокод" />
+                <Button x:Name="buttonUsePromocode" Text="Использовать" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Button x:Name="buttonClearShopCart" Text="Очистить" />
+                <Button x:Name="buttonMakeOrder"
+                        HorizontalOptions="EndAndExpand"
+                        Text="Заказать" />
+            </StackLayout>
         </StackLayout>
-        <StackLayout Orientation="Horizontal">
-          <Button x:Name="buttonClearShopCart" Text="Очистить"/>
-          <Button x:Name="buttonMakeOrder" HorizontalOptions="EndAndExpand" Text="Заказать"/>
-        </StackLayout>
-      </StackLayout>
     </StackLayout>
 </ContentPage>

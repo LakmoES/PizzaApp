@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PizzaApp.Pages.SettingsPage">
-  <StackLayout Padding="10,10,10,0">
-    <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
-      <Label Text="Товаров на странице" Style ="{DynamicResource SubtitleStyle}"/>
-      <Picker x:Name="pickerPageSize" Title="Выберите количество" />
+<ContentPage x:Class="PizzaApp.Pages.SettingsPage"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <StackLayout Padding="10,10,10,0">
+        <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+            <Label Style="{DynamicResource SubtitleStyle}" Text="Товаров на странице" />
+            <Picker x:Name="pickerPageSize" Title="Выберите количество" />
+        </StackLayout>
+        <Entry x:Name="entryServerURL" Placeholder="URL сервера" />
+        <Button Clicked="ButtonSave_Clicked" Text="Сохранить" />
     </StackLayout>
-    <Entry x:Name="entryServerURL" Placeholder="URL сервера" />
-    <Button Text="Сохранить" Clicked="ButtonSave_Clicked" />
-  </StackLayout>
 </ContentPage>

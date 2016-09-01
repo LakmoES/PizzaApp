@@ -1,10 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PizzaApp.Pages.CurrentTelEditPage">
-  <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Padding="10,0,10,0">
-    <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
-    <Entry Placeholder="Номер телефона" HorizontalOptions="Center" x:Name="entryTelNumber"/>
-    <Button Text ="Подтвердить" HorizontalOptions="Center" x:Name="buttonSubmit" />
-  </StackLayout>
+<ContentPage x:Class="PizzaApp.Pages.CurrentTelEditPage"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <StackLayout HorizontalOptions="Center"
+                 Padding="10,0,10,0"
+                 VerticalOptions="Center">
+        <ActivityIndicator x:Name="activityIndicator"
+                           IsRunning="False"
+                           IsVisible="False" />
+        <Entry x:Name="entryTelNumber"
+               HorizontalOptions="Center"
+               Placeholder="Номер телефона" />
+        <Button x:Name="buttonSubmit"
+                HorizontalOptions="Center"
+                Text="Подтвердить" />
+    </StackLayout>
 </ContentPage>

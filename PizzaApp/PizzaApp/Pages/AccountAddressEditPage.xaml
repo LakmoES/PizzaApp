@@ -1,32 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PizzaApp.Pages.AccountAddressEditPage">
-  <ScrollView>
-  <StackLayout Padding="10,0,10,0">
-    <StackLayout>
-      <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
-      <Label Text="Ваши адреса: " Style ="{DynamicResource TitleStyle}" />
-      <ListView x:Name="listViewAddressList">
-        <ListView.ItemTemplate>
-          <DataTemplate>
-            <ViewCell>
-              <ViewCell.ContextActions>
-                <MenuItem Clicked="OnEdit" CommandParameter="{Binding id}" Text="Править" />
-                <MenuItem Clicked="OnDelete" CommandParameter="{Binding id}" Text="Удалить" IsDestructive="True" />
-              </ViewCell.ContextActions>
-              <StackLayout Padding="15,0" VerticalOptions="FillAndExpand">
-                <Label Text="{Binding address}" />
-              </StackLayout>
-            </ViewCell>
-          </DataTemplate>
-        </ListView.ItemTemplate>
-      </ListView>
-    </StackLayout>
-    <StackLayout VerticalOptions="EndAndExpand">
-      <Entry x:Name="entryNewAddress" Placeholder="Новый адрес" Text="" />
-      <Button x:Name="buttonAddressAdd" Text="Добавить" />
-    </StackLayout>
-  </StackLayout>
-  </ScrollView>
+<ContentPage x:Class="PizzaApp.Pages.AccountAddressEditPage"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <ScrollView>
+        <StackLayout Padding="10,0,10,0">
+            <StackLayout>
+                <ActivityIndicator x:Name="activityIndicator"
+                                   IsRunning="False"
+                                   IsVisible="False" />
+                <Label Style="{DynamicResource TitleStyle}" Text="Ваши адреса: " />
+                <ListView x:Name="listViewAddressList">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.ContextActions>
+                                    <MenuItem Clicked="OnEdit"
+                                              CommandParameter="{Binding id}"
+                                              Text="Править" />
+                                    <MenuItem Clicked="OnDelete"
+                                              CommandParameter="{Binding id}"
+                                              IsDestructive="True"
+                                              Text="Удалить" />
+                                </ViewCell.ContextActions>
+                                <StackLayout Padding="15,0" VerticalOptions="FillAndExpand">
+                                    <Label Text="{Binding address}" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+            <StackLayout VerticalOptions="EndAndExpand">
+                <Entry x:Name="entryNewAddress"
+                       Placeholder="Новый адрес"
+                       Text="" />
+                <Button x:Name="buttonAddressAdd" Text="Добавить" />
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

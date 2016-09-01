@@ -1,11 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PizzaApp.Pages.ShopCartProductEdit">
-  <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-    <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
-    <Label x:Name="labelAmount" HorizontalOptions="Center"/>
-    <Stepper x:Name="stepperAmount" Minimum="1" Maximum="100" Increment="1"/>
-    <Button Text ="Подтвердить" x:Name="buttonSubmit" />
-  </StackLayout>
+<ContentPage x:Class="PizzaApp.Pages.ShopCartProductEdit"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+        <ActivityIndicator x:Name="activityIndicator"
+                           IsRunning="False"
+                           IsVisible="False" />
+        <Label x:Name="labelAmount" HorizontalOptions="Center" />
+        <Stepper x:Name="stepperAmount"
+                 Increment="1"
+                 Maximum="100"
+                 Minimum="1" />
+        <Button x:Name="buttonSubmit" Text="Подтвердить" />
+    </StackLayout>
 </ContentPage>

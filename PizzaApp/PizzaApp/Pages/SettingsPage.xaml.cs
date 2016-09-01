@@ -62,7 +62,7 @@ namespace PizzaApp.Pages
                 succeedFlag = false;
             else
             {
-                dbc.SaveServerURL(entryServerURL.Text);
+                dbc.SaveServerUrl(entryServerURL.Text);
                 ServerAddress.Url = entryServerURL.Text;
             }
 

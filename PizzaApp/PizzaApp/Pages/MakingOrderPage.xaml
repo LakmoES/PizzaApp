@@ -1,15 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PizzaApp.Pages.MakingOrderPage">
-  <StackLayout>
-    <ActivityIndicator x:Name="activityIndicator" IsRunning="False" IsVisible="False"/>
-    <Label x:Name="labelTotalPrice" Style ="{DynamicResource TitleStyle}"/>
-    <Label Text="Адрес:" Style ="{DynamicResource SubtitleStyle}"/>
-    <StackLayout Orientation="Horizontal">
-      <Picker x:Name="pickerDeliveryAddress" Title="Выберите адрес доставки" />
-      <Button x:Name="buttonEditAddresses" Text="Адреса" Clicked="ButtonEditAddresses_Clicked"/>
+<ContentPage x:Class="PizzaApp.Pages.MakingOrderPage"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <StackLayout>
+        <ActivityIndicator x:Name="activityIndicator"
+                           IsRunning="False"
+                           IsVisible="False" />
+        <Label x:Name="labelTotalPrice" Style="{DynamicResource TitleStyle}" />
+        <Label Style="{DynamicResource SubtitleStyle}" Text="Адрес:" />
+        <StackLayout Orientation="Horizontal">
+            <Picker x:Name="pickerDeliveryAddress" Title="Выберите адрес доставки" />
+            <Button x:Name="buttonEditAddresses"
+                    Clicked="ButtonEditAddresses_Clicked"
+                    Text="Адреса" />
+        </StackLayout>
+        <Button x:Name="buttonSubmit" Text="Подтвердить заказ" />
     </StackLayout>
-    <Button x:Name="buttonSubmit" Text="Подтвердить заказ"/>
-  </StackLayout>
 </ContentPage>
