@@ -20,11 +20,11 @@ namespace PizzaApp
         {
             DBConnection dbc = new DBConnection();
 
-            MainPage = new RootPage(dbc);
-
             ServerAddress.Url = dbc.GetServerURL() ?? "http://asp-lakmoes.tk";
 
             DependencyService.Get<IDBPlatform>().ClearLogFile();
+
+            MainPage = new RootPage(dbc);
         }
 
         protected override void OnStart()
