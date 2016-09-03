@@ -19,7 +19,9 @@ namespace PizzaApp.Pages
         private IEnumerable<Address> addresses;
         private ShopCartPage parent;
         private string promocode;
-        public MakingOrderPage(DBConnection dbc, IEnumerable<Address> addresses, Decimal totalPrice, ShopCartPage parent, string promocode = null)
+        private int productID;
+        private int amountOfProduct;
+        public MakingOrderPage(DBConnection dbc, IEnumerable<Address> addresses, Decimal totalPrice, ShopCartPage parent = null, string promocode = null, int productID = -1, int amountOfProduct = -1)
         {
             InitializeComponent();
             Title = "Сделать заказ";
@@ -27,6 +29,8 @@ namespace PizzaApp.Pages
             this.addresses = addresses;
             this.parent = parent;
             this.promocode = promocode;
+            this.productID = productID;
+            this.amountOfProduct = amountOfProduct;
 
             this.labelTotalPrice.Text = String.Format("Заказ на сумму {0} грн", totalPrice);
             foreach (var address in addresses)
@@ -60,7 +64,7 @@ namespace PizzaApp.Pages
             {
                 int? addressID = pickerDeliveryAddress.SelectedIndex == -1 ? null : addresses.ElementAt(pickerDeliveryAddress.SelectedIndex).id as int?;
                 var telnumbers = await UserProvider.GetTelList(dbc);
-                if (telnumbers.Count() <= 0)
+                if (!telnumbers.Any())
                 {
                     var questionResult = await DisplayAlert(null, "В Вашем профиле не найдено ни одиного номера телефона. Наш оператор не сможет с Вами связаться. Хотите добавить телефон?", "Да", "Нет");
                     if (questionResult)
@@ -70,13 +74,18 @@ namespace PizzaApp.Pages
                 {
                     if (await DisplayAlert(null, "Вы подтверждаете заказ?", "Да", "Нет"))
                     {
-                        var result = await ShopCartProvider.MakeOrder(dbc, addressID, promocode);
+                        int? result;
+                        if (productID == -1)
+                            result = await ShopCartProvider.MakeOrder(dbc, addressID, promocode);
+                        else
+                            result = await ShopCartProvider.OrderProduct(dbc, addressID, promocode, productID, amountOfProduct);
                         if (result == null)
                             await DisplayAlert("Ошибка", "Не удалось совершить заказ.", "OK");
                         else
                         {
                             await DisplayAlert(null, String.Format("Заказ №{0} отправлен на обработку. С вами свяжутся в ближайшее время.", result), "OK");
-                            await parent.UpdateShopCart();
+                            if (parent != null)
+                                await parent.UpdateShopCart();
                             await Navigation.PopAsync();
                         }
                     }

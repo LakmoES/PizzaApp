@@ -36,14 +36,32 @@ namespace PizzaApp.Pages
 
             this.stepperBuyAmount.ValueChanged += StepperBuyAmount_ValueChanged;
             this.buttonAddToCart.Clicked += ButtonAddToCart_Clicked;
-
-            //if(dbc.GetUser() == null)
-            //{
-            //    DeactivateControls();
-            //    activityIndicator.IsVisible = false;
-            //    activityIndicator.IsRunning = false;
-            //}
+            this.buttonBuyProduct.Clicked += ButtonBuyProduct_Clicked;
         }
+
+        private async void ButtonBuyProduct_Clicked(object sender, EventArgs e)
+        {
+            DeactivateControls();
+            await GoToMakingOrder();
+        }
+        private async Task GoToMakingOrder()
+        {
+            var addresses = await UserProvider.GetAddressList(dbc);
+            if (addresses == null)
+                await DisplayAlert("Ошибка", "Не удалось связаться с сервером.", "OK");
+            else
+                await Navigation.PushAsync(
+                    new MakingOrderPage(
+                        dbc,
+                        addresses,
+                        product.cost * Convert.ToDecimal(this.stepperBuyAmount.Value),
+                        productID: product.id,
+                        amountOfProduct: Convert.ToInt32(this.stepperBuyAmount.Value)
+                        )
+                );
+            ActivateControls();
+        }
+
         private void DeactivateControls()
         {
             activityIndicator.IsVisible = true;
@@ -51,6 +69,7 @@ namespace PizzaApp.Pages
 
             stepperBuyAmount.IsEnabled = false;
             buttonAddToCart.IsEnabled = false;
+            buttonBuyProduct.IsEnabled = false;
         }
         private void ActivateControls()
         {
@@ -59,6 +78,7 @@ namespace PizzaApp.Pages
 
             stepperBuyAmount.IsEnabled = true;
             buttonAddToCart.IsEnabled = true;
+            buttonBuyProduct.IsEnabled = true;
         }
         private async void ButtonAddToCart_Clicked(object sender, EventArgs e)
         {
@@ -86,7 +106,7 @@ namespace PizzaApp.Pages
             else
             {
                 this.stepperBuyAmount.Value = 1;
-                this.labelAlreadyExists.Text = String.Format("Уже есть в корзине: {0}", await AlreadyAmount());
+                this.labelAlreadyExists.Text = $"Уже есть в корзине: {await AlreadyAmount()}";
             }
 
             ActivateControls();

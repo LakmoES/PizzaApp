@@ -22,12 +22,7 @@ namespace PizzaApp.Data.Providers
             };
 
             string content = await TokenProviderHelper.TryGetContentPost(dbc, url, values);
-            if (content == null)
-                return false;
-            if (content.Equals("\"ok\""))
-                return true;
-            else
-                return false;
+            return content != null && content.Equals("\"ok\"");
         }
         public static async Task<bool> EditProduct(DBConnection dbc, int productID, int amount)
         {
@@ -40,12 +35,7 @@ namespace PizzaApp.Data.Providers
             };
 
             string content = await TokenProviderHelper.TryGetContentPost(dbc, url, values);
-            if (content == null)
-                return false;
-            if (content.Equals("\"ok\""))
-                return true;
-            else
-                return false;
+            return content != null && content.Equals("\"ok\"");
         }
 
         public static async Task<IEnumerable<ShopCartProduct>> Show(DBConnection dbc, string promocode)
@@ -81,10 +71,7 @@ namespace PizzaApp.Data.Providers
                 return 0;
 
             int count;
-            if (!Int32.TryParse(content, out count))
-                return 0;
-            else
-                return count;
+            return !int.TryParse(content, out count) ? 0 : count;
         }
         public static async Task<int?> MakeOrder(DBConnection dbc, int? addressID, string promocode)
         {
@@ -99,14 +86,27 @@ namespace PizzaApp.Data.Providers
             string content = await TokenProviderHelper.TryGetContentPost(dbc, url, values);
             if (content == null)
                 return null;
-            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("{\"orderNO\":[0-9]+}");
-            var match = regex.Match(content);
-            if (match.Success)
+            return ParseOrderNo(content);
+        }
+
+        public static async Task<int?> OrderProduct(DBConnection dbc, int? addressID, string promocode, int productID, int amountOfProduct)
+        {
+            string url = ShopCartUrlsCollection.OrderProduct;
+
+            var values = new Dictionary<string, string>
             {
-                return Convert.ToInt32(match.Value.Substring(11, match.Length - 11 - 1));
-            }
-            else
+                { "productID", productID.ToString() },
+                { "amount", amountOfProduct.ToString()}
+            };
+            if (addressID != null)
+                values.Add("addressID", addressID.ToString());
+            if (!string.IsNullOrEmpty(promocode))
+                values.Add("promocode", promocode);
+
+            string content = await TokenProviderHelper.TryGetContentPost(dbc, url, values);
+            if (content == null)
                 return null;
+            return ParseOrderNo(content);
         }
         public static async Task<IEnumerable<ServerError>> Clear(DBConnection dbc)
         {
@@ -118,8 +118,7 @@ namespace PizzaApp.Data.Providers
                 return new List<ServerError> { new ServerError { error = "Не удалось связаться с сервером." } };
             if (content.Equals("\"ok\""))
                 return null;
-            else
-                return new List<ServerError> { new ServerError { error = "Неизвестная ошибка." } };
+            return new List<ServerError> { new ServerError { error = "Неизвестная ошибка." } };
         }
         public static async Task<bool> RemoveProduct(DBConnection dbc, int productID)
         {
@@ -130,12 +129,16 @@ namespace PizzaApp.Data.Providers
             };
 
             string content = await TokenProviderHelper.TryGetContentPost(dbc, url, values);
-            if (content == null)
-                return false;
-            if (content.Equals("\"ok\""))
-                return true;
-            else
-                return false;
+            return content != null && content.Equals("\"ok\"");
+        }
+
+        private static int? ParseOrderNo(string content)
+        {
+            var regex = new System.Text.RegularExpressions.Regex("{\"orderNO\":[0-9]+}");
+            var match = regex.Match(content);
+            if (match.Success)
+                return Convert.ToInt32(match.Value.Substring(11, match.Length - 11 - 1));
+            return null;
         }
     }
 }

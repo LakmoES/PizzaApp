@@ -129,6 +129,16 @@
                                                                       Factor=1,
                                                                       Constant=0}"
                     Text="Добавить в корзину" />
+            <Button x:Name="buttonBuyProduct"
+                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                      Property=Width,
+                                                                      Factor=.35,
+                                                                      Constant=0}"
+                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                      Property=Height,
+                                                                      Factor=.6,
+                                                                      Constant=0}"
+                    Text="Купить сразу" />
         </RelativeLayout>
     </ScrollView>
 </ContentPage>

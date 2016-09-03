@@ -7,9 +7,6 @@
         {
             this.controllerUrl = controllerUrl;
         }
-        public string GetFullUrl(string methodName)
-        {
-            return string.Format("{0}/{1}/{2}", ServerAddress.Url, controllerUrl, methodName);
-        }
+        public string GetFullUrl(string methodName) => $"{ServerAddress.Url}/{controllerUrl}/{methodName}";
     }
 }

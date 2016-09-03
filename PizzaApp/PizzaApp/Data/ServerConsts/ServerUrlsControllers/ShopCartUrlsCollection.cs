@@ -9,12 +9,13 @@ namespace PizzaApp.Data.ServerConsts.ServerUrlsControllers
     public class ShopCartUrlsCollection
     {
         private static BaseUrlsController bc = new BaseUrlsController("ShopCart");
-        public static string AddProduct { get { return bc.GetFullUrl("AddProduct"); } }
-        public static string EditProduct { get { return bc.GetFullUrl("EditProduct"); } }
-        public static string Show { get { return bc.GetFullUrl("Show"); } }
-        public static string ProductExists { get { return bc.GetFullUrl("ProductExists"); } }
-        public static string MakeOrder { get { return bc.GetFullUrl("MakeOrder"); } }
-        public static string Clear { get { return bc.GetFullUrl("Clear"); } }
-        public static string RemoveProduct { get { return bc.GetFullUrl("RemoveProduct"); } }
+        public static string AddProduct => bc.GetFullUrl("AddProduct");
+        public static string EditProduct => bc.GetFullUrl("EditProduct");
+        public static string Show => bc.GetFullUrl("Show");
+        public static string ProductExists => bc.GetFullUrl("ProductExists");
+        public static string MakeOrder => bc.GetFullUrl("MakeOrder");
+        public static string Clear => bc.GetFullUrl("Clear");
+        public static string RemoveProduct => bc.GetFullUrl("RemoveProduct");
+        public static string OrderProduct => bc.GetFullUrl("OrderProduct");
     }
 }
