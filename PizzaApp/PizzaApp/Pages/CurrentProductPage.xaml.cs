@@ -42,7 +42,20 @@ namespace PizzaApp.Pages
         private async void ButtonBuyProduct_Clicked(object sender, EventArgs e)
         {
             DeactivateControls();
-            await GoToMakingOrder();
+            if (dbc.GetUser() == null)
+            {
+                bool result = await DisplayAlert("Вход не выполнен", "Вы хотите войти в свой профиль или создать гостевой?", "Да", "Нет");
+                if (result)
+                    await Navigation.PushAsync(new AccountPage(dbc));
+                else
+                {
+                    ActivateControls();
+                    return;
+                }
+            }
+            else
+                await GoToMakingOrder();
+            ActivateControls();
         }
         private async Task GoToMakingOrder()
         {
