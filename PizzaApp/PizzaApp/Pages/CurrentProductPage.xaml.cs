@@ -22,17 +22,17 @@ namespace PizzaApp.Pages
             this.product = product;
 
             if (this.product.available == 0)
+            {
                 this.buttonAddToCart.IsEnabled = false;
-            if (alreadyExists <= 0)
-                this.labelAlreadyExists.Text = "";
-            else
-                this.labelAlreadyExists.Text = String.Format("Уже есть в корзине: {0}", alreadyExists);
+                this.buttonBuyProduct.IsEnabled = false;
+            }
+            this.labelAlreadyExists.Text = alreadyExists <= 0 ? "" : string.Format("Уже есть в корзине: {0}", alreadyExists);
 
             this.Title = product.title;
             this.labelCategory.Text = dbc.GetCategoryTitle(product.category);
             this.labelAvailable.Text = product.available == 1 ? "В наличии" : "Нет в наличии";
             this.labelAdvertising.Text = product.advertising == 1 ? "Акция!" : "";
-            this.labelCostPerAmount.Text = String.Format("{0} грн за {1}", product.cost, product.measure);
+            this.labelCostPerAmount.Text = string.Format("{0} грн за {1}", product.cost, product.measure);
 
             this.stepperBuyAmount.ValueChanged += StepperBuyAmount_ValueChanged;
             this.buttonAddToCart.Clicked += ButtonAddToCart_Clicked;
