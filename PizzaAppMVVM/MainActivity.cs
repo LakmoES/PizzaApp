@@ -102,8 +102,14 @@ namespace PizzaAppMVVM
             var title = convertView.FindViewById<TextView>(Resource.Id.TextViewTitle);
             title.Text = product.title;
 
-            var desc = convertView.FindViewById<TextView>(Resource.Id.TextViewSubtitle);
-            desc.Text = product.cost + " грн";
+            var cost = convertView.FindViewById<TextView>(Resource.Id.TextViewSubtitle);
+            cost.Text = $"{product.cost} грн/{product.measure}";
+
+            var advertising = convertView.FindViewById<TextView>(Resource.Id.TextViewAdvertising);
+            advertising.Text = product.advertising == 0 ? "" : "Акция!";
+
+            var available = convertView.FindViewById<TextView>(Resource.Id.TextViewAvailable);
+            available.Text = product.available == 1 ? "" : "Нет в наличии";
 
             return convertView;
         }

@@ -40,7 +40,11 @@ namespace customviews
         public bool IsVisible
         {
             get { return base.Visibility == ViewStates.Visible; }
-            set { base.Visibility = value ? ViewStates.Visible : ViewStates.Invisible; }
+            set
+            {
+                base.Visibility = value ? ViewStates.Visible : ViewStates.Invisible;
+                base.Enabled = value;
+            }
         }
     }
 }

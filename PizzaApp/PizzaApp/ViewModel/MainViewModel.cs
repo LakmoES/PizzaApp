@@ -31,9 +31,11 @@ namespace PizzaApp.ViewModel
         {
             Title = "Главная";
             Page = 1;
-            PageSize = 3;
+            PageSize = 10;
 
             if (Products == null) Products = new ObservableCollection<Product>();
+
+            RefreshProductsCommand.Execute(null);
             ////if (IsInDesignMode)
             ////{
             ////    // Code runs in Blend --> create design time data.
