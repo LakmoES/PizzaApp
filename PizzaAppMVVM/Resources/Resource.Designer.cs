@@ -62,20 +62,29 @@ namespace PizzaAppMVVM
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f050004
-			public const int DisplayText = 2131034116;
+			// aapt resource value: 0x7f050005
+			public const int DisplayText = 2131034117;
 			
-			// aapt resource value: 0x7f050003
-			public const int GoBackButton = 2131034115;
+			// aapt resource value: 0x7f050004
+			public const int GoBackButton = 2131034116;
+			
+			// aapt resource value: 0x7f050001
+			public const int ListViewProducts = 2131034113;
 			
 			// aapt resource value: 0x7f050000
 			public const int MainActivityProgressBar = 2131034112;
 			
-			// aapt resource value: 0x7f050001
-			public const int MyButton = 2131034113;
-			
 			// aapt resource value: 0x7f050002
-			public const int NavigateButton = 2131034114;
+			public const int MyButton = 2131034114;
+			
+			// aapt resource value: 0x7f050003
+			public const int NavigateButton = 2131034115;
+			
+			// aapt resource value: 0x7f050007
+			public const int TextViewSubtitle = 2131034119;
+			
+			// aapt resource value: 0x7f050006
+			public const int TextViewTitle = 2131034118;
 			
 			static Id()
 			{
@@ -98,6 +107,9 @@ namespace PizzaAppMVVM
 			
 			// aapt resource value: 0x7f030002
 			public const int Page3 = 2130903042;
+			
+			// aapt resource value: 0x7f030003
+			public const int ProductTemplate = 2130903043;
 			
 			static Layout()
 			{

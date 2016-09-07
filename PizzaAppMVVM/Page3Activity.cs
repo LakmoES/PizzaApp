@@ -17,14 +17,7 @@ namespace PizzaAppMVVM
     [Activity(Label = "Page3")]
     public class Page3Activity : ActivityBase
     {
-        public NavigationService Nav
-        {
-            get
-            {
-                return (NavigationService)ServiceLocator.Current
-                    .GetInstance<INavigationService>();
-            }
-        }
+        public NavigationService Nav => (NavigationService)ServiceLocator.Current.GetInstance<INavigationService>();
 
         protected override void OnCreate(Bundle bundle)
         {

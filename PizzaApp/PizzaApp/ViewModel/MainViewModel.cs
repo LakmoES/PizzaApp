@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -30,6 +32,8 @@ namespace PizzaApp.ViewModel
             Title = "Главная";
             Page = 1;
             PageSize = 3;
+
+            if (Products == null) Products = new ObservableCollection<Product>();
             ////if (IsInDesignMode)
             ////{
             ////    // Code runs in Blend --> create design time data.
@@ -45,10 +49,11 @@ namespace PizzaApp.ViewModel
         private bool _isBusy;
         private int _page;
         private int _pageSize;
-        private ICollection<Product> _products;
+        //private ICollection<Product> _products;
         #endregion
 
         #region Public properties
+        public ObservableCollection<Product> Products { get; private set; }
         public string Title { get; set; }
         public bool IsBusy
         {
@@ -66,13 +71,14 @@ namespace PizzaApp.ViewModel
             get { return _pageSize; }
             set { _pageSize = value; RaisePropertyChanged(() => PageSize); }
         }
-        public ICollection<Product> Products
-        {
-            get { return _products; }
-            set { _products = value; RaisePropertyChanged(() => Products); }
-        }
+        //public ICollection<Product> Products
+        //{
+        //    get { return _products; }
+        //    set { _products = value; RaisePropertyChanged(() => Products); }
+        //}
         #endregion
 
+        #region Commands
         private ICommand _refreshProductsCommand;
 
         public ICommand RefreshProductsCommand
@@ -84,9 +90,25 @@ namespace PizzaApp.ViewModel
                     {
                         IsBusy = true;
                         var products = await ProductProvider.GetProductPage(Page, PageSize);
-                        Products = products != null ? new List<Product>(products) : null;
+                        UpdateProducts(products);
                         IsBusy = false;
                     }));
+            }
+        }
+        #endregion
+        
+        private void UpdateProducts(IEnumerable<Product> newProducts = null)
+        {
+            Debug.WriteLine(newProducts == null ? "empty" : newProducts.Count().ToString());
+
+            if (Products == null)
+                Products = new ObservableCollection<Product>();
+
+            var products = newProducts ?? new List<Product>();
+            Products.Clear();
+            foreach (var product in products)
+            {
+                Products.Add(product);
             }
         }
     }

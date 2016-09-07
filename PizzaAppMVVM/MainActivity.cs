@@ -14,6 +14,7 @@ using Microsoft.Practices.ServiceLocation;
 using PizzaApp.Data.Persistence;
 using PizzaApp.ViewModel;
 using PizzaApp.Data.ServerConsts;
+using PizzaApp.Data.ServerEntities;
 using PizzaAppMVVM.Persistence;
 
 namespace PizzaAppMVVM
@@ -38,14 +39,12 @@ namespace PizzaAppMVVM
         }
 
         private ActivityProgressBar _busyProgressBar;
+        public ActivityProgressBar BusyProgressBar => _busyProgressBar 
+            ?? (_busyProgressBar = FindViewById<ActivityProgressBar>(Resource.Id.MainActivityProgressBar));
 
-        public ActivityProgressBar BusyProgressBar
-        {
-            get
-            {
-                return _busyProgressBar ?? (_busyProgressBar = FindViewById<ActivityProgressBar>(Resource.Id.MainActivityProgressBar));
-            }
-        }
+        private ListView listViewProducts;
+        public ListView ListViewProducts => listViewProducts 
+            ?? (listViewProducts = FindViewById<ListView>(Resource.Id.ListViewProducts));
 
         private Button _mainButton;
 
@@ -70,6 +69,8 @@ namespace PizzaAppMVVM
 
                 SimpleIoc.Default.Register<INavigationService>(() => nav);
             }
+            //Vm.UpdateProducts();
+            ListViewProducts.Adapter = Vm.Products.GetAdapter(GetProductAdapter);
 
             //var button = FindViewById<Button>(Resource.Id.MyButton);
             //button.Click += (s, e) =>
@@ -92,6 +93,19 @@ namespace PizzaAppMVVM
                 );
 
             MainButton.SetCommand("Click", Vm.RefreshProductsCommand);
+        }
+        private View GetProductAdapter(int position, Product product, View convertView)
+        {
+            // Not reusing views here
+            convertView = LayoutInflater.Inflate(Resource.Layout.ProductTemplate, null);
+
+            var title = convertView.FindViewById<TextView>(Resource.Id.TextViewTitle);
+            title.Text = product.title;
+
+            var desc = convertView.FindViewById<TextView>(Resource.Id.TextViewSubtitle);
+            desc.Text = product.cost + " грн";
+
+            return convertView;
         }
     }
 }
