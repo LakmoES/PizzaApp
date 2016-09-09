@@ -60,9 +60,11 @@
     <Compile Include="Data\ServerEntities\Category.cs" />
     <Compile Include="Data\ServerEntities\Guest.cs" />
     <Compile Include="Data\ServerEntities\Order.cs" />
+    <Compile Include="Data\ServerEntities\ProductImage.cs" />
     <Compile Include="Data\ServerEntities\ShopCartProduct.cs" />
     <Compile Include="Data\ServerEntities\TelNumber.cs" />
     <Compile Include="Data\ServerError.cs" />
+    <Compile Include="Model\ProductWithImage.cs" />
     <Compile Include="Pages\AccountAddressEditPage.xaml.cs">
       <DependentUpon>AccountAddressEditPage.xaml</DependentUpon>
     </Compile>

@@ -4,10 +4,15 @@
     android:layout_height="match_parent"
     android:paddingLeft="16dp"
     android:paddingRight="16dp">
+  <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/ImageViewImage"/>
   <LinearLayout
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:layout_toRightOf="@id/ImageViewImage"
     android:id="@+id/LinearLayoutMain">
     <TextView
         android:layout_width="match_parent"

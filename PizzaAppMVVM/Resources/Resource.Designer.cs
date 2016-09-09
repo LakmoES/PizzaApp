@@ -69,7 +69,10 @@ namespace PizzaAppMVVM
 			public const int GoBackButton = 2131034116;
 			
 			// aapt resource value: 0x7f050006
-			public const int LinearLayoutMain = 2131034118;
+			public const int ImageViewImage = 2131034118;
+			
+			// aapt resource value: 0x7f050007
+			public const int LinearLayoutMain = 2131034119;
 			
 			// aapt resource value: 0x7f050000
 			public const int ListViewProducts = 2131034112;
@@ -83,17 +86,17 @@ namespace PizzaAppMVVM
 			// aapt resource value: 0x7f050003
 			public const int NavigateButton = 2131034115;
 			
-			// aapt resource value: 0x7f050009
-			public const int TextViewAdvertising = 2131034121;
-			
 			// aapt resource value: 0x7f05000a
-			public const int TextViewAvailable = 2131034122;
+			public const int TextViewAdvertising = 2131034122;
+			
+			// aapt resource value: 0x7f05000b
+			public const int TextViewAvailable = 2131034123;
+			
+			// aapt resource value: 0x7f050009
+			public const int TextViewSubtitle = 2131034121;
 			
 			// aapt resource value: 0x7f050008
-			public const int TextViewSubtitle = 2131034120;
-			
-			// aapt resource value: 0x7f050007
-			public const int TextViewTitle = 2131034119;
+			public const int TextViewTitle = 2131034120;
 			
 			static Id()
 			{

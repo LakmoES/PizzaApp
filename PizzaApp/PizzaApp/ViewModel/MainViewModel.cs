@@ -2,11 +2,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using PizzaApp.Data.Providers;
 using PizzaApp.Data.ServerEntities;
+using PizzaApp.Model;
 
 namespace PizzaApp.ViewModel
 {
@@ -33,7 +35,7 @@ namespace PizzaApp.ViewModel
             Page = 1;
             PageSize = 10;
 
-            if (Products == null) Products = new ObservableCollection<Product>();
+            if (Products == null) Products = new ObservableCollection<ProductWithImage>();
 
             RefreshProductsCommand.Execute(null);
             ////if (IsInDesignMode)
@@ -55,7 +57,7 @@ namespace PizzaApp.ViewModel
         #endregion
 
         #region Public properties
-        public ObservableCollection<Product> Products { get; private set; }
+        public ObservableCollection<ProductWithImage> Products { get; private set; }
         public string Title { get; set; }
         public bool IsBusy
         {
@@ -94,6 +96,7 @@ namespace PizzaApp.ViewModel
                         var products = await ProductProvider.GetProductPage(Page, PageSize);
                         UpdateProducts(products);
                         IsBusy = false;
+                        await GetImagesForProducts();
                     }));
             }
         }
@@ -104,7 +107,7 @@ namespace PizzaApp.ViewModel
             Debug.WriteLine(newProducts == null ? "empty" : newProducts.Count().ToString());
 
             if (Products == null)
-                Products = new ObservableCollection<Product>();
+                Products = new ObservableCollection<ProductWithImage>();
 
             var products = newProducts ?? new List<Product>();
             Products.Clear();
@@ -112,6 +115,12 @@ namespace PizzaApp.ViewModel
             {
                 Products.Add(product);
             }
+        }
+
+        private async Task GetImagesForProducts()
+        {
+            foreach (var product in Products)
+                product.Image = await ProductProvider.GetProductImage(product.Product.id);
         }
     }
 }

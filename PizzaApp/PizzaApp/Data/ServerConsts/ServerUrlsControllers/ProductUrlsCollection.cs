@@ -12,5 +12,6 @@ namespace PizzaApp.Data.ServerConsts.ServerUrlsControllers
         public static string Pages => bc.GetFullUrl("Pages");
         public static string CategoryList => bc.GetFullUrl("GetCategoryList");
         public static string PagesByName => bc.GetFullUrl("PagesByName");
+        public static string GetImagesUrl => bc.GetFullUrl("GetImagesUrl");
     }
 }

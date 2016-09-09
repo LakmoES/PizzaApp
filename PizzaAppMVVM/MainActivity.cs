@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -15,6 +16,7 @@ using PizzaApp.Data.Persistence;
 using PizzaApp.ViewModel;
 using PizzaApp.Data.ServerConsts;
 using PizzaApp.Data.ServerEntities;
+using PizzaApp.Model;
 using PizzaAppMVVM.Persistence;
 
 namespace PizzaAppMVVM
@@ -94,22 +96,24 @@ namespace PizzaAppMVVM
 
             MainButton.SetCommand("Click", Vm.RefreshProductsCommand);
         }
-        private View GetProductAdapter(int position, Product product, View convertView)
+        private View GetProductAdapter(int position, ProductWithImage product, View convertView)
         {
             // Not reusing views here
             convertView = LayoutInflater.Inflate(Resource.Layout.ProductTemplate, null);
 
             var title = convertView.FindViewById<TextView>(Resource.Id.TextViewTitle);
-            title.Text = product.title;
+            title.Text = product.Product.title;
 
             var cost = convertView.FindViewById<TextView>(Resource.Id.TextViewSubtitle);
-            cost.Text = $"{product.cost} грн/{product.measure}";
+            cost.Text = $"{product.Product.cost} грн/{product.Product.measure}";
 
             var advertising = convertView.FindViewById<TextView>(Resource.Id.TextViewAdvertising);
-            advertising.Text = product.advertising == 0 ? "" : "Акция!";
+            advertising.Text = product.Product.advertising == 0 ? "" : "Акция!";
 
             var available = convertView.FindViewById<TextView>(Resource.Id.TextViewAvailable);
-            available.Text = product.available == 1 ? "" : "Нет в наличии";
+            available.Text = product.Product.available == 1 ? "" : "Нет в наличии";
+
+            var image = convertView.FindViewById<ImageView>(Resource.Id.ImageViewImage);
 
             return convertView;
         }
